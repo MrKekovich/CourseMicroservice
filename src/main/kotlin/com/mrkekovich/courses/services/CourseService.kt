@@ -21,7 +21,7 @@ class CourseService(
         return CourseDto.Response(entity)
     }
 
-    fun create(course: CourseDto): CourseDto.Response {
+    fun create(course: CourseDto.Request): CourseDto.Response {
         val entity = CourseEntity(
             name = course.name,
             description = course.description
