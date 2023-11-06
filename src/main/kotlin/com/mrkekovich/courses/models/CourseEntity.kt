@@ -1,10 +1,9 @@
 package com.mrkekovich.courses.models
 
 import jakarta.persistence.*
-import lombok.Builder
 
 @Entity
-@Builder
+@Table(name = "courses")
 data class CourseEntity (
     @Column(nullable = false)
     val name: String?,
