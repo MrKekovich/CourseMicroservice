@@ -33,8 +33,8 @@ sealed class CourseDto(
         override val description: String?
     ) : CourseDto(name, description) {
         constructor(courseEntity: CourseEntity) : this(
-            courseEntity.name,
-            courseEntity.description,
+            name = courseEntity.name,
+            description = courseEntity.description,
         )
     }
 
@@ -47,9 +47,9 @@ sealed class CourseDto(
         override val description: String?
     ) : CourseDto(name, description) {
         constructor(courseEntity: CourseEntity) : this(
-            courseEntity.name,
-            courseEntity.description,
-            courseEntity.id,
+            name = courseEntity.name,
+            description = courseEntity.description,
+            id = courseEntity.id,
         )
     }
 }
