@@ -1,12 +1,11 @@
 package com.mrkekovich.courses.services
 
 import com.mrkekovich.courses.dto.CourseDto
-import com.mrkekovich.courses.models.CourseEntity
 import com.mrkekovich.courses.repositories.CourseRepository
-import jakarta.ws.rs.NotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class CourseService(
@@ -24,20 +23,22 @@ class CourseService(
     }
 
     fun getById(id: String): ResponseEntity<CourseDto.Response> {
-        val entity = courseRepository.findById(id).get()
-        val response = CourseDto.Response(entity)
+        val entity = courseRepository.findById(id).getOrNull()
+            ?: return ResponseEntity(
+                HttpStatus.NOT_FOUND
+            )
+
         return ResponseEntity<CourseDto.Response>(
-            response,
+            CourseDto.Response(entity),
             HttpStatus.OK
         )
     }
 
     fun create(course: CourseDto.Request): ResponseEntity<CourseDto.Response> {
-        val entity = course.toEntity()
-        courseRepository.save(entity)
-        val response = CourseDto.Response(entity)
+        val entity = courseRepository.save(course.toEntity())
+
         return ResponseEntity<CourseDto.Response>(
-            response,
+            CourseDto.Response(entity),
             HttpStatus.CREATED
         )
     }
@@ -45,23 +46,30 @@ class CourseService(
     fun update(
         id: String,
         course: CourseDto.Request,
-    ): ResponseEntity<CourseEntity> {
-        courseRepository.findById(id).orElseThrow {
-            NotFoundException("Course with id $id not found")
-        }
-        courseRepository.save(
+    ): ResponseEntity<CourseDto.Response> {
+        courseRepository.findById(id).getOrNull()
+            ?: return ResponseEntity(
+                HttpStatus.NOT_FOUND
+            )
+
+        val newEntity = courseRepository.save(
             course.toEntity(id = id)
         )
 
-        return ResponseEntity<CourseEntity>(
-            course.toEntity(id = id),
+        return ResponseEntity<CourseDto.Response>(
+            CourseDto.Response(newEntity),
             HttpStatus.OK
         )
     }
 
-    fun delete(id: String): ResponseEntity.BodyBuilder {
+    fun delete(id: String): ResponseEntity<Unit> {
+        courseRepository.findById(id).getOrNull()
+            ?: return ResponseEntity(
+                HttpStatus.NOT_FOUND
+            )
+
         courseRepository.deleteById(id)
-        return ResponseEntity.ok()
+        return ResponseEntity(HttpStatus.OK)
     }
 
 }

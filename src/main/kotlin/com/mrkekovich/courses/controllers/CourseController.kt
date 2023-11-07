@@ -1,7 +1,6 @@
 package com.mrkekovich.courses.controllers
 
 import com.mrkekovich.courses.dto.CourseDto
-import com.mrkekovich.courses.models.CourseEntity
 import com.mrkekovich.courses.services.CourseService
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -44,7 +43,7 @@ class CourseController(
         @Validated
         @RequestBody
         course: CourseDto.Request
-    ): ResponseEntity<CourseEntity> {
+    ): ResponseEntity<CourseDto.Response> {
         return courseService.update(id, course)
     }
 
@@ -53,7 +52,7 @@ class CourseController(
         @Validated
         @PathVariable
         id: String
-    ): ResponseEntity.BodyBuilder {
+    ): ResponseEntity<Unit> {
         return courseService.delete(id)
     }
 }
