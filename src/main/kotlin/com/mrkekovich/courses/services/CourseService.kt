@@ -3,6 +3,9 @@ package com.mrkekovich.courses.services
 import com.mrkekovich.courses.dto.CourseDto
 import com.mrkekovich.courses.models.CourseEntity
 import com.mrkekovich.courses.repositories.CourseRepository
+import jakarta.ws.rs.NotFoundException
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
@@ -10,43 +13,55 @@ class CourseService(
     private val courseRepository: CourseRepository
 ) {
 
-    fun getAll(): List<CourseDto.Response> {
-        return courseRepository.findAll().map {
+    fun getAll(): ResponseEntity<List<CourseDto.Response>> {
+        val response = courseRepository.findAll().map {
             CourseDto.Response(it)
         }
-    }
-
-    fun getById(id: String): CourseDto.Response {
-        val entity = courseRepository.findById(id).get()
-        return CourseDto.Response(entity)
-    }
-
-    fun create(course: CourseDto.Request): CourseDto.Response {
-        val entity = CourseEntity(
-            name = course.name,
-            description = course.description
+        return ResponseEntity<List<CourseDto.Response>>(
+            response,
+            HttpStatus.OK
         )
+    }
+
+    fun getById(id: String): ResponseEntity<CourseDto.Response> {
+        val entity = courseRepository.findById(id).get()
+        val response = CourseDto.Response(entity)
+        return ResponseEntity<CourseDto.Response>(
+            response,
+            HttpStatus.OK
+        )
+    }
+
+    fun create(course: CourseDto.Request): ResponseEntity<CourseDto.Response> {
+        val entity = course.toEntity()
         courseRepository.save(entity)
-        return CourseDto.Response(entity)
+        val response = CourseDto.Response(entity)
+        return ResponseEntity<CourseDto.Response>(
+            response,
+            HttpStatus.CREATED
+        )
     }
 
     fun update(
         id: String,
         course: CourseDto.Request,
-    ): CourseDto.Response {
-        val entity = courseRepository.findById(id).get()
+    ): ResponseEntity<CourseEntity> {
+        courseRepository.findById(id).orElseThrow {
+            NotFoundException("Course with id $id not found")
+        }
         courseRepository.save(
-            CourseEntity(
-                id = entity.id,
-                name = course.name,
-                description = course.description
-            )
+            course.toEntity(id = id)
         )
-        return CourseDto.Response(entity)
+
+        return ResponseEntity<CourseEntity>(
+            course.toEntity(id = id),
+            HttpStatus.OK
+        )
     }
 
-    fun delete(id: String) {
+    fun delete(id: String): ResponseEntity.BodyBuilder {
         courseRepository.deleteById(id)
+        return ResponseEntity.ok()
     }
 
 }

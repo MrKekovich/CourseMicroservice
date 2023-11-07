@@ -1,7 +1,9 @@
 package com.mrkekovich.courses.controllers
 
 import com.mrkekovich.courses.dto.CourseDto
+import com.mrkekovich.courses.models.CourseEntity
 import com.mrkekovich.courses.services.CourseService
+import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
@@ -11,7 +13,7 @@ class CourseController(
     private val courseService: CourseService
 ) {
     @GetMapping
-    fun getAll(): List<CourseDto.Response> {
+    fun getAll(): ResponseEntity<List<CourseDto.Response>> {
         return courseService.getAll()
     }
 
@@ -20,7 +22,7 @@ class CourseController(
         @Validated
         @PathVariable
         id: String
-    ): CourseDto.Response {
+    ): ResponseEntity<CourseDto.Response> {
         return courseService.getById(id)
     }
 
@@ -29,7 +31,7 @@ class CourseController(
         @Validated
         @RequestBody
         course: CourseDto.Request
-    ): CourseDto.Response {
+    ): ResponseEntity<CourseDto.Response> {
         return courseService.create(course)
     }
 
@@ -42,7 +44,7 @@ class CourseController(
         @Validated
         @RequestBody
         course: CourseDto.Request
-    ): CourseDto.Response {
+    ): ResponseEntity<CourseEntity> {
         return courseService.update(id, course)
     }
 
@@ -51,7 +53,7 @@ class CourseController(
         @Validated
         @PathVariable
         id: String
-    ) {
-        courseService.delete(id)
+    ): ResponseEntity.BodyBuilder {
+        return courseService.delete(id)
     }
 }
