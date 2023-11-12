@@ -15,20 +15,18 @@ import org.hibernate.validator.constraints.Length
  * @property description Course description
  * @property id (optional) Course ID
  */
-sealed class CourseDto(
+sealed class CourseDto {
+    @get:Length(min = 2, max = 50)
+    @get:NotNull
+    @get:NotBlank
+    abstract val name: String?
 
-    @Length(min = 2, max = 50)
-    @NotNull
-    @NotBlank
-    open val name: String?,
+    @get:Length(max = 500)
+    @get:NotNull
+    @get:NotBlank
+    abstract val description: String?
 
-    @Length(max = 500)
-    @NotNull
-    @NotBlank
-    open val description: String?,
-
-    open val id: String? = null,
-) {
+    open val id: String? = null
 
     /**
      * To entity
@@ -73,12 +71,7 @@ sealed class CourseDto(
     data class Request(
         override val name: String?,
         override val description: String?
-    ) : CourseDto(name, description) {
-        constructor(courseEntity: CourseEntity) : this(
-            name = courseEntity.name,
-            description = courseEntity.description,
-        )
-    }
+    ) : CourseDto()
 
     /**
      * Response data class.
@@ -90,13 +83,13 @@ sealed class CourseDto(
      * @property description Description of course.
      */
     data class Response(
+        override val name: String?,
+        override val description: String?,
+
         @NotNull
         @NotBlank
         override val id: String?,
-
-        override val name: String?,
-        override val description: String?
-    ) : CourseDto(name, description) {
+    ) : CourseDto() {
         constructor(courseEntity: CourseEntity) : this(
             name = courseEntity.name,
             description = courseEntity.description,
