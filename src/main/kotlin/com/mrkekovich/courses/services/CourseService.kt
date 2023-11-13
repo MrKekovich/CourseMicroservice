@@ -9,11 +9,15 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
+/**
+ * Course service implementation.
+ * @property courseRepository Course repository.
+ */
 @Service
 class CourseService(
     private val courseRepository: CourseRepository
-): BaseService<CourseEntity, String>(courseRepository) {
-    override fun getAll(): ResponseEntity<out List<BaseDto<CourseEntity, String>>> {
+): BaseService<CourseEntity, String, CourseDto.Response>(courseRepository) {
+    override fun getAll(): ResponseEntity<List<CourseDto.Response>> {
         val response = courseRepository.findAll().map {
             CourseDto.Response(it)
         }
@@ -23,7 +27,9 @@ class CourseService(
         )
     }
 
-    override fun <Request : BaseDto<CourseEntity, String>> create(dto: Request): ResponseEntity<out BaseDto<CourseEntity, String>> {
+    override fun <RQ : BaseDto<CourseEntity, String>> create(
+        dto: RQ
+    ): ResponseEntity<CourseDto.Response> {
         val course = courseRepository.save(dto.toEntity())
         return ResponseEntity(
             CourseDto.Response(course),
@@ -31,14 +37,15 @@ class CourseService(
         )
     }
 
-    override fun <Request : BaseDto<CourseEntity, String>> update(
+    override fun <RQ : BaseDto<CourseEntity, String>> update(
         id: String,
-        dto: Request
-    ): ResponseEntity<out BaseDto<CourseEntity, String>> {
-        val course = courseRepository.findById(id).getOrNull()
+        dto: RQ
+    ): ResponseEntity<CourseDto.Response> {
+        courseRepository.findById(id).getOrNull()
             ?: return ResponseEntity(
                 HttpStatus.NOT_FOUND
             )
+
         val newCourse = courseRepository.save(dto.toEntity(id = id))
         return ResponseEntity(
             CourseDto.Response(newCourse),
@@ -46,7 +53,7 @@ class CourseService(
         )
     }
 
-    override fun getById(id: String): ResponseEntity<out BaseDto<CourseEntity, String>> {
+    override fun getById(id: String): ResponseEntity<CourseDto.Response> {
         val course = courseRepository.findById(id).getOrNull()
             ?: return ResponseEntity(
                 HttpStatus.NOT_FOUND
