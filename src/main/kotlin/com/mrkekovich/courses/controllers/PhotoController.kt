@@ -1,7 +1,6 @@
 package com.mrkekovich.courses.controllers
 
 import com.mrkekovich.courses.dto.PhotoDto
-import com.mrkekovich.courses.models.PhotoEntity
 import com.mrkekovich.courses.services.PhotoService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -12,19 +11,19 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/photos")
 class PhotoController(
     private val photoService: PhotoService
-) : BaseController<PhotoEntity, String, PhotoDto.Response, PhotoDto.Request>() {
+) {
     @GetMapping
-    override fun getAll(): ResponseEntity<List<PhotoDto.Response>> =
+    fun getAll(): ResponseEntity<List<PhotoDto.Response>> =
         photoService.getAll()
 
     @GetMapping("/{id}")
-    override fun getById(
+    fun getById(
         @PathVariable id: String
     ): ResponseEntity<PhotoDto.Response> =
         photoService.getById(id)
 
     @PostMapping
-    override fun create(
+    fun create(
         @Validated
         @RequestBody
         dto: PhotoDto.Request
@@ -32,7 +31,7 @@ class PhotoController(
         photoService.create(dto)
 
     @PatchMapping("/{id}")
-    override fun update(
+    fun update(
         @Validated
         @PathVariable
         id: String,
@@ -44,7 +43,7 @@ class PhotoController(
         photoService.update(id, dto)
 
     @DeleteMapping("/{id}")
-    override fun delete(
+    fun delete(
         @Validated
         @PathVariable
         id: String

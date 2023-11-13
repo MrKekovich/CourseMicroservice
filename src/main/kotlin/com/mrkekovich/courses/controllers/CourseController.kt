@@ -1,7 +1,6 @@
 package com.mrkekovich.courses.controllers
 
 import com.mrkekovich.courses.dto.CourseDto
-import com.mrkekovich.courses.models.CourseEntity
 import com.mrkekovich.courses.services.CourseService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -12,13 +11,13 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/courses")
 class CourseController(
     private val courseService: CourseService
-) : BaseController<CourseEntity, String, CourseDto.Response, CourseDto.Request>() {
+) {
     @GetMapping
-    override fun getAll(): ResponseEntity<List<CourseDto.Response>> =
+    fun getAll(): ResponseEntity<List<CourseDto.Response>> =
         courseService.getAll()
 
     @GetMapping("/{id}")
-    override fun getById(
+    fun getById(
         @Validated
         @PathVariable
         id: String
@@ -26,7 +25,7 @@ class CourseController(
         courseService.getById(id)
 
     @PostMapping
-    override fun create(
+    fun create(
         @Validated
         @RequestBody
         dto: CourseDto.Request
@@ -34,7 +33,7 @@ class CourseController(
         courseService.create(dto)
 
     @PatchMapping("/{id}")
-    override fun update(
+    fun update(
         @Validated
         @PathVariable
         id: String,
@@ -46,7 +45,7 @@ class CourseController(
         courseService.update(id, dto)
 
     @DeleteMapping("/{id}")
-    override fun delete(
+    fun delete(
         @PathVariable
         id: String
     ): ResponseEntity<HttpStatus> =
