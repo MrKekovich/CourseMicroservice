@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Length
  * @property description Course description
  * @property id (optional) Course ID
  */
-sealed class CourseDto {
+sealed class CourseDto : BaseDto<CourseEntity>() {
     @get:Length(min = 2, max = 50)
     @get:NotNull
     @get:NotBlank
@@ -22,13 +22,7 @@ sealed class CourseDto {
     @get:NotBlank
     abstract val description: String?
 
-    open val id: String? = null
-
-    /**
-     * Converts DTO to an entity.
-     * @return CourseEntity with DTO's ID field.
-     */
-    fun toEntity(): CourseEntity {
+    override fun toEntity(): CourseEntity {
         return CourseEntity(
             title = title,
             description = description,
@@ -36,12 +30,7 @@ sealed class CourseDto {
         )
     }
 
-    /**
-     * Converts DTO to an entity with given ID.
-     * @param id the ID of entity. Leave empty to generate new ID.
-     * @return CourseEntity with given ID.
-     */
-    fun toEntity(id: String?): CourseEntity {
+    override fun toEntity(id: String?): CourseEntity {
         return CourseEntity(
             title = title,
             description = description,

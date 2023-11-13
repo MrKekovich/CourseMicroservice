@@ -2,6 +2,7 @@ package com.mrkekovich.courses.models
 
 import jakarta.persistence.*
 
+
 /**
  * Photo entity
  * @property fileName File name of a photo.
@@ -15,5 +16,5 @@ data class PhotoEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    val id: String? = null
-)
+    override val id: String? = null
+) : BaseEntity()
