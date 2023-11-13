@@ -1,7 +1,9 @@
 package com.mrkekovich.courses.controllers
 
 import com.mrkekovich.courses.dto.CourseDto
+import com.mrkekovich.courses.models.CourseEntity
 import com.mrkekovich.courses.services.CourseService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -10,74 +12,43 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/courses")
 class CourseController(
     private val courseService: CourseService
-) {
-    /**
-     * Gets all courses.
-     * @return Response entity containing list of all courses.
-     */
+) : BaseController<CourseEntity, String, CourseDto.Response, CourseDto.Request>() {
     @GetMapping
-    fun getAll(): ResponseEntity<List<CourseDto.Response>> {
-        return courseService.getAll()
-    }
+    override fun getAll(): ResponseEntity<List<CourseDto.Response>> =
+        courseService.getAll()
 
-    /**
-     * Gets course by its id.
-     * @param id the id of course to get.
-     * @return Response entity containing specified course.
-     */
     @GetMapping("/{id}")
-    fun getById(
+    override fun getById(
         @Validated
         @PathVariable
         id: String
-    ): ResponseEntity<CourseDto.Response> {
-        return courseService.getById(id)
-    }
+    ): ResponseEntity<CourseDto.Response> =
+        courseService.getById(id)
 
-    /**
-     * Creates new course.
-     * @param course json request body with course data.
-     * @return Response entity containing created course.
-     */
-    @PostMapping("/create")
-    fun create(
+    @PostMapping
+    override fun create(
         @Validated
         @RequestBody
-        course: CourseDto.Request
-    ): ResponseEntity<CourseDto.Response> {
-        return courseService.create(course)
-    }
+        dto: CourseDto.Request
+    ): ResponseEntity<CourseDto.Response> =
+        courseService.create(dto)
 
-    /**
-     * Updates specified course.
-     * @param id the id of course to update.
-     * @param course json request body with course data.
-     * @return Response entity containing updated course.
-     */
-    @PatchMapping("/update/{id}")
-    fun update(
+    @PatchMapping("/{id}")
+    override fun update(
         @Validated
         @PathVariable
         id: String,
 
         @Validated
         @RequestBody
-        course: CourseDto.Request
-    ): ResponseEntity<CourseDto.Response> {
-        return courseService.update(id, course)
-    }
+        dto: CourseDto.Request
+    ): ResponseEntity<CourseDto.Response> =
+        courseService.update(id, dto)
 
-    /**
-     * Deletes specified course.
-     * @param id the id of course to delete.
-     * @return Response entity containing http status.
-     */
-    @DeleteMapping("/delete/{id}")
-    fun delete(
-        @Validated
+    @DeleteMapping("/{id}")
+    override fun delete(
         @PathVariable
         id: String
-    ): ResponseEntity<Unit> {
-        return courseService.delete(id)
-    }
+    ): ResponseEntity<HttpStatus> =
+        courseService.delete(id)
 }
