@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 @Service
 class CourseService(
     private val courseRepository: CourseRepository
-): BaseService<CourseEntity, String, CourseDto.Response>(
+): AbstractCrudService<CourseEntity, String, CourseDto.Response>(
     repository = courseRepository,
 ) {
     override fun toResponse(entity: CourseEntity): CourseDto.Response =

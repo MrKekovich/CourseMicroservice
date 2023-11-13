@@ -9,20 +9,23 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
+
 @Service
 class PhotoService(
     photoRepository: PhotoRepository
-) : BaseService<PhotoEntity, String, PhotoDto.Response>(
+) : AbstractCrudService<PhotoEntity, String, PhotoDto.Response>(
     repository = photoRepository,
 ) {
     override fun toResponse(entity: PhotoEntity): PhotoDto.Response =
         PhotoDto.Response(entity)
 
     @Transactional
-    override fun <RQ : BaseDto<PhotoEntity, String>> create(dto: RQ): ResponseEntity<PhotoDto.Response> {
-        val response = super.create(dto)
+    override fun <RQ : BaseDto<PhotoEntity, String>> create(
+        request: RQ
+    ): ResponseEntity<PhotoDto.Response> {
+
         // TODO: save photo
-        return response
+        return super.create(request)
     }
 
     @Transactional

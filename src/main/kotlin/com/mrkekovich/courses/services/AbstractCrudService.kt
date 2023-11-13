@@ -15,7 +15,10 @@ import kotlin.jvm.optionals.getOrNull
  * @param RS response type
  * @property repository JPA repository
  */
-abstract class BaseService<T : EntityInterface<ID>, ID : Any, RS : BaseDto<T, ID>>(
+abstract class AbstractCrudService<
+        T : EntityInterface<ID>,
+        ID : Any,
+        RS : BaseDto<T, ID>>(
     private val repository: JpaRepository<T, ID>,
 ) {
     abstract fun toResponse(entity: T): RS
@@ -55,13 +58,13 @@ abstract class BaseService<T : EntityInterface<ID>, ID : Any, RS : BaseDto<T, ID
     /**
      * Create new record in the database.
      * @param RQ Request type.
-     * @param dto Request data.
+     * @param request Request data.
      * @return New record wrapped in [RS] and [ResponseEntity].
      */
     open fun <RQ : BaseDto<T, ID>> create(
-        dto: RQ
+        request: RQ
     ): ResponseEntity<RS> {
-        val entity = repository.save(dto.toEntity())
+        val entity = repository.save(request.toEntity())
         return ResponseEntity(
             toResponse(entity),
             HttpStatus.CREATED
@@ -72,18 +75,18 @@ abstract class BaseService<T : EntityInterface<ID>, ID : Any, RS : BaseDto<T, ID
      * Update existing record in the database.
      * @param RQ Request type.
      * @param id ID of the record to update.
-     * @param dto Request data.
+     * @param request Request data.
      * @return Updated record wrapped in [RS] and [ResponseEntity].
      */
     open fun <RQ : BaseDto<T, ID>> update(
         id: ID,
-        dto: RQ
+        request: RQ
     ): ResponseEntity<RS> {
         repository.findById(id).getOrNull()
             ?: return ResponseEntity(
                 HttpStatus.NOT_FOUND
             )
-        val newEntity = repository.save(dto.toEntity(id))
+        val newEntity = repository.save(request.toEntity(id))
         return ResponseEntity(
             toResponse(newEntity),
             HttpStatus.OK
