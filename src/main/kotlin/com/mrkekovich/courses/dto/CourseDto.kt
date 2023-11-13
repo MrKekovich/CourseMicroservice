@@ -36,20 +36,6 @@ sealed class CourseDto : BaseDto<CourseEntity, String>() {
         )
     }
 
-    /**
-     * @property title Course title
-     * @property description Course description
-     */
-    data class Request(
-        override val title: String?,
-        override val description: String?
-    ) : CourseDto()
-
-    /**
-     * @property id ID of course.
-     * @property title Title of course.
-     * @property description Description of course.
-     */
     data class Response(
         override val title: String?,
         override val description: String?,
@@ -64,4 +50,9 @@ sealed class CourseDto : BaseDto<CourseEntity, String>() {
             id = courseEntity.id,
         )
     }
+
+    data class Request(
+        override val title: String?,
+        override val description: String?
+    ) : CourseDto()
 }
