@@ -6,12 +6,10 @@ import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
 
 /**
- * Used to easily validate, convert, map and return data.
  * @property title Course name
  * @property description Course description
- * @property id (optional) Course ID
  */
-sealed class CourseDto : BaseDto<CourseEntity>() {
+sealed class CourseDto : BaseDto<CourseEntity, String>() {
     @get:Length(min = 2, max = 50)
     @get:NotNull
     @get:NotBlank
@@ -39,7 +37,6 @@ sealed class CourseDto : BaseDto<CourseEntity>() {
     }
 
     /**
-     * Used to represent requests from clients.
      * @property title Course title
      * @property description Course description
      */
@@ -49,8 +46,6 @@ sealed class CourseDto : BaseDto<CourseEntity>() {
     ) : CourseDto()
 
     /**
-     * Used to represent responses from server.
-     * Can be initialized with CourseEntity.
      * @property id ID of course.
      * @property title Title of course.
      * @property description Description of course.
