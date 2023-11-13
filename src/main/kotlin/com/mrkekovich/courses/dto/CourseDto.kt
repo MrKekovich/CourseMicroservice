@@ -6,12 +6,8 @@ import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
 
 /**
- * Course dto
- *
- * Sealed class for course DTOs.
  * Used to easily validate, convert, map and return data.
- *
- * @property name Course name
+ * @property title Course name
  * @property description Course description
  * @property id (optional) Course ID
  */
@@ -19,7 +15,7 @@ sealed class CourseDto {
     @get:Length(min = 2, max = 50)
     @get:NotNull
     @get:NotBlank
-    abstract val name: String?
+    abstract val title: String?
 
     @get:Length(max = 500)
     @get:NotNull
@@ -29,61 +25,49 @@ sealed class CourseDto {
     open val id: String? = null
 
     /**
-     * To entity
-     *
      * Converts DTO to an entity.
-     *
-     * @return CourseEntity with randomly initialized ID.
+     * @return CourseEntity with DTO's ID field.
      */
     fun toEntity(): CourseEntity {
         return CourseEntity(
-            name = name,
+            title = title,
             description = description,
             id = id
         )
     }
 
     /**
-     * To entity with ID
-     *
-     * Used to create entity with given ID.
-     *
+     * Converts DTO to an entity with given ID.
      * @param id the ID of entity. Leave empty to generate new ID.
      * @return CourseEntity with given ID.
      */
     fun toEntity(id: String?): CourseEntity {
         return CourseEntity(
-            name = name,
+            title = title,
             description = description,
             id = id
         )
     }
 
     /**
-     * Request data class.
-     *
      * Used to represent requests from clients.
-     * Can be initialized with CourseEntity or with name and description.
-     *
-     * @property name Course name
+     * @property title Course title
      * @property description Course description
      */
     data class Request(
-        override val name: String?,
+        override val title: String?,
         override val description: String?
     ) : CourseDto()
 
     /**
-     * Response data class.
-     *
      * Used to represent responses from server.
-     *
+     * Can be initialized with CourseEntity.
      * @property id ID of course.
-     * @property name Name of course.
+     * @property title Title of course.
      * @property description Description of course.
      */
     data class Response(
-        override val name: String?,
+        override val title: String?,
         override val description: String?,
 
         @NotNull
@@ -91,7 +75,7 @@ sealed class CourseDto {
         override val id: String?,
     ) : CourseDto() {
         constructor(courseEntity: CourseEntity) : this(
-            name = courseEntity.name,
+            title = courseEntity.title,
             description = courseEntity.description,
             id = courseEntity.id,
         )
