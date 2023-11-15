@@ -4,5 +4,10 @@
       "name": "app.photos.storage.location",
       "type": "java.lang.String",
       "description": "Photo storage location."
-  }
-] }
+    },
+    {
+      "name": "app.photos.allowed.extensions",
+      "type": "java.lang.String",
+      "description": "List of allowed photo file extensions."
+    }
+  ] }
