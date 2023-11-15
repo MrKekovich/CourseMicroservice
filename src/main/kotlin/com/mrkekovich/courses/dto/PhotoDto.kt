@@ -46,22 +46,14 @@ sealed class PhotoDto : BaseDto<PhotoEntity, String>() {
 
     data class UploadRequest(
         @NotNull
-        @NotBlank
         val file: MultipartFile?,
     ) : PhotoDto() {
         override val fileName: String?
             get() = file?.originalFilename
 
-        fun toEntity(fileName: String): PhotoEntity {
-            return PhotoEntity(
-                fileName = fileName,
-                id = id,
-            )
-        }
-
         fun toEntity(
-            id: String?,
-            fileName: String
+            fileName: String,
+            id: String? = null,
         ): PhotoEntity {
             return PhotoEntity(
                 fileName = fileName,

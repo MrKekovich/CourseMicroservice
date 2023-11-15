@@ -29,20 +29,23 @@ class PhotoService(
             File(it).extension
         }
 
-        val fileName = "${UUID.randomUUID()}.${fileExtension}"
-        val file = File("$photosStorageLocation/$fileName").apply {
-            photo.file?.transferTo(this)
+        val fileName = UUID.randomUUID()
+        File("$photosStorageLocation/$fileName.$fileExtension").apply {
+            photo.file?.bytes?.let { writeBytes(it) }
             createNewFile()
         }
 
+
         val entity = photoRepository.save(
-            photo.toEntity(fileName = fileName)
+            photo.toEntity(
+                fileName = "$fileName.$fileExtension",
+                id = fileName.toString()
+            )
         )
 
         return ResponseEntity(
             PhotoDto.Response(entity = entity),
             HttpStatus.OK
         )
-
     }
 }
