@@ -1,36 +1,48 @@
 package com.mrkekovich.courses.services
 
-import com.mrkekovich.courses.dto.BaseDto
 import com.mrkekovich.courses.dto.PhotoDto
-import com.mrkekovich.courses.models.PhotoEntity
 import com.mrkekovich.courses.repositories.PhotoRepository
 import jakarta.transaction.Transactional
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-
+import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.RequestBody
+import java.io.File
+import java.util.*
 
 @Service
 class PhotoService(
-    photoRepository: PhotoRepository
-) : AbstractCrudService<PhotoEntity, String, PhotoDto.Response>(
-    repository = photoRepository,
+    @Value("\${app.photos.storage.location}")
+    private val photosStorageLocation: String,
+
+    private val photoRepository: PhotoRepository,
 ) {
-    override fun toResponse(entity: PhotoEntity): PhotoDto.Response =
-        PhotoDto.Response(entity)
-
     @Transactional
-    override fun <RQ : BaseDto<PhotoEntity, String>> create(
-        request: RQ
+    fun uploadPhoto(
+        @Validated
+        @RequestBody
+        photo: PhotoDto.UploadRequest
     ): ResponseEntity<PhotoDto.Response> {
+        val fileExtension = photo.file?.originalFilename?.let {
+            File(it).extension
+        }
 
-        // TODO: save photo
-        return super.create(request)
-    }
+        val fileName = "${UUID.randomUUID()}.${fileExtension}"
+        val file = File("$photosStorageLocation/$fileName").apply {
+            photo.file?.transferTo(this)
+            createNewFile()
+        }
 
-    @Transactional
-    override fun delete(id: String): ResponseEntity<HttpStatus> {
-        // TODO: delete photo
-        return super.delete(id)
+        val entity = photoRepository.save(
+            photo.toEntity(fileName = fileName)
+        )
+
+        return ResponseEntity(
+            PhotoDto.Response(entity = entity),
+            HttpStatus.OK
+        )
+
     }
 }
