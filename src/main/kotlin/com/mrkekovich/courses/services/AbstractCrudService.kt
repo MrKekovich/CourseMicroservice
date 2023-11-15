@@ -8,8 +8,7 @@ import org.springframework.http.ResponseEntity
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Base service for all services.
- * Forces child classes to implement CRUD methods.
+ * Provides basic CRUD operations.
  * @param T entity type
  * @param ID entity ID type
  * @param RS response type

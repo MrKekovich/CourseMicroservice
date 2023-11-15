@@ -6,12 +6,16 @@ import jakarta.persistence.*
 /**
  * Photo entity
  * @property fileName File name of a photo.
- * @property id (Optional) ID of a photo.
+ * @property id ID of a photo.
  */
 @Entity
 @Table(name = "photos")
 data class PhotoEntity(
-    @Column(name = "file_name", nullable = false)
+    @Column(
+        name = "file_name",
+        nullable = false,
+        unique = true,
+    )
     val fileName: String?,
 
     @Id
