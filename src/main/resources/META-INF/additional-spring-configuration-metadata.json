@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "app.photos.storage.location",
+      "type": "java.lang.String",
+      "description": "Photo storage location."
+  }
+] }
