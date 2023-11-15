@@ -51,5 +51,22 @@ sealed class PhotoDto : BaseDto<PhotoEntity, String>() {
     ) : PhotoDto() {
         override val fileName: String?
             get() = file?.originalFilename
+
+        fun toEntity(fileName: String): PhotoEntity {
+            return PhotoEntity(
+                fileName = fileName,
+                id = id,
+            )
+        }
+
+        fun toEntity(
+            id: String?,
+            fileName: String
+        ): PhotoEntity {
+            return PhotoEntity(
+                fileName = fileName,
+                id = id,
+            )
+        }
     }
 }
