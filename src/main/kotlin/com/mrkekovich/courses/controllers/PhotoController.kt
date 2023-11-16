@@ -22,7 +22,7 @@ class PhotoController(
     fun upload(
         @Validated
         @ModelAttribute
-        photo: PhotoDto.UploadRequest
+        file: PhotoDto.UploadRequest
     ): ResponseEntity<PhotoDto.Response> =
-        photoService.uploadPhoto(photo = photo)
+        photoService.uploadPhoto(file = file)
 }
