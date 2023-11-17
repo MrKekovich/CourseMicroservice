@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile
 /**
  * @property fileName File name of a photo.
  */
-sealed class PhotoDto : BaseDto<PhotoEntity, String>() {
+sealed class PhotoDto : EntityDto<PhotoEntity, String>() {
     @get:NotNull
     @get:NotBlank
     abstract val fileName: String?

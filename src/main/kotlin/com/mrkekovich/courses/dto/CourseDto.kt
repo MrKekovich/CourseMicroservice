@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length
  * @property title Course name
  * @property description Course description
  */
-sealed class CourseDto : BaseDto<CourseEntity, String>() {
+sealed class CourseDto : EntityDto<CourseEntity, String>() {
     @get:Length(min = 2, max = 50)
     @get:NotNull
     @get:NotBlank

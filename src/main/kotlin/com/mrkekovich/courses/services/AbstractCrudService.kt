@@ -1,11 +1,12 @@
 package com.mrkekovich.courses.services
 
-import com.mrkekovich.courses.dto.BaseDto
+import com.mrkekovich.courses.dto.EntityDto
+import com.mrkekovich.courses.exceptions.NotFoundException
 import com.mrkekovich.courses.models.EntityInterface
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import kotlin.jvm.optionals.getOrNull
+import kotlin.jvm.optionals.getOrElse
 
 /**
  * Provides basic CRUD operations.
@@ -17,7 +18,7 @@ import kotlin.jvm.optionals.getOrNull
 abstract class AbstractCrudService<
         T : EntityInterface<ID>,
         ID : Any,
-        RS : BaseDto<T, ID>>(
+        RS : EntityDto<T, ID>>(
     private val repository: JpaRepository<T, ID>,
 ) {
     abstract fun toResponse(entity: T): RS
@@ -60,7 +61,7 @@ abstract class AbstractCrudService<
      * @param request Request data.
      * @return New record wrapped in [RS] and [ResponseEntity].
      */
-    open fun <RQ : BaseDto<T, ID>> create(
+    open fun <RQ : EntityDto<T, ID>> create(
         request: RQ
     ): ResponseEntity<RS> {
         val entity = repository.save(request.toEntity())
@@ -77,7 +78,7 @@ abstract class AbstractCrudService<
      * @param request Request data.
      * @return Updated record wrapped in [RS] and [ResponseEntity].
      */
-    open fun <RQ : BaseDto<T, ID>> update(
+    open fun <RQ : EntityDto<T, ID>> update(
         id: ID,
         request: RQ
     ): ResponseEntity<RS> {
@@ -86,6 +87,7 @@ abstract class AbstractCrudService<
                 HttpStatus.NOT_FOUND
             )
         val newEntity = repository.save(request.toEntity(id))
+
         return ResponseEntity(
             toResponse(newEntity),
             HttpStatus.OK
@@ -104,6 +106,7 @@ abstract class AbstractCrudService<
             )
 
         repository.delete(entity)
+
         return ResponseEntity(
             HttpStatus.OK
         )

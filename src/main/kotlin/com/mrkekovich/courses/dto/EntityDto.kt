@@ -6,23 +6,25 @@ import com.mrkekovich.courses.models.EntityInterface
  * Used to easily validate, convert, map and return data.
  * Forces to implement [toEntity] methods
  * and allows to use abstract services.
- * @param T the type of entity that implements [EntityInterface]
+ *
+ * @param T the type of entity that implements [EntityInterface].
  */
-abstract class BaseDto<T : EntityInterface<ID>, ID : Any> {
+abstract class EntityDto<T : EntityInterface<ID>, ID : Any> {
     /**
-     * This field allows you to focus only
-     * on important parts of the DTO.
+     * ID of entity.
      */
     open val id: ID? = null
 
     /**
      * Converts DTO to an entity.
-     * @return Entity with [id] field.
+     *
+     * @return Entity with [id] (instance field).
      */
     abstract fun toEntity(): T
 
     /**
-     * Converts DTO to an entity with given ID.
+     * Converts DTO to an entity with given ID (function parameter).
+     *
      * @param id the ID of entity. Leave empty to generate new ID.
      * @return Entity with given ID.
      */
