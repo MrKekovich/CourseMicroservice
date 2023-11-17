@@ -6,8 +6,17 @@ import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
 
 /**
- * @property title Course name
- * @property description Course description
+ * @property title Course name.
+ * Validated by
+ * [Length] (min = 2, max = 50),
+ * [NotNull],
+ * [NotBlank].
+ *
+ * @property description Course description.
+ * Validated by
+ * [Length] (max = 500),
+ * [NotNull],
+ * [NotBlank].
  */
 sealed class CourseDto : EntityDto<CourseEntity, String>() {
     @get:Length(min = 2, max = 50)
@@ -36,6 +45,14 @@ sealed class CourseDto : EntityDto<CourseEntity, String>() {
         )
     }
 
+    /**
+     * For documentation see [CourseDto].
+     *
+     * @param id Course id.
+     * Validated by
+     * [NotNull],
+     * [NotBlank].
+     */
     data class Response(
         override val title: String?,
         override val description: String?,
@@ -51,6 +68,9 @@ sealed class CourseDto : EntityDto<CourseEntity, String>() {
         )
     }
 
+    /**
+     * For documentation see [CourseDto]
+     */
     data class Request(
         override val title: String?,
         override val description: String?

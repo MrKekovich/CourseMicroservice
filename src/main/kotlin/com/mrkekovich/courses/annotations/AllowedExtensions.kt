@@ -8,14 +8,12 @@ import java.io.File
 import kotlin.reflect.KClass
 
 /**
- * Allowed extension validation.
  * Validates [MultipartFile] extension.
  * If extension is not in [allowedExtensions] or is null returns false.
- * @property allowedExtensions
- * @property message
- * @property groups
- * @property payload
- * @constructor Create empty Allowed extensions
+ * @property allowedExtensions Array of allowed extensions.
+ * @property message Error message.
+ * @property groups Validation groups.
+ * @property payload Validation payload.
  */
 @MustBeDocumented
 @Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY, AnnotationTarget.PROPERTY_GETTER)

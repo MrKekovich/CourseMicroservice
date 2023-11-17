@@ -8,6 +8,9 @@ import org.springframework.web.multipart.MultipartFile
 
 /**
  * @property fileName File name of a photo.
+ * Validated by
+ * [NotNull],
+ * [NotBlank]
  */
 sealed class PhotoDto : EntityDto<PhotoEntity, String>() {
     @get:NotNull
@@ -28,6 +31,14 @@ sealed class PhotoDto : EntityDto<PhotoEntity, String>() {
         )
     }
 
+    /**
+     * For documentation see [PhotoDto].
+     *
+     * @property id Photo id.
+     * Validated by
+     * [NotNull],
+     * [NotBlank].
+     */
     data class Response(
         override val fileName: String?,
 
@@ -41,6 +52,14 @@ sealed class PhotoDto : EntityDto<PhotoEntity, String>() {
         )
     }
 
+    /**
+     * Used to upload photo.
+     *
+     * @property file [MultipartFile] which contains uploaded file.
+     * Validated by
+     * [AllowedExtensions] ("png", "jpg", "jpeg"),
+     * [NotNull]
+     */
     data class UploadRequest(
         @get:NotNull
         @get:AllowedExtensions(["png", "jpg", "jpeg"])
@@ -48,15 +67,5 @@ sealed class PhotoDto : EntityDto<PhotoEntity, String>() {
     ) : PhotoDto() {
         override val fileName: String?
             get() = file?.originalFilename
-
-        fun toEntity(
-            fileName: String,
-            id: String? = null,
-        ): PhotoEntity {
-            return PhotoEntity(
-                fileName = fileName,
-                id = id,
-            )
-        }
     }
 }

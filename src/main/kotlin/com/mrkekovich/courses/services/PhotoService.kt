@@ -1,6 +1,7 @@
 package com.mrkekovich.courses.services
 
 import com.mrkekovich.courses.dto.PhotoDto
+import com.mrkekovich.courses.models.PhotoEntity
 import com.mrkekovich.courses.repositories.PhotoRepository
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Value
@@ -31,7 +32,7 @@ class PhotoService(
         )
 
         val entity = photoRepository.save(
-            photo.toEntity(
+            PhotoEntity(
                 fileName = createdFile.name,
                 id = fileName
             )
@@ -43,6 +44,12 @@ class PhotoService(
         )
     }
 
+    /**
+     * Save file to storage.
+     * @param name
+     * @param file
+     * @return
+     */
     private fun saveFile(
         name: String,
         file: MultipartFile,
