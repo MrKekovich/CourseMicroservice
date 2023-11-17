@@ -18,11 +18,12 @@ class PhotoController(
     @PostMapping(
         "/upload",
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE])
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
     fun upload(
         @Validated
         @ModelAttribute
-        file: PhotoDto.UploadRequest
+        photo: PhotoDto.UploadRequest
     ): ResponseEntity<PhotoDto.Response> =
-        photoService.uploadPhoto(file = file)
+        photoService.uploadPhoto(photo = photo)
 }

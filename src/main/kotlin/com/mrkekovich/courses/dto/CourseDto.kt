@@ -40,8 +40,8 @@ sealed class CourseDto : BaseDto<CourseEntity, String>() {
         override val title: String?,
         override val description: String?,
 
-        @NotNull
-        @NotBlank
+        @get:NotNull
+        @get:NotBlank
         override val id: String?,
     ) : CourseDto() {
         constructor(courseEntity: CourseEntity) : this(

@@ -11,11 +11,7 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "photos")
 data class PhotoEntity(
-    @Column(
-        name = "file_name",
-        nullable = false,
-        unique = true,
-    )
+    @Column(name = "file_name")
     val fileName: String?,
 
     @Id

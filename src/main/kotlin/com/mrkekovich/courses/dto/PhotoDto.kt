@@ -1,5 +1,6 @@
 package com.mrkekovich.courses.dto
 
+import com.mrkekovich.courses.annotations.AllowedExtensions
 import com.mrkekovich.courses.models.PhotoEntity
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -40,12 +41,9 @@ sealed class PhotoDto : BaseDto<PhotoEntity, String>() {
         )
     }
 
-    data class Request(
-        override val fileName: String?
-    ) : PhotoDto()
-
     data class UploadRequest(
-        @NotNull
+        @get:NotNull
+        @get:AllowedExtensions(["png", "jpg", "jpeg"])
         val file: MultipartFile?,
     ) : PhotoDto() {
         override val fileName: String?
