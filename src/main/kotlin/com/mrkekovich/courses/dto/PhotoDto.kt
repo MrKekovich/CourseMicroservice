@@ -44,7 +44,7 @@ sealed class PhotoDto : EntityDto<PhotoEntity, String>() {
 
         @get:NotNull
         @get:NotBlank
-        override val id: String?
+        override val id: String?,
     ) : PhotoDto() {
         constructor(entity: PhotoEntity) : this(
             fileName = entity.fileName,

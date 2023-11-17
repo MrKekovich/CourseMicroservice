@@ -21,7 +21,7 @@ class PhotoService(
 ) {
     @Transactional
     fun uploadPhoto(
-        photo: PhotoDto.UploadRequest
+        photo: PhotoDto.UploadRequest,
     ): ResponseEntity<PhotoDto.Response> {
         val fileName = UUID.randomUUID().toString()
 

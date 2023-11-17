@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/photos")
 class PhotoController(
-    private val photoService: PhotoService
+    private val photoService: PhotoService,
 ) {
     @PostMapping(
         "/upload",
@@ -23,7 +23,7 @@ class PhotoController(
     fun upload(
         @Validated
         @ModelAttribute
-        photo: PhotoDto.UploadRequest
+        photo: PhotoDto.UploadRequest,
     ): ResponseEntity<PhotoDto.Response> =
         photoService.uploadPhoto(photo = photo)
 }

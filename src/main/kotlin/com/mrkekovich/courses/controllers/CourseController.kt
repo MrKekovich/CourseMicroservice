@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/courses")
 class CourseController(
-    private val courseService: CourseService
+    private val courseService: CourseService,
 ) {
     @GetMapping
     fun getAll(): ResponseEntity<List<CourseDto.Response>> =
@@ -20,7 +20,7 @@ class CourseController(
     fun getById(
         @Validated
         @PathVariable
-        id: String
+        id: String,
     ): ResponseEntity<CourseDto.Response> =
         courseService.getById(id)
 
@@ -28,7 +28,7 @@ class CourseController(
     fun create(
         @Validated
         @RequestBody
-        dto: CourseDto.Request
+        dto: CourseDto.Request,
     ): ResponseEntity<CourseDto.Response> =
         courseService.create(dto)
 
@@ -40,14 +40,14 @@ class CourseController(
 
         @Validated
         @RequestBody
-        dto: CourseDto.Request
+        dto: CourseDto.Request,
     ): ResponseEntity<CourseDto.Response> =
         courseService.update(id, dto)
 
     @DeleteMapping("/{id}")
     fun delete(
         @PathVariable
-        id: String
+        id: String,
     ): ResponseEntity<HttpStatus> =
         courseService.delete(id)
 }

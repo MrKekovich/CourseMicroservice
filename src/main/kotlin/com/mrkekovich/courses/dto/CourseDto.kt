@@ -73,6 +73,6 @@ sealed class CourseDto : EntityDto<CourseEntity, String>() {
      */
     data class Request(
         override val title: String?,
-        override val description: String?
+        override val description: String?,
     ) : CourseDto()
 }

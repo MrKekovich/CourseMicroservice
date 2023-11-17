@@ -18,7 +18,8 @@ import kotlin.jvm.optionals.getOrElse
 abstract class AbstractCrudService<
         T : EntityInterface<ID>,
         ID : Any,
-        RS : EntityDto<T, ID>>(
+        RS : EntityDto<T, ID>,
+        >(
     private val repository: JpaRepository<T, ID>,
 ) {
     /**
@@ -55,7 +56,7 @@ abstract class AbstractCrudService<
      * @return Record wrapped in [RS] and [ResponseEntity].
      */
     open fun getById(
-        id: ID
+        id: ID,
     ): ResponseEntity<RS> {
         val entity = repository.findById(id).getOrElse {
             throw NotFoundException(idNotFoundMessage(id))
@@ -74,7 +75,7 @@ abstract class AbstractCrudService<
      * @return New record wrapped in [RS] and [ResponseEntity].
      */
     open fun <RQ : EntityDto<T, ID>> create(
-        request: RQ
+        request: RQ,
     ): ResponseEntity<RS> {
         val entity = repository.save(request.toEntity())
         return ResponseEntity(
@@ -92,7 +93,7 @@ abstract class AbstractCrudService<
      */
     open fun <RQ : EntityDto<T, ID>> update(
         id: ID,
-        request: RQ
+        request: RQ,
     ): ResponseEntity<RS> {
         repository.findById(id).getOrElse {
             throw NotFoundException(idNotFoundMessage(id))

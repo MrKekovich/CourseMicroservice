@@ -11,7 +11,10 @@ import org.springframework.web.context.request.WebRequest
 @RestControllerAdvice
 class GlobalExceptionHandler {
     @ExceptionHandler(value = [NotFoundException::class])
-    fun handleNotFoundException(notFoundException: NotFoundException, webRequest: WebRequest): ResponseEntity<ErrorDto> {
+    fun handleNotFoundException(
+        notFoundException: NotFoundException,
+        webRequest: WebRequest,
+    ): ResponseEntity<ErrorDto> {
         return ResponseEntity(
             ErrorDto(
                 errorMessage = notFoundException.message ?: "Record not found",

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 class CourseService(
-    private val courseRepository: CourseRepository
+    private val courseRepository: CourseRepository,
 ) : AbstractCrudService<CourseEntity, String, CourseDto.Response>(
     repository = courseRepository,
 ) {

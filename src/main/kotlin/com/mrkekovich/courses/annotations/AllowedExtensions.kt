@@ -23,7 +23,7 @@ annotation class AllowedExtensions(
     val allowedExtensions: Array<String>,
     val message: String = "Invalid file extension",
     val groups: Array<KClass<*>> = [],
-    val payload: Array<KClass<Any>> = []
+    val payload: Array<KClass<Any>> = [],
 )
 
 private class ExtensionValidator : ConstraintValidator<AllowedExtensions, MultipartFile?> {
