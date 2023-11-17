@@ -21,7 +21,19 @@ abstract class AbstractCrudService<
         RS : EntityDto<T, ID>>(
     private val repository: JpaRepository<T, ID>,
 ) {
-    abstract fun toResponse(entity: T): RS
+    /**
+     * @param id ID of the record
+     * @return message to show when record with given ID is not found.
+     */
+    protected open fun idNotFoundMessage(id: ID): String? =
+        "Record $id not found"
+
+    /**
+     * Converts entity to response.
+     * @param entity entity to convert.
+     * @return response dto [RS].
+     */
+    protected abstract fun toResponse(entity: T): RS
 
     /**
      * Get all records from the database.
@@ -45,10 +57,10 @@ abstract class AbstractCrudService<
     open fun getById(
         id: ID
     ): ResponseEntity<RS> {
-        val entity = repository.findById(id).getOrNull()
-            ?: return ResponseEntity(
-                HttpStatus.NOT_FOUND
-            )
+        val entity = repository.findById(id).getOrElse {
+            throw NotFoundException(idNotFoundMessage(id))
+        }
+
         return ResponseEntity(
             toResponse(entity),
             HttpStatus.OK
@@ -82,10 +94,10 @@ abstract class AbstractCrudService<
         id: ID,
         request: RQ
     ): ResponseEntity<RS> {
-        repository.findById(id).getOrNull()
-            ?: return ResponseEntity(
-                HttpStatus.NOT_FOUND
-            )
+        repository.findById(id).getOrElse {
+            throw NotFoundException(idNotFoundMessage(id))
+        }
+
         val newEntity = repository.save(request.toEntity(id))
 
         return ResponseEntity(
@@ -100,10 +112,9 @@ abstract class AbstractCrudService<
      * @return [HttpStatus] wrapped in [ResponseEntity].
      */
     open fun delete(id: ID): ResponseEntity<HttpStatus> {
-        val entity = repository.findById(id).getOrNull()
-            ?: return ResponseEntity(
-                HttpStatus.NOT_FOUND
-            )
+        val entity = repository.findById(id).getOrElse {
+            throw NotFoundException(idNotFoundMessage(id))
+        }
 
         repository.delete(entity)
 

@@ -15,6 +15,8 @@ class CourseService(
 ) : AbstractCrudService<CourseEntity, String, CourseDto.Response>(
     repository = courseRepository,
 ) {
+    override fun idNotFoundMessage(id: String): String? = "Course $id not found"
+
     override fun toResponse(entity: CourseEntity): CourseDto.Response =
         CourseDto.Response(entity)
 }
