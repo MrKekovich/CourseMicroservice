@@ -2,7 +2,6 @@ package com.mrkekovich.courses.models
 
 import jakarta.persistence.*
 
-
 /**
  * Photo entity
  * @property fileName File name of a photo.

@@ -37,6 +37,5 @@ private class ExtensionValidator : ConstraintValidator<AllowedExtensions, Multip
         val extension = value?.originalFilename?.let { File(it).extension }
             ?: return false
         return allowedExtensions.contains(extension)
-
     }
 }

@@ -22,9 +22,11 @@ class CourseController(
     @ApiResponse(
         responseCode = "200",
         description = "Get all course with a limit",
-        content = [Content(
-            schema = Schema(implementation = CourseDto.Response.Base::class)
-        )]
+        content = [
+            Content(
+                schema = Schema(implementation = CourseDto.Response.Base::class)
+            )
+        ]
     )
     @GetMapping("/get/all")
     fun getCourses(
@@ -37,9 +39,11 @@ class CourseController(
     @ApiResponse(
         responseCode = "200",
         description = "Create course",
-        content = [Content(
-            schema = Schema(implementation = CourseDto.Response.Base::class)
-        )]
+        content = [
+            Content(
+                schema = Schema(implementation = CourseDto.Response.Base::class)
+            )
+        ]
     )
     @PostMapping("/create")
     fun createCourse(
@@ -52,9 +56,11 @@ class CourseController(
     @ApiResponse(
         responseCode = "200",
         description = "Update course",
-        content = [Content(
-            schema = Schema(implementation = CourseDto.Response.Base::class)
-        )]
+        content = [
+            Content(
+                schema = Schema(implementation = CourseDto.Response.Base::class)
+            )
+        ]
     )
     @PatchMapping("/update")
     fun updateCourse(
