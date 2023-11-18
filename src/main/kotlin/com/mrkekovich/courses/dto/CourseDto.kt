@@ -20,57 +20,19 @@ import org.hibernate.validator.constraints.Length
  *
  * @property id ID of a course.
  */
-sealed class CourseDto : EntityDto<CourseEntity, String>() {
-    @get:Length(min = 2, max = 50)
-    @get:NotNull
-    @get:NotBlank
-    abstract val title: String?
 sealed class CourseDto {
+    @Schema(description = "Title of a course.")
     @Length(min = 1, max = 255)
     open val title: String? = null
 
-    @get:Length(max = 500)
-    @get:NotNull
-    @get:NotBlank
-    abstract val description: String?
+    @Schema(description = "Description of a course.")
+    @Length(min = 1, max = 1000)
+    open val description: String? = null
 
-    override fun toEntity(): CourseEntity {
-        return CourseEntity(
-            title = title,
-            description = description,
-            id = id
-        )
-    }
-
-    override fun toEntity(id: String?): CourseEntity {
-        return CourseEntity(
-            title = title,
-            description = description,
-            id = id
-        )
-    }
+    @Schema(description = "ID of a course.")
+    open val id: String? = null
 
     /**
-     * For documentation see [CourseDto].
-     *
-     * @param id Course id.
-     * Validated by
-     * [NotNull],
-     * [NotBlank].
-     */
-    data class Response(
-        override val title: String?,
-        override val description: String?,
-
-        @get:NotNull
-        @get:NotBlank
-        override val id: String?,
-    ) : CourseDto() {
-        constructor(courseEntity: CourseEntity) : this(
-            title = courseEntity.title,
-            description = courseEntity.description,
-            id = courseEntity.id,
-        )
      * Response DTO:
      * Sealed class that contains
      * DTOs for responses.
@@ -86,6 +48,7 @@ sealed class CourseDto {
          * @property description [Response.description]
          * @property id [Response.id]
          */
+        @Schema(
             name = "Base response",
             description = "Represents a response from server with course data."
         )
@@ -108,11 +71,6 @@ sealed class CourseDto {
      * DTOs for requests.
      * @see [CourseDto]
      */
-    data class Request(
-        override val title: String?,
-        override val description: String?,
-    ) : CourseDto()
-}
     sealed class Request : CourseDto() {
         /**
          * Create request:
@@ -126,6 +84,10 @@ sealed class CourseDto {
          * * [NotNull]
          * * [NotBlank].
          */
+        @Schema(
+            name = "Create request",
+            description = "Represents a request to create a new course."
+        )
         data class Create(
             @NotNull
             @NotBlank
@@ -144,7 +106,12 @@ sealed class CourseDto {
          * -1 means no limit.
          * * [Min] (-1).
          */
+        @Schema(
+            name = "Get all request",
+            description = "Represents a request to get all courses."
+        )
         data class GetAll(
+            @Schema(description = "Limit of courses to get. -1 means no limit.")
             @Min(-1)
             val limit: Int = -1,
         )
@@ -165,6 +132,10 @@ sealed class CourseDto {
          * * [NotNull],
          * * [NotBlank].
          */
+        @Schema(
+            name = "Update request",
+            description = "Represents a request to update a course."
+        )
         data class Update(
             @NotNull
             @NotBlank
@@ -184,6 +155,10 @@ sealed class CourseDto {
          * Represents a request to delete a course.
          * @property id [Request.id]
          */
+        @Schema(
+            name = "Delete request",
+            description = "Represents a request to delete a course."
+        )
         data class Delete(
             @NotNull
             @NotBlank
