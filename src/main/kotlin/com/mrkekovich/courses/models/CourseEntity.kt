@@ -19,5 +19,5 @@ data class CourseEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    override val id: String? = null,
-) : EntityInterface<String>
+    val id: String? = null,
+)
