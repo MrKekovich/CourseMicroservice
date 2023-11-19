@@ -33,7 +33,7 @@ class CourseController(
         @Validated
         dto: CourseDto.Request.GetAll,
     ): ResponseEntity<List<CourseDto.Response.Base>> =
-        courseService.getCourses(dto)
+        courseService.getAll(dto)
 
     @Operation(summary = "Create course")
     @ApiResponse(
@@ -50,7 +50,7 @@ class CourseController(
         @Validated
         dto: CourseDto.Request.Create,
     ): ResponseEntity<CourseDto.Response.Base> =
-        courseService.createCourse(dto)
+        courseService.create(dto)
 
     @Operation(summary = "Update course")
     @ApiResponse(
@@ -67,7 +67,7 @@ class CourseController(
         @Validated
         dto: CourseDto.Request.Update,
     ): ResponseEntity<CourseDto.Response.Base> =
-        courseService.updateCourse(dto)
+        courseService.update(dto)
 
     @Operation(summary = "Delete course")
     @ApiResponse(
@@ -79,5 +79,5 @@ class CourseController(
         @Validated
         dto: CourseDto.Request.Delete,
     ): ResponseEntity<HttpStatus> =
-        courseService.deleteCourse(dto)
+        courseService.delete(dto)
 }

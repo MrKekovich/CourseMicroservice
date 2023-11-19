@@ -22,7 +22,7 @@ class CourseService(
             description = this.description
         )
 
-    fun getCourses(
+    fun getAll(
         dto: CourseDto.Request.GetAll,
     ): ResponseEntity<List<CourseDto.Response.Base>> {
         val response = courseRepository.findAll().map {
@@ -32,7 +32,7 @@ class CourseService(
         return ResponseEntity.ok(response)
     }
 
-    fun createCourse(
+    fun create(
         dto: CourseDto.Request.Create,
     ): ResponseEntity<CourseDto.Response.Base> {
         val entity = courseRepository.save(
@@ -41,7 +41,7 @@ class CourseService(
         return ResponseEntity.ok(entity.toResponse())
     }
 
-    fun updateCourse(
+    fun update(
         dto: CourseDto.Request.Update,
     ): ResponseEntity<CourseDto.Response.Base> {
         val entity = courseRepository.findById(dto.id).getOrElse {
@@ -57,7 +57,7 @@ class CourseService(
         return ResponseEntity.ok(newEntity.toResponse())
     }
 
-    fun deleteCourse(
+    fun delete(
         dto: CourseDto.Request.Delete,
     ): ResponseEntity<HttpStatus> {
         val entity = courseRepository.findById(dto.id).getOrElse {
