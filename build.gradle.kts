@@ -69,4 +69,3 @@ tasks.contractTest {
 
 contracts {
 }
-
