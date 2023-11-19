@@ -21,15 +21,15 @@ import org.hibernate.validator.constraints.Length
  * @property id ID of a course.
  */
 sealed class CourseDto {
-    @Schema(description = "Title of a course.")
-    @Length(min = 1, max = 255)
+    @get:Schema(description = "Title of a course.")
+    @get:Length(min = 1, max = 255)
     open val title: String? = null
 
-    @Schema(description = "Description of a course.")
-    @Length(min = 1, max = 1000)
+    @get:Schema(description = "Description of a course.")
+    @get:Length(min = 1, max = 1000)
     open val description: String? = null
 
-    @Schema(description = "ID of a course.")
+    @get:Schema(description = "ID of a course.")
     open val id: String? = null
 
     /**
@@ -89,12 +89,12 @@ sealed class CourseDto {
             description = "Represents a request to create a new course."
         )
         data class Create(
-            @NotNull
-            @NotBlank
+            @get:NotNull
+            @get:NotBlank
             override val title: String,
 
-            @NotNull
-            @NotBlank
+            @get:NotNull
+            @get:NotBlank
             override val description: String,
         ) : Request()
 
@@ -111,8 +111,9 @@ sealed class CourseDto {
             description = "Represents a request to get all courses."
         )
         data class GetAll(
-            @Schema(description = "Limit of courses to get. -1 means no limit.")
-            @Min(-1)
+            @get:Schema(description = "Limit of courses to get. -1 means no limit.")
+            @get:NotNull
+            @get:Min(-1)
             val limit: Int = -1,
         )
 
@@ -137,16 +138,16 @@ sealed class CourseDto {
             description = "Represents a request to update a course."
         )
         data class Update(
-            @NotNull
-            @NotBlank
+            @get:NotNull
+            @get:NotBlank
             override val title: String,
 
-            @NotNull
-            @NotBlank
+            @get:NotNull
+            @get:NotBlank
             override val description: String,
 
-            @NotNull
-            @NotBlank
+            @get:NotNull
+            @get:NotBlank
             override val id: String,
         ) : Request()
 
@@ -160,8 +161,8 @@ sealed class CourseDto {
             description = "Represents a request to delete a course."
         )
         data class Delete(
-            @NotNull
-            @NotBlank
+            @get:NotNull
+            @get:NotBlank
             override val id: String,
         ) : Request()
     }
