@@ -31,6 +31,7 @@ class CourseController(
     @GetMapping("/get/all")
     fun getCourses(
         @Validated
+        @RequestBody
         dto: CourseDto.Request.GetAll,
     ): ResponseEntity<List<CourseDto.Response.Base>> =
         courseService.getAll(dto)
@@ -48,6 +49,7 @@ class CourseController(
     @PostMapping("/create")
     fun createCourse(
         @Validated
+        @RequestBody
         dto: CourseDto.Request.Create,
     ): ResponseEntity<CourseDto.Response.Base> =
         courseService.create(dto)
@@ -65,6 +67,7 @@ class CourseController(
     @PatchMapping("/update")
     fun updateCourse(
         @Validated
+        @RequestBody
         dto: CourseDto.Request.Update,
     ): ResponseEntity<CourseDto.Response.Base> =
         courseService.update(dto)
@@ -77,6 +80,7 @@ class CourseController(
     @DeleteMapping("/delete")
     fun deleteCourse(
         @Validated
+        @RequestBody
         dto: CourseDto.Request.Delete,
     ): ResponseEntity<HttpStatus> =
         courseService.delete(dto)
