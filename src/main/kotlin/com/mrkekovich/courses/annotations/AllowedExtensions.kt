@@ -18,24 +18,25 @@ import kotlin.reflect.KClass
 @MustBeDocumented
 @Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY, AnnotationTarget.PROPERTY_GETTER)
 @Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = [ExtensionValidator::class])
+@Constraint(validatedBy = [AllowedExtensions.ExtensionValidator::class])
 annotation class AllowedExtensions(
     val allowedExtensions: Array<String>,
     val message: String = "Invalid file extension",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<Any>> = [],
-)
+) {
+    class ExtensionValidator : ConstraintValidator<AllowedExtensions, MultipartFile?> {
+        private lateinit var allowedExtensions: Array<String>
 
-private class ExtensionValidator : ConstraintValidator<AllowedExtensions, MultipartFile?> {
-    lateinit var allowedExtensions: Array<String>
+        override fun initialize(constraintAnnotation: AllowedExtensions) {
+            allowedExtensions = constraintAnnotation.allowedExtensions
+        }
 
-    override fun initialize(constraintAnnotation: AllowedExtensions) {
-        allowedExtensions = constraintAnnotation.allowedExtensions
-    }
-
-    override fun isValid(value: MultipartFile?, context: ConstraintValidatorContext?): Boolean {
-        val extension = value?.originalFilename?.let { File(it).extension }
-            ?: return false
-        return allowedExtensions.contains(extension)
+        override fun isValid(value: MultipartFile?, context: ConstraintValidatorContext?): Boolean {
+            val extension = value?.originalFilename?.let { File(it).extension }
+                ?: return false
+            return allowedExtensions.contains(extension)
+        }
     }
 }
+
