@@ -3,6 +3,7 @@ package com.mrkekovich.courses.services
 import com.mrkekovich.courses.dto.CourseDto
 import com.mrkekovich.courses.models.CourseEntity
 import com.mrkekovich.courses.repositories.CourseRepository
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -142,5 +143,13 @@ class CourseServiceTest {
         assert(actualEntity == null)
         assert(deleteResponse.statusCode.is2xxSuccessful)
         // </editor-fold>
+    }
+
+    companion object {
+        @JvmStatic
+        @AfterAll
+        fun tearDown(courseServiceTest: CourseServiceTest) {
+            courseServiceTest.courseRepository.deleteAll()
+        }
     }
 }
