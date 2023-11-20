@@ -13,15 +13,6 @@ import kotlin.jvm.optionals.getOrNull
 class CourseService(
     private val courseRepository: CourseRepository,
 ) {
-    private fun CourseEntity.toResponse(): CourseDto.Response.Base =
-        CourseDto.Response.Base(this)
-
-    private fun CourseDto.Request.Create.toEntity(): CourseEntity =
-        CourseEntity(
-            title = title,
-            description = description
-        )
-
     fun getAll(
         dto: CourseDto.Request.GetAll,
     ): ResponseEntity<List<CourseDto.Response.Base>> {
@@ -70,3 +61,12 @@ class CourseService(
         return ResponseEntity(HttpStatus.OK)
     }
 }
+
+private fun CourseEntity.toResponse(): CourseDto.Response.Base =
+    CourseDto.Response.Base(this)
+
+private fun CourseDto.Request.Create.toEntity(): CourseEntity =
+    CourseEntity(
+        title = title,
+        description = description
+    )
