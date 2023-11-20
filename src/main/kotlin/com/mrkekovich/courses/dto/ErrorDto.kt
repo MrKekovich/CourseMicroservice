@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class ErrorDto(
     @JsonProperty("error_message")
-    val errorMessage: String,
+    val errorMessage: String?,
 
-    val status: Int,
+    val status: Int?,
 )

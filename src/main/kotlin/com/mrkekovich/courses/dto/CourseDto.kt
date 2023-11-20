@@ -91,11 +91,11 @@ sealed class CourseDto {
         data class Create(
             @get:NotNull
             @get:NotBlank
-            override val title: String,
+            override val title: String?,
 
             @get:NotNull
             @get:NotBlank
-            override val description: String,
+            override val description: String?,
         ) : Request()
 
         /**
@@ -114,7 +114,7 @@ sealed class CourseDto {
             @get:Schema(description = "Limit of courses to get. -1 means no limit.")
             @get:NotNull
             @get:Min(-1)
-            val limit: Int = -1,
+            val limit: Int? = -1,
         )
 
         /**
@@ -140,15 +140,15 @@ sealed class CourseDto {
         data class Update(
             @get:NotNull
             @get:NotBlank
-            override val title: String,
+            override val title: String?,
 
             @get:NotNull
             @get:NotBlank
-            override val description: String,
+            override val description: String?,
 
             @get:NotNull
             @get:NotBlank
-            override val id: String,
+            override val id: String?,
         ) : Request()
 
         /**
@@ -163,7 +163,7 @@ sealed class CourseDto {
         data class Delete(
             @get:NotNull
             @get:NotBlank
-            override val id: String,
+            override val id: String?,
         ) : Request()
     }
 }

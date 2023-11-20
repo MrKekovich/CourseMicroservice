@@ -7,7 +7,7 @@ import com.mrkekovich.courses.repositories.CourseRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import kotlin.jvm.optionals.getOrElse
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class CourseService(
@@ -18,8 +18,8 @@ class CourseService(
 
     private fun CourseDto.Request.Create.toEntity(): CourseEntity =
         CourseEntity(
-            title = this.title,
-            description = this.description
+            title = title,
+            description = description
         )
 
     fun getAll(
@@ -44,15 +44,16 @@ class CourseService(
     fun update(
         dto: CourseDto.Request.Update,
     ): ResponseEntity<CourseDto.Response.Base> {
-        val entity = courseRepository.findById(dto.id).getOrElse {
-            throw NotFoundException("Course ${dto.id} not found")
+        val entity = dto.id?.let { id ->
+            courseRepository.findById(id).getOrNull()
+        } ?: throw NotFoundException("Course ${dto.id} not found")
+
+        val newEntity = entity.copy(
+            title = dto.title,
+            description = dto.description
+        ).also {
+            courseRepository.save(it)
         }
-        val newEntity = courseRepository.save(
-            entity.copy(
-                title = dto.title,
-                description = dto.description
-            )
-        )
 
         return ResponseEntity.ok(newEntity.toResponse())
     }
@@ -60,10 +61,12 @@ class CourseService(
     fun delete(
         dto: CourseDto.Request.Delete,
     ): ResponseEntity<HttpStatus> {
-        val entity = courseRepository.findById(dto.id).getOrElse {
-            throw NotFoundException("Course ${dto.id} not found")
-        }
+        val entity = dto.id?.let {
+            courseRepository.findById(it).getOrNull()
+        } ?: throw NotFoundException("Course ${dto.id} not found")
+
         courseRepository.delete(entity)
+
         return ResponseEntity(HttpStatus.OK)
     }
 }
