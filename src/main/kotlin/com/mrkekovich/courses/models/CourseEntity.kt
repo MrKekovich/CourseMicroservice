@@ -20,4 +20,7 @@ class CourseEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: String? = null,
+
+    @OneToMany(mappedBy = "course", cascade = [CascadeType.ALL])
+    var modules: MutableList<ModuleEntity> = mutableListOf()
 )
