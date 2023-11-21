@@ -8,7 +8,7 @@ class CourseDtoTest {
     private val validator = factory.validator
 
     @Test
-    fun `course dto length validation`() {
+    fun `course dto should validate title and description length`() {
         // Create dto was chosen because it has fields we need.
         // Title and description are validated by length anyway.
 
@@ -47,7 +47,7 @@ class CourseDtoTest {
     }
 
     @Test
-    fun `create request course dto`() {
+    fun `create request course dto should validate`() {
         // <editor-fold desc="Arrange">
         val validDto = CourseDto.Request.Create(
             title = "title",
@@ -82,7 +82,7 @@ class CourseDtoTest {
     }
 
     @Test
-    fun `get all request course dto`() {
+    fun `get all request course dto should validate`() {
         // <editor-fold desc="Arrange">
         val validDtos = (-1..100).map { limit ->
             CourseDto.Request.GetAll(
@@ -117,7 +117,7 @@ class CourseDtoTest {
     }
 
     @Test
-    fun `update request course dto`() {
+    fun `update request course dto should validate`() {
         // <editor-fold desc="Arrange">
         val validDto = CourseDto.Request.Update(
             title = "title",
@@ -164,7 +164,7 @@ class CourseDtoTest {
     }
 
     @Test
-    fun `delete request course dto`() {
+    fun `delete request course dto should validate`() {
         // <editor-fold desc="Arrange">
         val validDto = CourseDto.Request.Delete(
             id = "id",
