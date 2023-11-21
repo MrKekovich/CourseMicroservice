@@ -39,11 +39,12 @@ class CourseService(
             courseRepository.findById(id).getOrNull()
         } ?: throw NotFoundException("Course ${dto.id} not found")
 
-        val newEntity = entity.copy(
+        val newEntity = CourseEntity(
             title = dto.title,
-            description = dto.description
-        ).also {
-            courseRepository.save(it)
+            description = dto.description,
+            id = entity.id
+        ).apply {
+            courseRepository.save(this)
         }
 
         return ResponseEntity.ok(newEntity.toResponse())

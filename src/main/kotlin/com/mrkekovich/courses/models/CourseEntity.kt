@@ -10,7 +10,7 @@ import jakarta.persistence.*
  */
 @Entity
 @Table(name = "courses")
-data class CourseEntity(
+class CourseEntity(
     @Column(nullable = false)
     val title: String?,
 
