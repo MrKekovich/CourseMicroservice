@@ -13,6 +13,7 @@ import kotlin.jvm.optionals.getOrNull
 class CourseService(
     private val courseRepository: CourseRepository,
 ) {
+    @Suppress("UnusedParameter")
     fun getAll(
         dto: CourseDto.Request.GetAll,
     ): ResponseEntity<List<CourseDto.Response.Base>> {

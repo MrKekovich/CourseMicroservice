@@ -1,3 +1,5 @@
+@file:Suppress("ForbiddenComment")
+
 package com.mrkekovich.courses.dto
 
 import jakarta.validation.Validation

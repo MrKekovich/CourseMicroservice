@@ -8,5 +8,6 @@ import org.springframework.boot.runApplication
 class CoursesApplication
 
 fun main(args: Array<String>) {
+    @Suppress("SpreadOperator")
     runApplication<CoursesApplication>(*args)
 }

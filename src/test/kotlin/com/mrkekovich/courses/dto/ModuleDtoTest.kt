@@ -119,6 +119,7 @@ class ModuleDtoTest {
     }
 
     @Test
+    @Suppress("LongMethod")
     fun `update request module dto should validate`() {
         // <editor-fold desc="Arrange">
         val validDto = ModuleDto.Request.Update(
