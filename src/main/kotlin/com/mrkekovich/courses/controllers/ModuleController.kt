@@ -39,7 +39,7 @@ class ModuleController(
         @Validated
         @RequestBody
         dto: ModuleDto.Request.GetAll
-    ): List<ModuleDto.Response.Base> =
+    ): ResponseEntity<List<ModuleDto.Response.Base>> =
         moduleService.getAll(dto)
 
     @Operation(summary = "Create module")

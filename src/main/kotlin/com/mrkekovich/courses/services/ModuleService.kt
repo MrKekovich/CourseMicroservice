@@ -53,8 +53,12 @@ class ModuleService(
     }
 
     @Suppress("UnusedParameter")
-    fun getAll(dto: ModuleDto.Request.GetAll): List<ModuleDto.Response.Base> {
-        return moduleRepository.findAll().map { it.toBaseResponse() }
+    fun getAll(dto: ModuleDto.Request.GetAll): ResponseEntity<List<ModuleDto.Response.Base>> {
+        val response = moduleRepository.findAll().map { it.toBaseResponse() }
+        return ResponseEntity(
+            response,
+            HttpStatus.OK
+        )
     }
 
     fun update(dto: ModuleDto.Request.Update): ResponseEntity<ModuleDto.Response.Base> {
