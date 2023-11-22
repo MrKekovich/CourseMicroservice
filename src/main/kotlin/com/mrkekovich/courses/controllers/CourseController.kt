@@ -28,7 +28,7 @@ class CourseController(
             )
         ]
     )
-    @GetMapping("/get/all")
+    @GetMapping
     fun getCourses(
         @Validated
         @RequestBody
@@ -46,7 +46,7 @@ class CourseController(
             )
         ]
     )
-    @PostMapping("/create")
+    @PostMapping
     fun createCourse(
         @Validated
         @RequestBody
@@ -64,7 +64,7 @@ class CourseController(
             )
         ]
     )
-    @PatchMapping("/update")
+    @PatchMapping
     fun updateCourse(
         @Validated
         @RequestBody
@@ -77,7 +77,7 @@ class CourseController(
         responseCode = "200",
         description = "Delete course",
     )
-    @DeleteMapping("/delete")
+    @DeleteMapping
     fun deleteCourse(
         @Validated
         @RequestBody
