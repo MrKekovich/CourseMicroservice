@@ -27,6 +27,7 @@ sealed class ModuleDto {
     open val id: String? = null
 
     sealed class Request : ModuleDto() {
+        @Schema(description = "Module creation request")
         data class Create(
             @get:NotBlank
             @get:NotNull
@@ -46,6 +47,7 @@ sealed class ModuleDto {
             override val order: Int? = 0,
         ) : Request()
 
+        @Schema(description = "Module update request")
         data class Update(
             @get:NotBlank
             @get:NotNull
@@ -68,6 +70,8 @@ sealed class ModuleDto {
             @get:NotNull
             override val id: String?
         ) : Request()
+
+        @Schema(description = "Module deletion request")
         data class Delete(
             @get:NotBlank
             @get:NotNull
