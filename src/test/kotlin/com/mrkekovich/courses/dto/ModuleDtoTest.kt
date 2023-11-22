@@ -1,11 +1,8 @@
 package com.mrkekovich.courses.dto
 
-import jakarta.validation.Validation
 import org.junit.jupiter.api.Test
 
-class ModuleDtoTest {
-    private val factory = Validation.buildDefaultValidatorFactory()
-    private val validator = factory.validator
+class ModuleDtoTest : BaseTestDto() {
 
     @Test
     fun `module dto should validate title and description length`() {
@@ -57,13 +54,13 @@ class ModuleDtoTest {
             description = "description",
             parentId = "parent",
             courseId = "course",
-            order = 0,
+            position = 0,
         )
         val validDtoNoParentId = ModuleDto.Request.Create(
             title = "title",
             description = "description",
             courseId = "course",
-            order = 0,
+            position = 0,
         )
         val validDtoNoOrder = ModuleDto.Request.Create(
             title = "title",
@@ -127,14 +124,14 @@ class ModuleDtoTest {
             description = "description",
             parentId = "parent",
             courseId = "course",
-            order = 0,
+            position = 0,
             id = "id",
         )
         val validNoParentId = ModuleDto.Request.Update(
             title = "title",
             description = "description",
             courseId = "course",
-            order = 0,
+            position = 0,
             id = "id",
         )
         val validNoOrder = ModuleDto.Request.Update(

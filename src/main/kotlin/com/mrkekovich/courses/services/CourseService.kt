@@ -65,7 +65,11 @@ class CourseService(
 }
 
 private fun CourseEntity.toResponse(): CourseDto.Response.Base =
-    CourseDto.Response.Base(this)
+    CourseDto.Response.Base(
+        title = title,
+        description = description,
+        id = id
+    )
 
 private fun CourseDto.Request.Create.toEntity(): CourseEntity =
     CourseEntity(

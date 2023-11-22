@@ -2,12 +2,9 @@
 
 package com.mrkekovich.courses.dto
 
-import jakarta.validation.Validation
 import org.junit.jupiter.api.Test
 
-class CourseDtoTest {
-    private val factory = Validation.buildDefaultValidatorFactory()
-    private val validator = factory.validator
+class CourseDtoTest : BaseTestDto() {
 
     @Test
     fun `course dto should validate title and description length`() {

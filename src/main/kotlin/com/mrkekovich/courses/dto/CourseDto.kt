@@ -1,6 +1,5 @@
 package com.mrkekovich.courses.dto
 
-import com.mrkekovich.courses.models.CourseEntity
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
@@ -56,13 +55,7 @@ sealed class CourseDto {
             override val title: String?,
             override val description: String?,
             override val id: String?,
-        ) : Response() {
-            constructor(entity: CourseEntity) : this(
-                title = entity.title,
-                description = entity.description,
-                id = entity.id
-            )
-        }
+        ) : Response()
     }
 
     /**

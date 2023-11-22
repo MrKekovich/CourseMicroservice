@@ -20,8 +20,8 @@ sealed class ModuleDto {
     @get:Schema(description = "Parent course id")
     open val courseId: String? = null
 
-    @get:Schema(description = "Module order")
-    open val order: Int? = null
+    @get:Schema(description = "Module position")
+    open val position: Int? = null
 
     @get:Schema(description = "Module id")
     open val id: String? = null
@@ -44,7 +44,7 @@ sealed class ModuleDto {
             override val courseId: String?,
 
             @get:NotNull
-            override val order: Int? = 0,
+            override val position: Int? = 0,
         ) : Request()
 
         @Schema(description = "Module update request")
@@ -64,7 +64,7 @@ sealed class ModuleDto {
             override val courseId: String?,
 
             @get:NotNull
-            override val order: Int? = 0,
+            override val position: Int? = 0,
 
             @get:NotBlank
             @get:NotNull
@@ -91,7 +91,7 @@ sealed class ModuleDto {
             override val description: String?,
             override val parentId: String?,
             override val courseId: String?,
-            override val order: Int?
+            override val position: Int?
         ) : Response()
     }
 }

@@ -27,8 +27,8 @@ class ModuleEntity(
     @ManyToOne(cascade = [CascadeType.ALL])
     val parentModule: ModuleEntity? = null,
 
-    @Column(name = "order")
-    val order: Int? = 0,
+    @Column(name = "position")
+    val position: Int? = 0,
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

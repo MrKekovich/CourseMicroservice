@@ -25,7 +25,7 @@ class ModuleService(
             course = courseId?.let {
                 courseRepository.findById(it).getOrNull()
             } ?: throw NotFoundException("Course with id $courseId not found"),
-            order = order,
+            position = position,
             id = id
         )
     }
@@ -40,7 +40,7 @@ class ModuleService(
             course = courseId?.let {
                 courseRepository.findById(it).getOrNull()
             } ?: throw NotFoundException("Course with id $courseId not found"),
-            order = order
+            position = position
         )
     }
 
@@ -87,6 +87,6 @@ private fun ModuleEntity.toBaseResponse(): ModuleDto.Response.Base {
         description = description,
         parentId = parentModule?.id,
         courseId = course?.id,
-        order = order
+        position = position
     )
 }
