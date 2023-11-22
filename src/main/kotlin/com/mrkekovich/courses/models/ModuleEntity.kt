@@ -13,7 +13,6 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "modules")
-@Suppress("LongParameterList")
 class ModuleEntity(
     @Column(name = "title")
     val title: String?,
@@ -28,16 +27,16 @@ class ModuleEntity(
     @ManyToOne(cascade = [CascadeType.ALL])
     val parentModule: ModuleEntity? = null,
 
-    @OneToMany(
-        mappedBy = "parentModule",
-        cascade = [CascadeType.ALL]
-    )
-    val childrenModules: MutableSet<ModuleEntity> = mutableSetOf(),
-
     @Column(name = "order")
     val order: Int? = 0,
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: String? = null,
-)
+) {
+    @OneToMany(
+        mappedBy = "parentModule",
+        cascade = [CascadeType.ALL]
+    )
+    var childrenModules: MutableSet<ModuleEntity> = mutableSetOf()
+}
