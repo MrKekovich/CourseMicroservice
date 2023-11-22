@@ -18,7 +18,7 @@ class CourseService(
         dto: CourseDto.Request.GetAll,
     ): ResponseEntity<List<CourseDto.Response.Base>> {
         val response = courseRepository.findAll().map {
-            it.toResponse()
+            it.toBaseResponseDto()
         }
 
         return ResponseEntity.ok(response)
@@ -30,7 +30,7 @@ class CourseService(
         val entity = courseRepository.save(
             dto.toEntity()
         )
-        return ResponseEntity.ok(entity.toResponse())
+        return ResponseEntity.ok(entity.toBaseResponseDto())
     }
 
     fun update(
@@ -48,7 +48,7 @@ class CourseService(
             courseRepository.save(this)
         }
 
-        return ResponseEntity.ok(newEntity.toResponse())
+        return ResponseEntity.ok(newEntity.toBaseResponseDto())
     }
 
     fun delete(
@@ -64,7 +64,7 @@ class CourseService(
     }
 }
 
-private fun CourseEntity.toResponse(): CourseDto.Response.Base =
+private fun CourseEntity.toBaseResponseDto(): CourseDto.Response.Base =
     CourseDto.Response.Base(
         title = title,
         description = description,
