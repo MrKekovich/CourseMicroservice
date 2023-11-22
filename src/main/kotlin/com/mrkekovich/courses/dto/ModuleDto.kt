@@ -77,5 +77,21 @@ sealed class ModuleDto {
             @get:NotNull
             override val id: String?
         ) : Request()
+
+        data class GetAll(
+            @get:NotNull
+            val limit: Int = 10,
+        )
+    }
+
+    sealed class Response : ModuleDto() {
+        data class Base(
+            override val id: String?,
+            override val title: String?,
+            override val description: String?,
+            override val parentId: String?,
+            override val courseId: String?,
+            override val order: Int?
+        ) : Response()
     }
 }
