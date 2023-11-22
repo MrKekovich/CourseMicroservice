@@ -13,13 +13,13 @@ import jakarta.persistence.Table
 @Table(name = "article_entity")
 class ArticleEntity(
     @Column(name = "title")
-    val title: String,
+    val title: String?,
 
     @Column(name = "description")
-    val description: String,
+    val description: String?,
 
     @Column(name = "content")
-    val content: String,
+    val content: String?,
 
     @ManyToOne
     @JoinColumn(name = "module_id")
