@@ -39,4 +39,10 @@ class ModuleEntity(
         cascade = [CascadeType.ALL]
     )
     var childrenModules: MutableSet<ModuleEntity> = mutableSetOf()
+
+    @OneToMany(
+        mappedBy = "module",
+        cascade = [CascadeType.ALL]
+    )
+    var articles: MutableSet<ArticleEntity> = mutableSetOf()
 }
