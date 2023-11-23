@@ -1,5 +1,6 @@
 package com.mrkekovich.courses.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
@@ -20,6 +21,7 @@ sealed class ArticleDto {
     open val content: String? = null
 
     @get:Schema(description = "Parent module id")
+    @get:JsonProperty("module_id")
     open val moduleId: String? = null
 
     @get:Schema(description = "Article id")

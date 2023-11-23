@@ -1,5 +1,6 @@
 package com.mrkekovich.courses.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -15,9 +16,11 @@ sealed class ModuleDto {
     open val description: String? = null
 
     @get:Schema(description = "Parent module id")
+    @get:JsonProperty("parent_id")
     open val parentId: String? = null
 
     @get:Schema(description = "Parent course id")
+    @get:JsonProperty("course_id")
     open val courseId: String? = null
 
     @get:Schema(description = "Module position")
