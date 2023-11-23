@@ -48,7 +48,7 @@ sealed class CourseDto {
          * @property id [Response.id]
          */
         @Schema(
-            name = "Base response",
+            name = "Base course response",
             description = "Represents a response from server with course data."
         )
         data class Base(
@@ -78,7 +78,7 @@ sealed class CourseDto {
          * * [NotBlank].
          */
         @Schema(
-            name = "Create request",
+            name = "Create course request",
             description = "Represents a request to create a new course."
         )
         data class Create(
@@ -100,7 +100,7 @@ sealed class CourseDto {
          * * [Min] (-1).
          */
         @Schema(
-            name = "Get all request",
+            name = "Get all courses request",
             description = "Represents a request to get all courses."
         )
         data class GetAll(
@@ -127,7 +127,7 @@ sealed class CourseDto {
          * * [NotBlank].
          */
         @Schema(
-            name = "Update request",
+            name = "Update course request",
             description = "Represents a request to update a course."
         )
         data class Update(
@@ -150,7 +150,7 @@ sealed class CourseDto {
          * @property id [Request.id]
          */
         @Schema(
-            name = "Delete request",
+            name = "Delete course request",
             description = "Represents a request to delete a course."
         )
         data class Delete(

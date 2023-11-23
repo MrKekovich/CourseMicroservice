@@ -20,7 +20,7 @@ sealed class ArticleDto {
     @get:Length(max = 300000)
     open val content: String? = null
 
-    @get:Schema(description = "Parent module id")
+    @get:Schema(description = "The module article belongs to")
     @get:JsonProperty("module_id")
     open val moduleId: String? = null
 
