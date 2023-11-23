@@ -2,7 +2,8 @@ package com.mrkekovich.courses.services
 
 import com.mrkekovich.courses.dto.ArticleDto
 import com.mrkekovich.courses.exceptions.NotFoundException
-import com.mrkekovich.courses.models.ArticleEntity
+import com.mrkekovich.courses.mappers.toBaseResponseDto
+import com.mrkekovich.courses.mappers.toEntity
 import com.mrkekovich.courses.repositories.ArticleRepository
 import com.mrkekovich.courses.repositories.ModuleRepository
 import org.springframework.http.HttpStatus
@@ -15,31 +16,11 @@ class ArticleService(
     private val articleRepository: ArticleRepository,
     private val moduleRepository: ModuleRepository
 ) {
-    private fun ArticleDto.Request.Create.toEntity(): ArticleEntity {
-        return ArticleEntity(
-            title = title,
-            content = content,
-            description = description,
-            module = moduleId?.let {
-                moduleRepository.findById(it).getOrNull()
-            } ?: throw NotFoundException("Module with id $moduleId not found")
-        )
-    }
-
-    private fun ArticleDto.Request.Update.toEntity(): ArticleEntity {
-        return ArticleEntity(
-            id = id,
-            title = title,
-            content = content,
-            description = description,
-            module = moduleId?.let {
-                moduleRepository.findById(it).getOrNull()
-            } ?: throw NotFoundException("Module with id $moduleId not found")
-        )
-    }
-
     fun createArticle(dto: ArticleDto.Request.Create): ResponseEntity<ArticleDto.Response.Base> {
-        val entity = articleRepository.save(dto.toEntity())
+        val entity = articleRepository.save(
+            dto.toEntity(moduleRepository)
+        )
+
         return ResponseEntity(
             entity.toBaseResponseDto(),
             HttpStatus.CREATED
@@ -50,7 +31,10 @@ class ArticleService(
     fun getArticles(
         dto: ArticleDto.Request.GetAll
     ): ResponseEntity<List<ArticleDto.Response.Base>> {
-        val response = articleRepository.findAll().map { it.toBaseResponseDto() }
+        val response = articleRepository.findAll().map {
+            it.toBaseResponseDto()
+        }
+
         return ResponseEntity(
             response,
             HttpStatus.OK
@@ -62,7 +46,10 @@ class ArticleService(
             articleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException("Article with id ${dto.id} not found")
 
-        val updatedEntity = articleRepository.save(dto.toEntity())
+        val updatedEntity = articleRepository.save(
+            dto.toEntity(moduleRepository)
+        )
+
         return ResponseEntity(
             updatedEntity.toBaseResponseDto(),
             HttpStatus.OK
@@ -73,19 +60,11 @@ class ArticleService(
         val entity = dto.id?.let {
             articleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException("Article with id ${dto.id} not found")
+
         articleRepository.delete(entity)
+
         return ResponseEntity(
             HttpStatus.OK
         )
     }
-}
-
-private fun ArticleEntity.toBaseResponseDto(): ArticleDto.Response.Base {
-    return ArticleDto.Response.Base(
-        title = title,
-        content = content,
-        description = description,
-        moduleId = module.id,
-        id = id,
-    )
 }

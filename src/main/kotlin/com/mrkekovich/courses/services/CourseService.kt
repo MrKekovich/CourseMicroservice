@@ -2,7 +2,8 @@ package com.mrkekovich.courses.services
 
 import com.mrkekovich.courses.dto.CourseDto
 import com.mrkekovich.courses.exceptions.NotFoundException
-import com.mrkekovich.courses.models.CourseEntity
+import com.mrkekovich.courses.mappers.toBaseResponseDto
+import com.mrkekovich.courses.mappers.toEntity
 import com.mrkekovich.courses.repositories.CourseRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -36,19 +37,15 @@ class CourseService(
     fun update(
         dto: CourseDto.Request.Update,
     ): ResponseEntity<CourseDto.Response.Base> {
-        val entity = dto.id?.let { id ->
+        dto.id?.let { id ->
             courseRepository.findById(id).getOrNull()
         } ?: throw NotFoundException("Course ${dto.id} not found")
 
-        val newEntity = CourseEntity(
-            title = dto.title,
-            description = dto.description,
-            id = entity.id
-        ).apply {
-            courseRepository.save(this)
-        }
-
-        return ResponseEntity.ok(newEntity.toBaseResponseDto())
+        val updatedEntity = courseRepository.save(dto.toEntity())
+        return ResponseEntity(
+            updatedEntity.toBaseResponseDto(),
+            HttpStatus.OK,
+        )
     }
 
     fun delete(
@@ -63,16 +60,3 @@ class CourseService(
         return ResponseEntity(HttpStatus.OK)
     }
 }
-
-private fun CourseEntity.toBaseResponseDto(): CourseDto.Response.Base =
-    CourseDto.Response.Base(
-        title = title,
-        description = description,
-        id = id
-    )
-
-private fun CourseDto.Request.Create.toEntity(): CourseEntity =
-    CourseEntity(
-        title = title,
-        description = description
-    )

@@ -1,0 +1,70 @@
+package com.mrkekovich.courses.mappers
+
+import com.mrkekovich.courses.dto.ArticleDto
+import com.mrkekovich.courses.exceptions.NotFoundException
+import com.mrkekovich.courses.models.ArticleEntity
+import com.mrkekovich.courses.repositories.ModuleRepository
+import kotlin.jvm.optionals.getOrNull
+
+fun ArticleEntity.toBaseResponseDto(): ArticleDto.Response.Base {
+    return ArticleDto.Response.Base(
+        title = title,
+        content = content,
+        description = description,
+        moduleId = module.id,
+        id = id,
+    )
+}
+
+/**
+ * Create request to entity
+ *
+ * Transforms create request DTO to entity
+ * @param moduleRepository [ModuleRepository]
+ * @return [ArticleEntity] from [ArticleDto.Request.Create]
+ */
+fun ArticleDto.Request.Create.toEntity(
+    moduleRepository: ModuleRepository
+): ArticleEntity = dtoToEntity(
+    this,
+    moduleRepository
+)
+
+/**
+ * Update request to entity
+ *
+ * Transforms update request DTO to entity
+ * @param moduleRepository [ModuleRepository]
+ * @return [ArticleEntity] from [ArticleDto.Request.Update]
+ */
+fun ArticleDto.Request.Update.toEntity(
+    moduleRepository: ModuleRepository
+): ArticleEntity = dtoToEntity(
+    this,
+    moduleRepository,
+)
+
+/**
+ * Dto to entity
+ *
+ * Converts dto to an entity.
+ * By default, parent DTOs have all fields we need set to null.
+ * So be careful when creating an entity from DTO that does not
+ * override all fields - they will be set to null.
+ *
+ * @param dto The [ArticleDto] to convert to entity.
+ * @param moduleRepository [ModuleRepository] Used to map module from id.
+ * @return [ArticleEntity] with mapped fields.
+ */
+private fun dtoToEntity(
+    dto: ArticleDto,
+    moduleRepository: ModuleRepository,
+): ArticleEntity = ArticleEntity(
+    title = dto.title,
+    content = dto.content,
+    description = dto.description,
+    module = dto.moduleId?.let {
+        moduleRepository.findById(it).getOrNull()
+    } ?: throw NotFoundException("Module with id ${dto.moduleId} not found"),
+    id = dto.id
+)

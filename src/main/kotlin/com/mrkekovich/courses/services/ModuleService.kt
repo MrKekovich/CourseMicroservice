@@ -2,7 +2,8 @@ package com.mrkekovich.courses.services
 
 import com.mrkekovich.courses.dto.ModuleDto
 import com.mrkekovich.courses.exceptions.NotFoundException
-import com.mrkekovich.courses.models.ModuleEntity
+import com.mrkekovich.courses.mappers.toBaseResponse
+import com.mrkekovich.courses.mappers.toEntity
 import com.mrkekovich.courses.repositories.CourseRepository
 import com.mrkekovich.courses.repositories.ModuleRepository
 import org.springframework.http.HttpStatus
@@ -15,37 +16,14 @@ class ModuleService(
     private val moduleRepository: ModuleRepository,
     private val courseRepository: CourseRepository,
 ) {
-    private fun ModuleDto.Request.Update.toEntity(): ModuleEntity {
-        return ModuleEntity(
-            title = title,
-            description = description,
-            parentModule = parentId?.let {
-                moduleRepository.findById(it).getOrNull()
-            },
-            course = courseId?.let {
-                courseRepository.findById(it).getOrNull()
-            } ?: throw NotFoundException("Course with id $courseId not found"),
-            position = position,
-            id = id
-        )
-    }
-
-    private fun ModuleDto.Request.Create.toEntity(): ModuleEntity {
-        return ModuleEntity(
-            title = title,
-            description = description,
-            parentModule = parentId?.let {
-                moduleRepository.findById(it).getOrNull()
-            },
-            course = courseId?.let {
-                courseRepository.findById(it).getOrNull()
-            } ?: throw NotFoundException("Course with id $courseId not found"),
-            position = position
-        )
-    }
-
     fun create(dto: ModuleDto.Request.Create): ResponseEntity<ModuleDto.Response.Base> {
-        val entity = moduleRepository.save(dto.toEntity())
+        val entity = moduleRepository.save(
+            dto.toEntity(
+                moduleRepository = moduleRepository,
+                courseRepository = courseRepository,
+            )
+        )
+
         return ResponseEntity(
             entity.toBaseResponse(),
             HttpStatus.OK
@@ -54,7 +32,10 @@ class ModuleService(
 
     @Suppress("UnusedParameter")
     fun getAll(dto: ModuleDto.Request.GetAll): ResponseEntity<List<ModuleDto.Response.Base>> {
-        val response = moduleRepository.findAll().map { it.toBaseResponse() }
+        val response = moduleRepository.findAll().map {
+            it.toBaseResponse()
+        }
+
         return ResponseEntity(
             response,
             HttpStatus.OK
@@ -66,7 +47,11 @@ class ModuleService(
             moduleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException("Module with id ${dto.id} not found")
 
-        val updatedEntity = dto.toEntity()
+        val updatedEntity = dto.toEntity(
+            moduleRepository = moduleRepository,
+            courseRepository = courseRepository,
+        )
+
         return ResponseEntity(
             updatedEntity.toBaseResponse(),
             HttpStatus.OK
@@ -82,15 +67,4 @@ class ModuleService(
 
         return ResponseEntity(HttpStatus.OK)
     }
-}
-
-private fun ModuleEntity.toBaseResponse(): ModuleDto.Response.Base {
-    return ModuleDto.Response.Base(
-        id = id,
-        title = title,
-        description = description,
-        parentId = parentModule?.id,
-        courseId = course?.id,
-        position = position
-    )
 }
