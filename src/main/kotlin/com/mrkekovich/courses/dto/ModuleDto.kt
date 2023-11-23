@@ -30,7 +30,7 @@ sealed class ModuleDto {
     open val id: String? = null
 
     sealed class Request : ModuleDto() {
-        @Schema(description = "Create module request")
+        @Schema(name = "Create module request")
         data class Create(
             @get:NotBlank
             @get:NotNull
@@ -50,7 +50,7 @@ sealed class ModuleDto {
             override val position: Int? = 0,
         ) : Request()
 
-        @Schema(description = "Update module request")
+        @Schema(name = "Update module request")
         data class Update(
             @get:NotBlank
             @get:NotNull
@@ -74,13 +74,14 @@ sealed class ModuleDto {
             override val id: String?
         ) : Request()
 
-        @Schema(description = "Delete module request")
+        @Schema(name = "Delete module request")
         data class Delete(
             @get:NotBlank
             @get:NotNull
             override val id: String?
         ) : Request()
 
+        @Schema(name = "Get all modules request")
         data class GetAll(
             @get:NotNull
             val limit: Int = 10,
@@ -88,7 +89,7 @@ sealed class ModuleDto {
     }
 
     sealed class Response : ModuleDto() {
-        @Schema(description = "Base module response")
+        @Schema(name = "Base module response")
         data class Base(
             override val id: String?,
             override val title: String?,
