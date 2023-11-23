@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/articles")
+@RequestMapping("/api/v1/articles")
 @Tag(name = "Article controller")
 class ArticleController(
     private val articleService: ArticleService
