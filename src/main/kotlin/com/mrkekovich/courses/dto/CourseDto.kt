@@ -65,7 +65,7 @@ data class CreateCourseRequest(
     @get:NotBlank
     override val title: String?,
 
-    @get:NotBlank
+    @get:NotNull
     override val description: String?,
 ) : CourseDto()
 
@@ -107,7 +107,7 @@ data class UpdateCourseRequest(
     @get:NotBlank
     override val title: String?,
 
-    @get:NotBlank
+    @get:NotNull
     override val description: String?,
 
     @get:NotBlank
