@@ -7,11 +7,9 @@ class ArticleDtoTest {
     fun `should validate length`() {
         // Length validation is defined in Parent class,
         // By validating Create request only we can validate all Article DTOs.
-
         // act
         validateLength(
-            validLengthRange = 1 until 255,
-            testRange = 0..300
+            maxLength = 255
         ) {
             CreateArticleRequest(
                 title = it,
@@ -22,8 +20,7 @@ class ArticleDtoTest {
         }
 
         validateLength(
-            validLengthRange = 1 until 1000,
-            testRange = 1..1500,
+            maxLength = 1000
         ) {
             CreateArticleRequest(
                 title = "valid",
@@ -34,8 +31,7 @@ class ArticleDtoTest {
         }
 
         validateLength(
-            validLengthRange = 1 until 300000,
-            testRange = 1..300500,
+            maxLength = 1000
         ) {
             CreateArticleRequest(
                 title = "valid",
@@ -66,7 +62,7 @@ class ArticleDtoTest {
 
         // assert
         assert(violations.isEmpty())
-        validateNotBlank(1, createDto)
+        validateNotBlankString(1, createDto)
         validateNotNull(4, createDto)
     }
 
@@ -91,15 +87,39 @@ class ArticleDtoTest {
 
         // assert
         assert(violations.isEmpty())
-        validateNotBlank(2, updateDto)
+        validateNotBlankString(2, updateDto)
         validateNotNull(4, updateDto)
     }
 
     @Test
     fun `delete article request should validate`() {
         // assert
-        validateNotBlank(1) {
-            DeleteArticleRequest(id = it)
+        validateNotBlankString(1, ::DeleteArticleRequest)
+        validateNotNull(1, ::DeleteArticleRequest)
+    }
+
+    @Test
+    fun `get all articles request should validate`() {
+        // arrange
+        val validDto = GetAllArticlesRequest(
+            limit = 1
+        )
+        val invalidDtos = (-100..-1).map {
+            GetAllArticlesRequest(limit = it)
         }
+
+        // act
+        val violationsValid =
+            validator.validate(validDto)
+
+        val violationsInvalid =
+            invalidDtos.map {
+                validator.validate(it)
+            }
+
+        // assert
+        assert(violationsValid.isEmpty())
+        assert(violationsInvalid.all { it.isNotEmpty() })
+        validateNotNull(1, ::GetAllArticlesRequest)
     }
 }

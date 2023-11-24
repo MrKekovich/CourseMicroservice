@@ -4,71 +4,88 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import jakarta.validation.ValidatorFactory
 
-private val factory: ValidatorFactory = Validation.buildDefaultValidatorFactory()
+val factory: ValidatorFactory = Validation.buildDefaultValidatorFactory()
 val validator: Validator = factory.validator
 
-/**
- * Returns list of strings with length from min to max (inclusive).
- *
- * @param range range of lengths to get.
- *
- * @throws IllegalArgumentException if min < 0 or max < 0 or min > max
- *
- * @return list of strings of length from min to max (inclusive).
- */
-fun stringRange(
-    range: IntRange,
-    char: Char
-): List<String> {
-    when {
-        range.first < 0 -> throw IllegalArgumentException("range.first must be >= 0")
-        range.last < 0 -> throw IllegalArgumentException("range.last must be >= 0")
-    }
-    return (range).map {
-        char.toString().repeat(it)
-    }
-}
-
 fun validateLength(
-    validLengthRange: IntRange,
-    testRange: IntRange,
+    minLength: Int? = null,
+    maxLength: Int,
     createDto: (field: String) -> Any,
 ) {
-    val stringRange = stringRange(testRange, 'a')
-    for (field in stringRange) {
-        val dto = createDto(field)
+    // arrange
+    val validDtoMaxLength = createDto("1".repeat(maxLength))
 
-        val violations =
-            validator.validate(dto)
+    val validDtoMinLength = minLength?.let {
+        assert(minLength > 0) { "minLength must be greater than 0" }
+        createDto("".repeat(maxLength - 1))
+    }
 
-        if (field.length in validLengthRange) {
-            assert(violations.isEmpty())
-        } else {
-            assert(violations.isNotEmpty())
+    val invalidOverMaxLengthDto = createDto("1".repeat(maxLength + 1))
+
+    val invalidUnderMinLengthDto = minLength?.let {
+        assert(minLength > 0) { "minLength must be greater than 0" }
+        createDto("".repeat(maxLength - 1))
+    }
+
+    // act
+    val violationsValidMaxLengthDto =
+        validator.validate(validDtoMaxLength)
+
+    val violationsValidMinLengthDto =
+        validDtoMinLength?.let {
+            validator.validate(validDtoMinLength)
         }
+
+    val violationsOverMaxLength =
+        validator.validate(invalidOverMaxLengthDto)
+
+    val violationsUnderMinLength = invalidUnderMinLengthDto?.let {
+        validator.validate(invalidUnderMinLengthDto)
+    }
+
+    // assert
+    assert(violationsValidMaxLengthDto.isEmpty())
+    violationsValidMinLengthDto?.let {
+        assert(it.isEmpty())
+    }
+
+    assert(violationsOverMaxLength.isNotEmpty())
+    violationsUnderMinLength?.let {
+        assert(it.isNotEmpty())
     }
 }
 
-fun validateNotNull(
+fun <T : Any> validateNotNull(
     expectedViolationsCount: Int,
-    createDto: (field: String?) -> Any,
+    createDto: (field: T?) -> Any,
 ) {
+    // arrange
     val invalidDto = createDto(null)
 
+    // act
     val violations =
         validator.validate(invalidDto)
 
+    // assert
     assert(violations.size == expectedViolationsCount)
 }
 
-fun validateNotBlank(
+fun validateNotBlankString(
     expectedViolationsCount: Int,
     createDto: (field: String?) -> Any,
 ) {
+    // arrange
     val invalidBlankFieldDto = createDto("")
+    val invalidWhiteSpaceValueDto = createDto(" ")
 
+    // act
     val violationsBlankField =
         validator.validate(invalidBlankFieldDto)
 
+    val violationsWhiteSpaceValue =
+        validator.validate(invalidWhiteSpaceValueDto)
+
+    // assert
     assert(violationsBlankField.size == expectedViolationsCount)
+    assert(violationsWhiteSpaceValue.size == expectedViolationsCount)
 }
