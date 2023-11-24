@@ -50,6 +50,7 @@ fun validateLength(
 }
 
 fun validateNotNull(
+    expectedViolationsCount: Int,
     createDto: (field: String?) -> Any,
 ) {
     val invalidDto = createDto(null)
@@ -57,21 +58,17 @@ fun validateNotNull(
     val violations =
         validator.validate(invalidDto)
 
-    assert(violations.isNotEmpty())
+    assert(violations.size == expectedViolationsCount)
 }
 
 fun validateNotBlank(
+    expectedViolationsCount: Int,
     createDto: (field: String?) -> Any,
 ) {
     val invalidBlankFieldDto = createDto("")
-    val invalidNullFieldDto = createDto(null)
 
     val violationsBlankField =
         validator.validate(invalidBlankFieldDto)
 
-    val violationsNullField =
-        validator.validate(invalidNullFieldDto)
-
-    assert(violationsBlankField.isNotEmpty())
-    assert(violationsNullField.isNotEmpty())
+    assert(violationsBlankField.size == expectedViolationsCount)
 }
