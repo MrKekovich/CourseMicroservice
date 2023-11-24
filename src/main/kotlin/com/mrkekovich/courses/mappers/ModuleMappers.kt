@@ -1,14 +1,17 @@
 package com.mrkekovich.courses.mappers
 
+import com.mrkekovich.courses.dto.BaseModuleResponse
+import com.mrkekovich.courses.dto.CreateModuleRequest
 import com.mrkekovich.courses.dto.ModuleDto
+import com.mrkekovich.courses.dto.UpdateModuleRequest
 import com.mrkekovich.courses.exceptions.NotFoundException
 import com.mrkekovich.courses.models.ModuleEntity
 import com.mrkekovich.courses.repositories.CourseRepository
 import com.mrkekovich.courses.repositories.ModuleRepository
 import kotlin.jvm.optionals.getOrNull
 
-fun ModuleEntity.toBaseResponse(): ModuleDto.Response.Base {
-    return ModuleDto.Response.Base(
+fun ModuleEntity.toBaseResponse(): BaseModuleResponse {
+    return BaseModuleResponse(
         id = id,
         title = title,
         description = description,
@@ -18,7 +21,7 @@ fun ModuleEntity.toBaseResponse(): ModuleDto.Response.Base {
     )
 }
 
-fun ModuleDto.Request.Update.toEntity(
+fun UpdateModuleRequest.toEntity(
     moduleRepository: ModuleRepository,
     courseRepository: CourseRepository,
 ): ModuleEntity = dtoToEntity(
@@ -27,7 +30,7 @@ fun ModuleDto.Request.Update.toEntity(
     courseRepository
 )
 
-fun ModuleDto.Request.Create.toEntity(
+fun CreateModuleRequest.toEntity(
     moduleRepository: ModuleRepository,
     courseRepository: CourseRepository,
 ): ModuleEntity = dtoToEntity(

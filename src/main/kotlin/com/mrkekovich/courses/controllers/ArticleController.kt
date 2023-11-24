@@ -1,6 +1,10 @@
 package com.mrkekovich.courses.controllers
 
-import com.mrkekovich.courses.dto.ArticleDto
+import com.mrkekovich.courses.dto.BaseArticleResponse
+import com.mrkekovich.courses.dto.CreateArticleRequest
+import com.mrkekovich.courses.dto.DeleteArticleRequest
+import com.mrkekovich.courses.dto.GetAllArticlesRequest
+import com.mrkekovich.courses.dto.UpdateArticleRequest
 import com.mrkekovich.courses.services.ArticleService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -30,7 +34,7 @@ class ArticleController(
         description = "Get all articles",
         content = [
             Content(
-                schema = Schema(implementation = ArticleDto.Response.Base::class)
+                schema = Schema(implementation = BaseArticleResponse::class)
             )
         ]
     )
@@ -38,8 +42,8 @@ class ArticleController(
     fun getArticles(
         @Validated
         @RequestBody
-        dto: ArticleDto.Request.GetAll
-    ): ResponseEntity<List<ArticleDto.Response.Base>> =
+        dto: GetAllArticlesRequest
+    ): ResponseEntity<List<BaseArticleResponse>> =
         articleService.getArticles(dto)
 
     @Operation(summary = "Create new article")
@@ -48,7 +52,7 @@ class ArticleController(
         description = "Create new article",
         content = [
             Content(
-                schema = Schema(implementation = ArticleDto.Response.Base::class)
+                schema = Schema(implementation = BaseArticleResponse::class)
             )
         ]
     )
@@ -56,8 +60,8 @@ class ArticleController(
     fun createArticle(
         @Validated
         @RequestBody
-        dto: ArticleDto.Request.Create
-    ): ResponseEntity<ArticleDto.Response.Base> =
+        dto: CreateArticleRequest
+    ): ResponseEntity<BaseArticleResponse> =
         articleService.createArticle(dto)
 
     @Operation(summary = "Update article")
@@ -66,7 +70,7 @@ class ArticleController(
         description = "Update article",
         content = [
             Content(
-                schema = Schema(implementation = ArticleDto.Response.Base::class)
+                schema = Schema(implementation = BaseArticleResponse::class)
             )
         ]
     )
@@ -74,8 +78,8 @@ class ArticleController(
     fun updateArticle(
         @Validated
         @RequestBody
-        dto: ArticleDto.Request.Update
-    ): ResponseEntity<ArticleDto.Response.Base> =
+        dto: UpdateArticleRequest
+    ): ResponseEntity<BaseArticleResponse> =
         articleService.updateArticle(dto)
 
     @Operation(summary = "Delete article")
@@ -84,7 +88,7 @@ class ArticleController(
         description = "Delete article",
         content = [
             Content(
-                schema = Schema(implementation = ArticleDto.Response.Base::class)
+                schema = Schema(implementation = BaseArticleResponse::class)
             )
         ]
     )
@@ -92,7 +96,7 @@ class ArticleController(
     fun deleteArticle(
         @Validated
         @RequestBody
-        dto: ArticleDto.Request.Delete
+        dto: DeleteArticleRequest
     ): ResponseEntity<HttpStatus> =
         articleService.deleteArticle(dto)
 }

@@ -1,6 +1,10 @@
 package com.mrkekovich.courses.services
 
-import com.mrkekovich.courses.dto.CourseDto
+import com.mrkekovich.courses.dto.BaseCourseResponse
+import com.mrkekovich.courses.dto.CreateCourseRequest
+import com.mrkekovich.courses.dto.DeleteCourseRequest
+import com.mrkekovich.courses.dto.GetAllCoursesRequest
+import com.mrkekovich.courses.dto.UpdateCourseRequest
 import com.mrkekovich.courses.exceptions.NotFoundException
 import com.mrkekovich.courses.mappers.toBaseResponseDto
 import com.mrkekovich.courses.mappers.toEntity
@@ -16,8 +20,8 @@ class CourseService(
 ) {
     @Suppress("UnusedParameter")
     fun getAll(
-        dto: CourseDto.Request.GetAll,
-    ): ResponseEntity<List<CourseDto.Response.Base>> {
+        dto: GetAllCoursesRequest,
+    ): ResponseEntity<List<BaseCourseResponse>> {
         val response = courseRepository.findAll().map {
             it.toBaseResponseDto()
         }
@@ -26,8 +30,8 @@ class CourseService(
     }
 
     fun create(
-        dto: CourseDto.Request.Create,
-    ): ResponseEntity<CourseDto.Response.Base> {
+        dto: CreateCourseRequest,
+    ): ResponseEntity<BaseCourseResponse> {
         val entity = courseRepository.save(
             dto.toEntity()
         )
@@ -35,8 +39,8 @@ class CourseService(
     }
 
     fun update(
-        dto: CourseDto.Request.Update,
-    ): ResponseEntity<CourseDto.Response.Base> {
+        dto: UpdateCourseRequest,
+    ): ResponseEntity<BaseCourseResponse> {
         dto.id?.let { id ->
             courseRepository.findById(id).getOrNull()
         } ?: throw NotFoundException("Course ${dto.id} not found")
@@ -49,7 +53,7 @@ class CourseService(
     }
 
     fun delete(
-        dto: CourseDto.Request.Delete,
+        dto: DeleteCourseRequest,
     ): ResponseEntity<HttpStatus> {
         val entity = dto.id?.let {
             courseRepository.findById(it).getOrNull()

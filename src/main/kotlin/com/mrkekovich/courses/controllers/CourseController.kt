@@ -1,6 +1,10 @@
 package com.mrkekovich.courses.controllers
 
-import com.mrkekovich.courses.dto.CourseDto
+import com.mrkekovich.courses.dto.BaseCourseResponse
+import com.mrkekovich.courses.dto.CreateCourseRequest
+import com.mrkekovich.courses.dto.DeleteCourseRequest
+import com.mrkekovich.courses.dto.GetAllCoursesRequest
+import com.mrkekovich.courses.dto.UpdateCourseRequest
 import com.mrkekovich.courses.services.CourseService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -30,7 +34,7 @@ class CourseController(
         description = "Get all course with a limit",
         content = [
             Content(
-                schema = Schema(implementation = CourseDto.Response.Base::class)
+                schema = Schema(implementation = BaseCourseResponse::class)
             )
         ]
     )
@@ -38,8 +42,8 @@ class CourseController(
     fun getCourses(
         @Validated
         @RequestBody
-        dto: CourseDto.Request.GetAll,
-    ): ResponseEntity<List<CourseDto.Response.Base>> =
+        dto: GetAllCoursesRequest,
+    ): ResponseEntity<List<BaseCourseResponse>> =
         courseService.getAll(dto)
 
     @Operation(summary = "Create course")
@@ -48,7 +52,7 @@ class CourseController(
         description = "Create course",
         content = [
             Content(
-                schema = Schema(implementation = CourseDto.Response.Base::class)
+                schema = Schema(implementation = BaseCourseResponse::class)
             )
         ]
     )
@@ -56,8 +60,8 @@ class CourseController(
     fun createCourse(
         @Validated
         @RequestBody
-        dto: CourseDto.Request.Create,
-    ): ResponseEntity<CourseDto.Response.Base> =
+        dto: CreateCourseRequest,
+    ): ResponseEntity<BaseCourseResponse> =
         courseService.create(dto)
 
     @Operation(summary = "Update course")
@@ -66,7 +70,7 @@ class CourseController(
         description = "Update course",
         content = [
             Content(
-                schema = Schema(implementation = CourseDto.Response.Base::class)
+                schema = Schema(implementation = BaseCourseResponse::class)
             )
         ]
     )
@@ -74,8 +78,8 @@ class CourseController(
     fun updateCourse(
         @Validated
         @RequestBody
-        dto: CourseDto.Request.Update,
-    ): ResponseEntity<CourseDto.Response.Base> =
+        dto: UpdateCourseRequest,
+    ): ResponseEntity<BaseCourseResponse> =
         courseService.update(dto)
 
     @Operation(summary = "Delete course")
@@ -87,7 +91,7 @@ class CourseController(
     fun deleteCourse(
         @Validated
         @RequestBody
-        dto: CourseDto.Request.Delete,
+        dto: DeleteCourseRequest,
     ): ResponseEntity<HttpStatus> =
         courseService.delete(dto)
 }

@@ -1,6 +1,10 @@
 package com.mrkekovich.courses.controllers
 
-import com.mrkekovich.courses.dto.ModuleDto
+import com.mrkekovich.courses.dto.BaseModuleResponse
+import com.mrkekovich.courses.dto.CreateModuleRequest
+import com.mrkekovich.courses.dto.DeleteModuleRequest
+import com.mrkekovich.courses.dto.GetAllModulesRequest
+import com.mrkekovich.courses.dto.UpdateModuleRequest
 import com.mrkekovich.courses.services.ModuleService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -30,7 +34,7 @@ class ModuleController(
         description = "Get all modules",
         content = [
             Content(
-                schema = Schema(implementation = ModuleDto.Response.Base::class)
+                schema = Schema(implementation = BaseModuleResponse::class)
             )
         ]
     )
@@ -38,8 +42,8 @@ class ModuleController(
     fun getAll(
         @Validated
         @RequestBody
-        dto: ModuleDto.Request.GetAll
-    ): ResponseEntity<List<ModuleDto.Response.Base>> =
+        dto: GetAllModulesRequest
+    ): ResponseEntity<List<BaseModuleResponse>> =
         moduleService.getAll(dto)
 
     @Operation(summary = "Create module")
@@ -48,7 +52,7 @@ class ModuleController(
         description = "Create module",
         content = [
             Content(
-                schema = Schema(implementation = ModuleDto.Response.Base::class)
+                schema = Schema(implementation = BaseModuleResponse::class)
             )
         ]
     )
@@ -56,8 +60,8 @@ class ModuleController(
     fun create(
         @Validated
         @RequestBody
-        dto: ModuleDto.Request.Create
-    ): ResponseEntity<ModuleDto.Response.Base> =
+        dto: CreateModuleRequest
+    ): ResponseEntity<BaseModuleResponse> =
         moduleService.create(dto)
 
     @Operation(summary = "Update module")
@@ -66,7 +70,7 @@ class ModuleController(
         description = "Update module",
         content = [
             Content(
-                schema = Schema(implementation = ModuleDto.Response.Base::class)
+                schema = Schema(implementation = BaseModuleResponse::class)
             )
         ]
     )
@@ -74,8 +78,8 @@ class ModuleController(
     fun update(
         @Validated
         @RequestBody
-        dto: ModuleDto.Request.Update
-    ): ResponseEntity<ModuleDto.Response.Base> =
+        dto: UpdateModuleRequest
+    ): ResponseEntity<BaseModuleResponse> =
         moduleService.update(dto)
 
     @Operation(summary = "Delete module")
@@ -87,7 +91,7 @@ class ModuleController(
     fun delete(
         @Validated
         @RequestBody
-        dto: ModuleDto.Request.Delete
+        dto: DeleteModuleRequest
     ): ResponseEntity<HttpStatus> =
         moduleService.delete(dto)
 }

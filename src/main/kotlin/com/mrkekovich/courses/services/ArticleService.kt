@@ -1,6 +1,10 @@
 package com.mrkekovich.courses.services
 
-import com.mrkekovich.courses.dto.ArticleDto
+import com.mrkekovich.courses.dto.BaseArticleResponse
+import com.mrkekovich.courses.dto.CreateArticleRequest
+import com.mrkekovich.courses.dto.DeleteArticleRequest
+import com.mrkekovich.courses.dto.GetAllArticlesRequest
+import com.mrkekovich.courses.dto.UpdateArticleRequest
 import com.mrkekovich.courses.exceptions.NotFoundException
 import com.mrkekovich.courses.mappers.toBaseResponseDto
 import com.mrkekovich.courses.mappers.toEntity
@@ -16,7 +20,7 @@ class ArticleService(
     private val articleRepository: ArticleRepository,
     private val moduleRepository: ModuleRepository
 ) {
-    fun createArticle(dto: ArticleDto.Request.Create): ResponseEntity<ArticleDto.Response.Base> {
+    fun createArticle(dto: CreateArticleRequest): ResponseEntity<BaseArticleResponse> {
         val entity = articleRepository.save(
             dto.toEntity(moduleRepository)
         )
@@ -29,8 +33,8 @@ class ArticleService(
 
     @Suppress("UnusedParameter")
     fun getArticles(
-        dto: ArticleDto.Request.GetAll
-    ): ResponseEntity<List<ArticleDto.Response.Base>> {
+        dto: GetAllArticlesRequest
+    ): ResponseEntity<List<BaseArticleResponse>> {
         val response = articleRepository.findAll().map {
             it.toBaseResponseDto()
         }
@@ -41,7 +45,7 @@ class ArticleService(
         )
     }
 
-    fun updateArticle(dto: ArticleDto.Request.Update): ResponseEntity<ArticleDto.Response.Base> {
+    fun updateArticle(dto: UpdateArticleRequest): ResponseEntity<BaseArticleResponse> {
         dto.id?.let {
             articleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException("Article with id ${dto.id} not found")
@@ -56,7 +60,7 @@ class ArticleService(
         )
     }
 
-    fun deleteArticle(dto: ArticleDto.Request.Delete): ResponseEntity<HttpStatus> {
+    fun deleteArticle(dto: DeleteArticleRequest): ResponseEntity<HttpStatus> {
         val entity = dto.id?.let {
             articleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException("Article with id ${dto.id} not found")

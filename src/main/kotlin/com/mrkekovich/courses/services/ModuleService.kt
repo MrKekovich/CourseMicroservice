@@ -1,6 +1,10 @@
 package com.mrkekovich.courses.services
 
-import com.mrkekovich.courses.dto.ModuleDto
+import com.mrkekovich.courses.dto.BaseModuleResponse
+import com.mrkekovich.courses.dto.CreateModuleRequest
+import com.mrkekovich.courses.dto.DeleteModuleRequest
+import com.mrkekovich.courses.dto.GetAllModulesRequest
+import com.mrkekovich.courses.dto.UpdateModuleRequest
 import com.mrkekovich.courses.exceptions.NotFoundException
 import com.mrkekovich.courses.mappers.toBaseResponse
 import com.mrkekovich.courses.mappers.toEntity
@@ -16,7 +20,7 @@ class ModuleService(
     private val moduleRepository: ModuleRepository,
     private val courseRepository: CourseRepository,
 ) {
-    fun create(dto: ModuleDto.Request.Create): ResponseEntity<ModuleDto.Response.Base> {
+    fun create(dto: CreateModuleRequest): ResponseEntity<BaseModuleResponse> {
         val entity = moduleRepository.save(
             dto.toEntity(
                 moduleRepository = moduleRepository,
@@ -31,7 +35,7 @@ class ModuleService(
     }
 
     @Suppress("UnusedParameter")
-    fun getAll(dto: ModuleDto.Request.GetAll): ResponseEntity<List<ModuleDto.Response.Base>> {
+    fun getAll(dto: GetAllModulesRequest): ResponseEntity<List<BaseModuleResponse>> {
         val response = moduleRepository.findAll().map {
             it.toBaseResponse()
         }
@@ -42,7 +46,7 @@ class ModuleService(
         )
     }
 
-    fun update(dto: ModuleDto.Request.Update): ResponseEntity<ModuleDto.Response.Base> {
+    fun update(dto: UpdateModuleRequest): ResponseEntity<BaseModuleResponse> {
         dto.id?.let {
             moduleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException("Module with id ${dto.id} not found")
@@ -58,7 +62,7 @@ class ModuleService(
         )
     }
 
-    fun delete(dto: ModuleDto.Request.Delete): ResponseEntity<HttpStatus> {
+    fun delete(dto: DeleteModuleRequest): ResponseEntity<HttpStatus> {
         val entity = dto.id?.let {
             moduleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException("Module with id ${dto.id} not found")

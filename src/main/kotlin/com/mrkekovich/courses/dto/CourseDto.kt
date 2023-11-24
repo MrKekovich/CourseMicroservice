@@ -7,156 +7,137 @@ import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
 
 /**
- * Course DTO:
- * Used to transfer validated
- * data between client and server.
+ * Course Data Transfer Object.
+ * Used to transfer validated data between client and server.
  *
  * @property title Title of a course.
- * * [Length] (min = 1, max = 255).
+ * - [Length]: (max = 255).
  *
  * @property description Description of a course.
- * * [Length] (min = 1, max = 1000).
+ * - [Length]: (max = 1000).
  *
  * @property id ID of a course.
  */
 sealed class CourseDto {
     @get:Schema(description = "Title of a course.")
-    @get:Length(min = 1, max = 255)
+    @get:Length(max = 255)
     open val title: String? = null
 
     @get:Schema(description = "Description of a course.")
-    @get:Length(min = 1, max = 1000)
+    @get:Length(max = 1000)
     open val description: String? = null
 
     @get:Schema(description = "ID of a course.")
     open val id: String? = null
-
-    /**
-     * Response DTO:
-     * Sealed class that contains
-     * DTOs for responses.
-     * @see [CourseDto]
-     */
-    sealed class Response : CourseDto() {
-        /**
-         * Base response:
-         * Represents a response from server
-         * with course data.
-         *
-         * @property title [Response.title]
-         * @property description [Response.description]
-         * @property id [Response.id]
-         */
-        @Schema(
-            name = "Base course response",
-            description = "Represents a response from server with course data."
-        )
-        data class Base(
-            override val title: String?,
-            override val description: String?,
-            override val id: String?,
-        ) : Response()
-    }
-
-    /**
-     * Request:
-     * Sealed class that contains
-     * DTOs for requests.
-     * @see [CourseDto]
-     */
-    sealed class Request : CourseDto() {
-        /**
-         * Create request:
-         * Represents a request to create a new course.
-         *
-         * @property title [Request.title]
-         * * [NotNull]
-         * * [NotBlank]
-         *
-         * @property description [Request.description]
-         * * [NotNull]
-         * * [NotBlank].
-         */
-        @Schema(
-            name = "Create course request",
-            description = "Represents a request to create a new course."
-        )
-        data class Create(
-            @get:NotNull
-            @get:NotBlank
-            override val title: String?,
-
-            @get:NotNull
-            @get:NotBlank
-            override val description: String?,
-        ) : Request()
-
-        /**
-         * Get all request:
-         * Represents a request to get all courses.
-         *
-         * @property limit Limit of courses to get.
-         * -1 means no limit.
-         * * [Min] (-1).
-         */
-        @Schema(
-            name = "Get all courses request",
-            description = "Represents a request to get all courses."
-        )
-        data class GetAll(
-            @get:Schema(description = "Limit of courses to get. -1 means no limit.")
-            @get:NotNull
-            @get:Min(-1)
-            val limit: Int? = -1,
-        )
-
-        /**
-         * Update request:
-         * Represents a request to update a course.
-         *
-         * @property title [Request.title]
-         * * [NotNull],
-         * * [NotBlank].
-         *
-         * @property description [Request.description]
-         * * [NotNull],
-         * * [NotBlank].
-         *
-         * @property id [Request.id]
-         * * [NotNull],
-         * * [NotBlank].
-         */
-        @Schema(
-            name = "Update course request",
-            description = "Represents a request to update a course."
-        )
-        data class Update(
-            @get:NotNull
-            @get:NotBlank
-            override val title: String?,
-
-            @get:NotNull
-            @get:NotBlank
-            override val description: String?,
-
-            @get:NotNull
-            @get:NotBlank
-            override val id: String?,
-        ) : Request()
-
-        /**
-         * Delete request:
-         * Represents a request to delete a course.
-         * @property id [Request.id]
-         */
-        @Schema(
-            name = "Delete course request",
-            description = "Represents a request to delete a course."
-        )
-        data class Delete(
-            @get:NotNull
-            @get:NotBlank
-            override val id: String?,
-        ) : Request()
-    }
 }
+
+/**
+ * Base response DTO represents a response from server with course data.
+ *
+ * @property title [ArticleDto.title]
+ * @property description [ArticleDto.description]
+ * @property id [ArticleDto.id]
+ */
+@Schema(
+    name = "Base course response",
+    description = "Represents a response from server with course data."
+)
+data class BaseCourseResponse(
+    override val title: String?,
+    override val description: String?,
+    override val id: String?,
+) : CourseDto()
+
+/**
+ * Create request represents a client request to create a new course.
+ *
+ * @property title [CourseDto.title]
+ * - [NotNull]
+ * - [NotBlank]
+ *
+ * @property description [CourseDto.description]
+ * - [NotNull]
+ * - [NotBlank]
+ */
+@Schema(
+    name = "Create course request",
+    description = "Represents a client request to create a new course."
+)
+data class CreateCourseRequest(
+    @get:NotNull
+    @get:NotBlank
+    override val title: String?,
+
+    @get:NotNull
+    @get:NotBlank
+    override val description: String?,
+) : CourseDto()
+
+/**
+ * Get all request represents a client request to get all courses.
+ *
+ * @property limit Limit of courses to get (-1 means no limit).
+ * - [Min] (-1).
+ */
+@Schema(
+    name = "Get all courses request",
+    description = "Represents a client request to get all courses."
+)
+data class GetAllCoursesRequest(
+    @get:Schema(description = "Limit of courses to get. -1 means no limit.")
+    @get:NotNull
+    @get:Min(-1)
+    val limit: Int? = -1,
+)
+
+/**
+ * Update DTO represents a client request to update a course.
+ * Contains new values for a course:
+ *
+ * @property title [CourseDto.title]
+ * - [NotNull],
+ * - [NotBlank].
+ *
+ * @property description [CourseDto.description]
+ * - [NotNull],
+ * - [NotBlank].
+ *
+ * @property id ID of a course to update.
+ * - [NotNull],
+ * - [NotBlank].
+ */
+@Schema(
+    name = "Update course request",
+    description = "Represents a client request to update a course."
+)
+data class UpdateCourseRequest(
+    @get:NotNull
+    @get:NotBlank
+    override val title: String?,
+
+    @get:NotNull
+    @get:NotBlank
+    override val description: String?,
+
+    @get:NotNull
+    @get:NotBlank
+    override val id: String?,
+) : CourseDto()
+
+/**
+ * Delete DTO represents a client request to delete a course.
+ *
+ * @property id ID of a course to delete.
+ * Validation:
+ * - [NotNull]
+ * - [NotBlank]
+ */
+@Schema(
+    name = "Delete course request",
+    description = "Represents a client request to delete a course."
+)
+data class DeleteCourseRequest(
+    @get:NotNull
+    @get:NotBlank
+    override val id: String?,
+) : CourseDto()

@@ -1,34 +1,37 @@
 package com.mrkekovich.courses.mappers
 
+import com.mrkekovich.courses.dto.BaseCourseResponse
 import com.mrkekovich.courses.dto.CourseDto
+import com.mrkekovich.courses.dto.CreateCourseRequest
+import com.mrkekovich.courses.dto.UpdateCourseRequest
 import com.mrkekovich.courses.models.CourseEntity
 
 /**
- * Converts [CourseEntity] to [CourseDto.Response.Base].
+ * Converts [CourseEntity] to [BaseCourseResponse].
  *
- * @return [CourseDto.Response.Base] mapped from [CourseEntity].
+ * @return [BaseCourseResponse] mapped from [CourseEntity].
  */
-fun CourseEntity.toBaseResponseDto(): CourseDto.Response.Base = CourseDto.Response.Base(
+fun CourseEntity.toBaseResponseDto(): BaseCourseResponse = BaseCourseResponse(
     title = title,
     description = description,
     id = id
 )
 
 /**
- * Converts [CourseDto.Request.Create] request DTO to entity.
+ * Converts [CreateCourseRequest] request DTO to entity.
  *
- * @return [CourseEntity] mapped from [CourseDto.Request.Create].
+ * @return [CourseEntity] mapped from [CreateCourseRequest].
  */
-fun CourseDto.Request.Create.toEntity(): CourseEntity = dtoToEntity(
+fun CreateCourseRequest.toEntity(): CourseEntity = dtoToEntity(
     this
 )
 
 /**
- * Converts [CourseDto.Request.Update] to entity
+ * Converts [UpdateCourseRequest] to entity
  *
- * @return [CourseEntity] mapped from [CourseDto.Request.Update].
+ * @return [CourseEntity] mapped from [UpdateCourseRequest].
  */
-fun CourseDto.Request.Update.toEntity(): CourseEntity {
+fun UpdateCourseRequest.toEntity(): CourseEntity {
     return dtoToEntity(this)
 }
 

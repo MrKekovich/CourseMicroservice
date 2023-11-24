@@ -1,13 +1,16 @@
 package com.mrkekovich.courses.mappers
 
 import com.mrkekovich.courses.dto.ArticleDto
+import com.mrkekovich.courses.dto.BaseArticleResponse
+import com.mrkekovich.courses.dto.CreateArticleRequest
+import com.mrkekovich.courses.dto.UpdateArticleRequest
 import com.mrkekovich.courses.exceptions.NotFoundException
 import com.mrkekovich.courses.models.ArticleEntity
 import com.mrkekovich.courses.repositories.ModuleRepository
 import kotlin.jvm.optionals.getOrNull
 
-fun ArticleEntity.toBaseResponseDto(): ArticleDto.Response.Base {
-    return ArticleDto.Response.Base(
+fun ArticleEntity.toBaseResponseDto(): BaseArticleResponse {
+    return BaseArticleResponse(
         title = title,
         content = content,
         description = description,
@@ -21,9 +24,9 @@ fun ArticleEntity.toBaseResponseDto(): ArticleDto.Response.Base {
  *
  * Transforms create request DTO to entity
  * @param moduleRepository [ModuleRepository]
- * @return [ArticleEntity] from [ArticleDto.Request.Create]
+ * @return [ArticleEntity] from [CreateArticleRequest]
  */
-fun ArticleDto.Request.Create.toEntity(
+fun CreateArticleRequest.toEntity(
     moduleRepository: ModuleRepository
 ): ArticleEntity = dtoToEntity(
     this,
@@ -35,9 +38,9 @@ fun ArticleDto.Request.Create.toEntity(
  *
  * Transforms update request DTO to entity
  * @param moduleRepository [ModuleRepository]
- * @return [ArticleEntity] from [ArticleDto.Request.Update]
+ * @return [ArticleEntity] from [UpdateArticleRequest]
  */
-fun ArticleDto.Request.Update.toEntity(
+fun UpdateArticleRequest.toEntity(
     moduleRepository: ModuleRepository
 ): ArticleEntity = dtoToEntity(
     this,
