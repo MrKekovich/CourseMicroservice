@@ -32,23 +32,6 @@ sealed class CourseDto {
 }
 
 /**
- * Base response DTO represents a response from server with course data.
- *
- * @property title [ArticleDto.title]
- * @property description [ArticleDto.description]
- * @property id [ArticleDto.id]
- */
-@Schema(
-    name = "Base course response",
-    description = "Represents a response from server with course data."
-)
-data class BaseCourseResponse(
-    override val title: String?,
-    override val description: String?,
-    override val id: String?,
-) : CourseDto()
-
-/**
  * Create request represents a client request to create a new course.
  *
  * @property title [CourseDto.title]
@@ -68,23 +51,6 @@ data class CreateCourseRequest(
     @get:NotNull
     override val description: String?,
 ) : CourseDto()
-
-/**
- * Get all request represents a client request to get all courses.
- *
- * @property limit Limit of courses to get (-1 means no limit).
- * - [Min] (-1).
- */
-@Schema(
-    name = "Get all courses request",
-    description = "Represents a client request to get all courses."
-)
-data class GetAllCoursesRequest(
-    @get:Schema(description = "Limit of courses to get. -1 means no limit.")
-    @get:NotNull
-    @get:Min(-1)
-    val limit: Int? = -1,
-)
 
 /**
  * Update DTO represents a client request to update a course.
@@ -127,5 +93,39 @@ data class UpdateCourseRequest(
 )
 data class DeleteCourseRequest(
     @get:NotBlank
+    override val id: String?,
+) : CourseDto()
+
+/**
+ * Get all request represents a client request to get all courses.
+ *
+ * @property limit Limit of courses to get (-1 means no limit).
+ * - [Min] (-1).
+ */
+@Schema(
+    name = "Get all courses request",
+    description = "Represents a client request to get all courses."
+)
+data class GetAllCoursesRequest(
+    @get:Schema(description = "Limit of courses to get. -1 means no limit.")
+    @get:NotNull
+    @get:Min(-1)
+    val limit: Int? = -1,
+)
+
+/**
+ * Base response DTO represents a response from server with course data.
+ *
+ * @property title [ArticleDto.title]
+ * @property description [ArticleDto.description]
+ * @property id [ArticleDto.id]
+ */
+@Schema(
+    name = "Base course response",
+    description = "Represents a response from server with course data."
+)
+data class BaseCourseResponse(
+    override val title: String?,
+    override val description: String?,
     override val id: String?,
 ) : CourseDto()
