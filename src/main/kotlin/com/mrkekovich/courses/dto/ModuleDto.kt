@@ -55,17 +55,14 @@ sealed class ModuleDto {
  * Contains values to create a new module.
  *
  * @property title [ModuleDto.title]
- * - [NotNull]
  *  - [NotBlank]
  *
  * @property description [ModuleDto.description]
- * - [NotNull]
  * - [NotBlank]
  *
  * @property parentId [ModuleDto.parentId]
  *
  * @property courseId [ModuleDto.courseId]
- * - [NotNull]
  * - [NotBlank]
  *
  * @property position [ModuleDto.position]
@@ -76,17 +73,14 @@ sealed class ModuleDto {
 @Schema(name = "Create module request")
 data class CreateModuleRequest(
     @get:NotBlank
-    @get:NotNull
     override val title: String?,
 
     @get:NotBlank
-    @get:NotNull
     override val description: String?,
 
     override val parentId: String? = null,
 
     @get:NotBlank
-    @get:NotNull
     override val courseId: String?,
 
     @get:NotNull
@@ -98,11 +92,9 @@ data class CreateModuleRequest(
  * Contains new values for the module to update.
  *
  * @property title [ModuleDto.title]
- * - [NotNull]
  * - [NotBlank]
  *
  * @property description [ModuleDto.description]
- * - [NotNull]
  * - [NotBlank]
  *
  * @property position [ModuleDto.position]
@@ -111,21 +103,17 @@ data class CreateModuleRequest(
  * @property parentId [ModuleDto.parentId]
  *
  * @property courseId [ModuleDto.courseId]
- * - [NotNull]
  * - [NotBlank]
  *
  * @property id ID of the module to update.
- * - [NotNull]
  * - [NotBlank]
  */
 @Schema(name = "Update module request")
 data class UpdateModuleRequest(
     @get:NotBlank
-    @get:NotNull
     override val title: String?,
 
     @get:NotBlank
-    @get:NotNull
     override val description: String?,
 
     @get:NotNull
@@ -134,11 +122,9 @@ data class UpdateModuleRequest(
     override val parentId: String? = null,
 
     @get:NotBlank
-    @get:NotNull
     override val courseId: String?,
 
     @get:NotBlank
-    @get:NotNull
     override val id: String?
 ) : ModuleDto()
 
@@ -146,13 +132,11 @@ data class UpdateModuleRequest(
  * Delete module DTO represents a client request to delete a module.
  *
  * @property id ID of the module to delete.
- * - [NotNull]
  * - [NotBlank]
  */
 @Schema(name = "Delete module request")
 data class DeleteModuleRequest(
     @get:NotBlank
-    @get:NotNull
     override val id: String?
 ) : ModuleDto()
 

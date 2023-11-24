@@ -55,7 +55,6 @@ sealed class ArticleDto {
  *
  * @property title [ArticleDto.title]
  * Validation:
- * - [NotNull],
  * - [NotBlank]
  *
  * @property description [ArticleDto.description]
@@ -74,7 +73,6 @@ sealed class ArticleDto {
  */
 @Schema(name = "Create article request")
 data class CreateArticleRequest(
-    @get:NotNull
     @get:NotBlank
     override val title: String?,
 
@@ -94,7 +92,6 @@ data class CreateArticleRequest(
  *
  * @property title [ArticleDto.title].
  * Validation:
- * - [NotNull]
  * - [NotBlank]
  *
  * @property description [ArticleDto.description]
@@ -111,12 +108,10 @@ data class CreateArticleRequest(
  *
  * @property id [ArticleDto.id] of article to update.
  * Validation:
- * - [NotNull]
  * - [NotBlank]
  */
 @Schema(name = "Update article request")
 data class UpdateArticleRequest(
-    @get:NotNull
     @get:NotBlank
     override val title: String?,
 
@@ -129,7 +124,6 @@ data class UpdateArticleRequest(
     @get:NotNull
     override val moduleId: String? = null,
 
-    @get:NotNull
     @get:NotBlank
     override val id: String?,
 ) : ArticleDto()
@@ -139,11 +133,10 @@ data class UpdateArticleRequest(
  *
  * @property id [ArticleDto.id] of article to delete.
  * Validation:
- * - [NotNull]
+ * - [NotBlank]
  */
 @Schema(name = "Delete article request")
 data class DeleteArticleRequest(
-    @get:NotNull
     @get:NotBlank
     override val id: String?,
 ) : ArticleDto()

@@ -52,11 +52,9 @@ data class BaseCourseResponse(
  * Create request represents a client request to create a new course.
  *
  * @property title [CourseDto.title]
- * - [NotNull]
  * - [NotBlank]
  *
  * @property description [CourseDto.description]
- * - [NotNull]
  * - [NotBlank]
  */
 @Schema(
@@ -64,11 +62,9 @@ data class BaseCourseResponse(
     description = "Represents a client request to create a new course."
 )
 data class CreateCourseRequest(
-    @get:NotNull
     @get:NotBlank
     override val title: String?,
 
-    @get:NotNull
     @get:NotBlank
     override val description: String?,
 ) : CourseDto()
@@ -95,31 +91,25 @@ data class GetAllCoursesRequest(
  * Contains new values for a course:
  *
  * @property title [CourseDto.title]
- * - [NotNull],
- * - [NotBlank].
+ * - [NotBlank]
  *
  * @property description [CourseDto.description]
- * - [NotNull],
- * - [NotBlank].
+ * - [NotBlank]
  *
  * @property id ID of a course to update.
- * - [NotNull],
- * - [NotBlank].
+ * - [NotBlank]
  */
 @Schema(
     name = "Update course request",
     description = "Represents a client request to update a course."
 )
 data class UpdateCourseRequest(
-    @get:NotNull
     @get:NotBlank
     override val title: String?,
 
-    @get:NotNull
     @get:NotBlank
     override val description: String?,
 
-    @get:NotNull
     @get:NotBlank
     override val id: String?,
 ) : CourseDto()
@@ -129,7 +119,6 @@ data class UpdateCourseRequest(
  *
  * @property id ID of a course to delete.
  * Validation:
- * - [NotNull]
  * - [NotBlank]
  */
 @Schema(
@@ -137,7 +126,6 @@ data class UpdateCourseRequest(
     description = "Represents a client request to delete a course."
 )
 data class DeleteCourseRequest(
-    @get:NotNull
     @get:NotBlank
     override val id: String?,
 ) : CourseDto()
