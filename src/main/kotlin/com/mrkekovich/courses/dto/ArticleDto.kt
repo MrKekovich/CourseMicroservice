@@ -153,10 +153,10 @@ data class DeleteArticleRequest(
  */
 @Schema(name = "Get all articles request")
 data class GetAllArticlesRequest(
-    @Schema(description = "Article records limit. -1 means no limit.")
+    @get:Schema(description = "Article records limit. -1 means no limit.")
     @get:NotNull
     @get:Min(-1)
-    val limit: Int = -1
+    val limit: Int? = -1
 )
 
 /**
