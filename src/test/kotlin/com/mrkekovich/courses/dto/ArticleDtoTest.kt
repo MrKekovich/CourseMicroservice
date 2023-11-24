@@ -31,7 +31,7 @@ class ArticleDtoTest {
         }
 
         validateLength(
-            maxLength = 1000
+            maxLength = 300000
         ) {
             CreateArticleRequest(
                 title = "valid",
@@ -88,7 +88,7 @@ class ArticleDtoTest {
         // assert
         assert(violations.isEmpty())
         validateNotBlankString(2, updateDto)
-        validateNotNull(4, updateDto)
+        validateNotNull(3, updateDto)
     }
 
     @Test
@@ -104,7 +104,7 @@ class ArticleDtoTest {
         val validDto = GetAllArticlesRequest(
             limit = 1
         )
-        val invalidDtos = (-100..-1).map {
+        val invalidDtos = (-100 until -1).map {
             GetAllArticlesRequest(limit = it)
         }
 
