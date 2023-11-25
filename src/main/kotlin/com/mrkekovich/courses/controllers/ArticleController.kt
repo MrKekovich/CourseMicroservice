@@ -44,7 +44,7 @@ class ArticleController(
         @RequestBody
         dto: GetAllArticlesRequest
     ): ResponseEntity<List<BaseArticleResponse>> =
-        articleService.getArticles(dto)
+        articleService.getAll(dto)
 
     @Operation(summary = "Create new article")
     @ApiResponse(
@@ -62,7 +62,7 @@ class ArticleController(
         @RequestBody
         dto: CreateArticleRequest
     ): ResponseEntity<BaseArticleResponse> =
-        articleService.createArticle(dto)
+        articleService.create(dto)
 
     @Operation(summary = "Update article")
     @ApiResponse(
@@ -80,7 +80,7 @@ class ArticleController(
         @RequestBody
         dto: UpdateArticleRequest
     ): ResponseEntity<BaseArticleResponse> =
-        articleService.updateArticle(dto)
+        articleService.update(dto)
 
     @Operation(summary = "Delete article")
     @ApiResponse(
@@ -98,5 +98,5 @@ class ArticleController(
         @RequestBody
         dto: DeleteArticleRequest
     ): ResponseEntity<HttpStatus> =
-        articleService.deleteArticle(dto)
+        articleService.delete(dto)
 }

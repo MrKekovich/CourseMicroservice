@@ -20,7 +20,7 @@ class ArticleService(
     private val articleRepository: ArticleRepository,
     private val moduleRepository: ModuleRepository
 ) {
-    fun createArticle(dto: CreateArticleRequest): ResponseEntity<BaseArticleResponse> {
+    fun create(dto: CreateArticleRequest): ResponseEntity<BaseArticleResponse> {
         val entity = articleRepository.save(
             dto.toEntity(moduleRepository)
         )
@@ -32,7 +32,7 @@ class ArticleService(
     }
 
     @Suppress("UnusedParameter")
-    fun getArticles(
+    fun getAll(
         dto: GetAllArticlesRequest
     ): ResponseEntity<List<BaseArticleResponse>> {
         val response = articleRepository.findAll().map {
@@ -45,7 +45,7 @@ class ArticleService(
         )
     }
 
-    fun updateArticle(dto: UpdateArticleRequest): ResponseEntity<BaseArticleResponse> {
+    fun update(dto: UpdateArticleRequest): ResponseEntity<BaseArticleResponse> {
         dto.id?.let {
             articleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException("Article with id ${dto.id} not found")
@@ -60,7 +60,7 @@ class ArticleService(
         )
     }
 
-    fun deleteArticle(dto: DeleteArticleRequest): ResponseEntity<HttpStatus> {
+    fun delete(dto: DeleteArticleRequest): ResponseEntity<HttpStatus> {
         val entity = dto.id?.let {
             articleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException("Article with id ${dto.id} not found")
