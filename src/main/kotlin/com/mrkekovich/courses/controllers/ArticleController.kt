@@ -3,7 +3,6 @@ package com.mrkekovich.courses.controllers
 import com.mrkekovich.courses.dto.BaseArticleResponse
 import com.mrkekovich.courses.dto.CreateArticleRequest
 import com.mrkekovich.courses.dto.DeleteArticleRequest
-import com.mrkekovich.courses.dto.GetAllArticlesRequest
 import com.mrkekovich.courses.dto.UpdateArticleRequest
 import com.mrkekovich.courses.services.ArticleService
 import io.swagger.v3.oas.annotations.Operation
@@ -40,11 +39,11 @@ class ArticleController(
     )
     @GetMapping
     fun getArticles(
-        @Validated
-        @RequestBody
-        dto: GetAllArticlesRequest
+//        @Validated
+//        @RequestBody
+//        dto: GetAllArticlesRequest TODO: add pagination
     ): ResponseEntity<List<BaseArticleResponse>> =
-        articleService.getAll(dto)
+        articleService.getAll(/*dto*/)
 
     @Operation(summary = "Create new article")
     @ApiResponse(

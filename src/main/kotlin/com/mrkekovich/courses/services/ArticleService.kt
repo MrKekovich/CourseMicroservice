@@ -3,7 +3,6 @@ package com.mrkekovich.courses.services
 import com.mrkekovich.courses.dto.BaseArticleResponse
 import com.mrkekovich.courses.dto.CreateArticleRequest
 import com.mrkekovich.courses.dto.DeleteArticleRequest
-import com.mrkekovich.courses.dto.GetAllArticlesRequest
 import com.mrkekovich.courses.dto.UpdateArticleRequest
 import com.mrkekovich.courses.exceptions.NotFoundException
 import com.mrkekovich.courses.mappers.toBaseResponseDto
@@ -33,7 +32,7 @@ class ArticleService(
 
     @Suppress("UnusedParameter")
     fun getAll(
-        dto: GetAllArticlesRequest
+//        dto: GetAllArticlesRequest TODO: add pagination
     ): ResponseEntity<List<BaseArticleResponse>> {
         val response = articleRepository.findAll().map {
             it.toBaseResponseDto()
