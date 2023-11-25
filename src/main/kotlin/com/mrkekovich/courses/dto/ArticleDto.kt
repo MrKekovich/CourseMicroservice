@@ -76,7 +76,7 @@ data class CreateArticleRequest(
 
     override val content: String?,
 
-    @get:NotNull
+    @get:NotBlank
     override val moduleId: String?,
 ) : ArticleDto()
 
@@ -109,7 +109,7 @@ data class UpdateArticleRequest(
 
     override val content: String?,
 
-    @get:NotNull
+    @get:NotBlank
     override val moduleId: String? = null,
 
     @get:NotBlank

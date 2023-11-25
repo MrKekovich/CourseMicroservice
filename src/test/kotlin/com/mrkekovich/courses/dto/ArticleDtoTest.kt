@@ -62,8 +62,8 @@ class ArticleDtoTest {
 
         // assert
         assert(violations.isEmpty())
-        validateNotBlankString(1, createDto)
-        validateNotNull(4, createDto)
+        validateNotBlankString(2, createDto)
+        validateNotNull(2, createDto)
     }
 
     @Test
@@ -87,7 +87,7 @@ class ArticleDtoTest {
 
         // assert
         assert(violations.isEmpty())
-        validateNotBlankString(2, updateDto)
+        validateNotBlankString(3, updateDto)
         validateNotNull(3, updateDto)
     }
 
