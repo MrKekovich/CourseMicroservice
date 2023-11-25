@@ -44,6 +44,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
+    testImplementation("io.mockk:mockk:1.13.8")
 }
 
 dependencyManagement {
