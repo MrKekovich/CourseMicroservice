@@ -18,22 +18,31 @@ import kotlin.jvm.optionals.getOrNull
 
 class CourseServiceTest {
     private val courseRepository: CourseRepository = mockk()
+
     private val courseService = CourseService(courseRepository)
+
+    private val course = CourseEntity(
+        title = "title",
+        description = "description",
+        id = "id"
+    )
 
     @Test
     fun `should return correct course on create`() {
         // arrange
-        val record = CourseEntity("title", "description", "id")
-        val request = CreateCourseRequest(record.title, record.description)
+        val request = CreateCourseRequest(
+            title = course.title,
+            description = course.description
+        )
         val expected = ResponseEntity(
-            record.toBaseResponseDto(),
+            course.toBaseResponseDto(),
             HttpStatus.CREATED
         )
-
-        // act
         every {
             courseRepository.save(any())
-        } returns record
+        } returns course
+
+        // act
         val actual = courseService.create(request)
 
         // assert
@@ -44,73 +53,81 @@ class CourseServiceTest {
     @Test
     fun `should get all courses`() {
         // arrange
-        val records = listOf(
-            CourseEntity("title", "description"),
-            CourseEntity("another title", "another description")
-        )
+        val records = listOf(course, course)
         val expected = ResponseEntity(
             records.map { it.toBaseResponseDto() },
             HttpStatus.OK
         )
 
-        // act
         every {
             courseRepository.findAll()
         } returns records
+
+        // act
         val actual = courseService.getAll()
 
         // assert
-        verify(exactly = 1) { courseRepository.findAll() }
         assert(actual == expected)
+        verify(exactly = 1) { courseRepository.findAll() }
     }
 
     @Test
-    fun `should return update course`() {
+    fun `should return updated course`() {
         // arrange
-        val record = CourseEntity("title", "description", "id")
-        val request = UpdateCourseRequest(record.title, record.description, record.id)
+        val request = UpdateCourseRequest(
+            title = course.title,
+            description = course.description,
+            id = course.id
+        )
         val expected = ResponseEntity(
-            record.toBaseResponseDto(),
+            course.toBaseResponseDto(),
             HttpStatus.OK
         )
 
-        // act
-        record.id?.let {
+        request.id?.let {
             every {
                 courseRepository.findById(it).getOrNull()
-            } returns record
+            } returns course
         }
         every {
             courseRepository.save(any())
-        } returns record
+        } returns course
+
+        // act
         val actual = courseService.update(request)
 
         // assert
+        assert(actual == expected)
         verify(exactly = 1) { courseRepository.save(any()) }
         verify(exactly = 1) { courseRepository.findById(any()) }
-        assert(actual == expected)
     }
 
     @Test
     fun `should throw exception if course not found on update`() {
         // arrange
-        val record = CourseEntity("title", "description", "id")
-        val request = UpdateCourseRequest(record.title, record.description, record.id)
+        val request = UpdateCourseRequest(
+            title = course.title,
+            description = course.description,
+            id = course.id
+        )
+        val expectedMessage = "Course with id ${request.id} not found"
 
-        // act
-        record.id?.let {
+        request.id?.let {
             every {
                 courseRepository.findById(it).getOrNull()
             } returns null
         }
         every {
             courseRepository.save(any())
-        } returns record
+        } returns course
+
+        // act
+        val message = assertThrows<NotFoundException> {
+            courseService.update(request)
+        }.message
 
         // assert
-        assertThrows<NotFoundException> {
-            courseService.update(request)
-        }
+        assert(message == expectedMessage)
         verify(exactly = 1) { courseRepository.findById(any()) }
         verify(exactly = 0) { courseRepository.save(any()) }
     }
@@ -118,35 +135,34 @@ class CourseServiceTest {
     @Test
     fun `should delete course`() {
         // arrange
-        val record = CourseEntity("title", "description", "id")
-        val request = DeleteCourseRequest(record.id)
+        val request = DeleteCourseRequest(course.id)
         val expected = ResponseEntity<HttpStatus>(HttpStatus.OK)
 
-        // act
-        record.id?.let {
+        request.id?.let {
             every {
                 courseRepository.findById(it).getOrNull()
-            } returns record
+            } returns course
         }
         every {
             courseRepository.delete(any())
         } returns Unit
+
+        // act
         val actual = courseService.delete(request)
 
         // assert
+        assert(actual == expected)
         verify(exactly = 1) { courseRepository.findById(any()) }
         verify(exactly = 1) { courseRepository.delete(any()) }
-        assert(actual == expected)
     }
 
     @Test
     fun `should throw exception if course not found on delete`() {
         // arrange
-        val record = CourseEntity("title", "description", "id")
-        val request = DeleteCourseRequest(record.id)
+        val request = DeleteCourseRequest(course.id)
+        val expectedMessage = "Course with id ${request.id} not found"
 
-        // act
-        record.id?.let {
+        request.id?.let {
             every {
                 courseRepository.findById(it).getOrNull()
             } returns null
@@ -155,10 +171,13 @@ class CourseServiceTest {
             courseRepository.delete(any())
         } returns Unit
 
-        // assert
-        assertThrows<NotFoundException> {
+        // act
+        val message = assertThrows<NotFoundException> {
             courseService.delete(request)
-        }
+        }.message
+
+        // assert
+        assert(message == expectedMessage)
         verify(exactly = 1) { courseRepository.findById(any()) }
         verify(exactly = 0) { courseRepository.delete(any()) }
     }
