@@ -45,7 +45,7 @@ class CourseService(
     ): ResponseEntity<BaseCourseResponse> {
         dto.id?.let { id ->
             courseRepository.findById(id).getOrNull()
-        } ?: throw NotFoundException("Course ${dto.id} not found")
+        } ?: throw NotFoundException("Course with id ${dto.id} not found")
 
         val updatedEntity = courseRepository.save(dto.toEntity())
         return ResponseEntity(
@@ -59,7 +59,7 @@ class CourseService(
     ): ResponseEntity<HttpStatus> {
         val entity = dto.id?.let {
             courseRepository.findById(it).getOrNull()
-        } ?: throw NotFoundException("Course ${dto.id} not found")
+        } ?: throw NotFoundException("Course with id ${dto.id} not found")
 
         courseRepository.delete(entity)
 
