@@ -3,7 +3,6 @@ package com.mrkekovich.courses.controllers
 import com.mrkekovich.courses.dto.BaseCourseResponse
 import com.mrkekovich.courses.dto.CreateCourseRequest
 import com.mrkekovich.courses.dto.DeleteCourseRequest
-import com.mrkekovich.courses.dto.GetAllCoursesRequest
 import com.mrkekovich.courses.dto.UpdateCourseRequest
 import com.mrkekovich.courses.services.CourseService
 import io.swagger.v3.oas.annotations.Operation
@@ -40,11 +39,11 @@ class CourseController(
     )
     @GetMapping
     fun getCourses(
-        @Validated
-        @RequestBody
-        dto: GetAllCoursesRequest,
+//        @Validated
+//        @RequestBody
+//        dto: GetAllCoursesRequest, TODO: Add pagination
     ): ResponseEntity<List<BaseCourseResponse>> =
-        courseService.getAll(dto)
+        courseService.getAll(/*dto*/)
 
     @Operation(summary = "Create course")
     @ApiResponse(

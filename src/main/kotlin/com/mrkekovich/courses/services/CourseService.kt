@@ -3,7 +3,6 @@ package com.mrkekovich.courses.services
 import com.mrkekovich.courses.dto.BaseCourseResponse
 import com.mrkekovich.courses.dto.CreateCourseRequest
 import com.mrkekovich.courses.dto.DeleteCourseRequest
-import com.mrkekovich.courses.dto.GetAllCoursesRequest
 import com.mrkekovich.courses.dto.UpdateCourseRequest
 import com.mrkekovich.courses.exceptions.NotFoundException
 import com.mrkekovich.courses.mappers.toBaseResponseDto
@@ -20,7 +19,7 @@ class CourseService(
 ) {
     @Suppress("UnusedParameter")
     fun getAll(
-        dto: GetAllCoursesRequest,
+//        dto: GetAllCoursesRequest, TODO: Add pagination
     ): ResponseEntity<List<BaseCourseResponse>> {
         val response = courseRepository.findAll().map {
             it.toBaseResponseDto()
@@ -35,7 +34,10 @@ class CourseService(
         val entity = courseRepository.save(
             dto.toEntity()
         )
-        return ResponseEntity.ok(entity.toBaseResponseDto())
+        return ResponseEntity(
+            entity.toBaseResponseDto(),
+            HttpStatus.CREATED,
+        )
     }
 
     fun update(
