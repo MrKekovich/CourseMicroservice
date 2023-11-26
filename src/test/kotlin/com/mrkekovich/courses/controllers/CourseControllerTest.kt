@@ -28,6 +28,8 @@ internal class CourseControllerTest @Autowired constructor(
     val mockMvc: MockMvc,
     val objectMapper: ObjectMapper
 ) {
+    private val baseUrl = "/api/v1/courses"
+
     private val course = CourseEntity(
         title = "title",
         description = "description",
@@ -41,7 +43,7 @@ internal class CourseControllerTest @Autowired constructor(
     @Test
     fun `should create and return course`() {
         // act
-        mockMvc.post("/api/v1/courses") {
+        mockMvc.post(baseUrl) {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(request)
         }
@@ -61,14 +63,14 @@ internal class CourseControllerTest @Autowired constructor(
         val expected = listOf(request, request)
 
         expected.forEach {
-            mockMvc.post("/api/v1/courses") {
+            mockMvc.post(baseUrl) {
                 contentType = MediaType.APPLICATION_JSON
                 content = objectMapper.writeValueAsString(it)
             }
         }
 
         // act
-        mockMvc.get("/api/v1/courses") {
+        mockMvc.get(baseUrl) {
             contentType = MediaType.APPLICATION_JSON
         }
             .andDo { print() }
@@ -87,7 +89,7 @@ internal class CourseControllerTest @Autowired constructor(
     @Test
     fun `should update course`() {
         // arrange
-        val createResult = mockMvc.post("/api/v1/courses") {
+        val createResult = mockMvc.post(baseUrl) {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(request)
         }.andReturn()
@@ -101,7 +103,7 @@ internal class CourseControllerTest @Autowired constructor(
         )
 
         // act
-        mockMvc.patch("/api/v1/courses", updateRequest.id) {
+        mockMvc.patch(baseUrl, updateRequest.id) {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(updateRequest)
         }
@@ -115,7 +117,7 @@ internal class CourseControllerTest @Autowired constructor(
                 jsonPath("$.id") { value(updateRequest.id) }
             }
 
-        mockMvc.get("/api/v1/courses") {
+        mockMvc.get(baseUrl) {
             contentType = MediaType.APPLICATION_JSON
         }
             .andExpect {
@@ -129,7 +131,7 @@ internal class CourseControllerTest @Autowired constructor(
     @Test
     fun `should delete course`() {
         // arrange
-        val createResult = mockMvc.post("/api/v1/courses") {
+        val createResult = mockMvc.post(baseUrl) {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(request)
         }.andReturn()
@@ -141,7 +143,7 @@ internal class CourseControllerTest @Autowired constructor(
         )
 
         // act
-        mockMvc.delete("/api/v1/courses", createdCourseId) {
+        mockMvc.delete(baseUrl, createdCourseId) {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(request)
         }
@@ -151,7 +153,7 @@ internal class CourseControllerTest @Autowired constructor(
                 status { isOk() }
             }
 
-        mockMvc.get("/api/v1/courses") {
+        mockMvc.get(baseUrl) {
             contentType = MediaType.APPLICATION_JSON
         }
             .andExpect {
