@@ -20,15 +20,15 @@ class ModuleEntity(
     @Column(name = "description")
     val description: String?,
 
+    @Column(name = "position")
+    val position: Int? = 0,
+
     @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "course_id")
     val course: CourseEntity? = null,
 
     @ManyToOne(cascade = [CascadeType.ALL])
     val parentModule: ModuleEntity? = null,
-
-    @Column(name = "position")
-    val position: Int? = 0,
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

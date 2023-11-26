@@ -78,13 +78,13 @@ data class CreateModuleRequest(
     @get:NotBlank
     override val description: String?,
 
+    @get:NotNull
+    override val position: Int? = 0,
+
     override val parentId: String? = null,
 
     @get:NotBlank
     override val courseId: String?,
-
-    @get:NotNull
-    override val position: Int? = 0,
 ) : ModuleDto()
 
 /**
