@@ -3,10 +3,9 @@ package com.mrkekovich.courses.services
 import com.mrkekovich.courses.dto.BaseModuleResponse
 import com.mrkekovich.courses.dto.CreateModuleRequest
 import com.mrkekovich.courses.dto.DeleteModuleRequest
-import com.mrkekovich.courses.dto.GetAllModulesRequest
 import com.mrkekovich.courses.dto.UpdateModuleRequest
 import com.mrkekovich.courses.exceptions.NotFoundException
-import com.mrkekovich.courses.mappers.toBaseResponse
+import com.mrkekovich.courses.mappers.toBaseResponseDto
 import com.mrkekovich.courses.mappers.toEntity
 import com.mrkekovich.courses.repositories.CourseRepository
 import com.mrkekovich.courses.repositories.ModuleRepository
@@ -29,15 +28,17 @@ class ModuleService(
         )
 
         return ResponseEntity(
-            entity.toBaseResponse(),
-            HttpStatus.OK
+            entity.toBaseResponseDto(),
+            HttpStatus.CREATED
         )
     }
 
     @Suppress("UnusedParameter")
-    fun getAll(dto: GetAllModulesRequest): ResponseEntity<List<BaseModuleResponse>> {
+    fun getAll(
+//        dto: GetAllModulesRequest TODO: add pagination
+    ): ResponseEntity<List<BaseModuleResponse>> {
         val response = moduleRepository.findAll().map {
-            it.toBaseResponse()
+            it.toBaseResponseDto()
         }
 
         return ResponseEntity(
@@ -51,13 +52,15 @@ class ModuleService(
             moduleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException("Module with id ${dto.id} not found")
 
-        val updatedEntity = dto.toEntity(
-            moduleRepository = moduleRepository,
-            courseRepository = courseRepository,
+        val updatedEntity = moduleRepository.save(
+            dto.toEntity(
+                moduleRepository = moduleRepository,
+                courseRepository = courseRepository,
+            )
         )
 
         return ResponseEntity(
-            updatedEntity.toBaseResponse(),
+            updatedEntity.toBaseResponseDto(),
             HttpStatus.OK
         )
     }

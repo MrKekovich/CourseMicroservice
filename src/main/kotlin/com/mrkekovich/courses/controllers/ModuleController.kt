@@ -3,7 +3,6 @@ package com.mrkekovich.courses.controllers
 import com.mrkekovich.courses.dto.BaseModuleResponse
 import com.mrkekovich.courses.dto.CreateModuleRequest
 import com.mrkekovich.courses.dto.DeleteModuleRequest
-import com.mrkekovich.courses.dto.GetAllModulesRequest
 import com.mrkekovich.courses.dto.UpdateModuleRequest
 import com.mrkekovich.courses.services.ModuleService
 import io.swagger.v3.oas.annotations.Operation
@@ -40,11 +39,11 @@ class ModuleController(
     )
     @GetMapping
     fun getAll(
-        @Validated
-        @RequestBody
-        dto: GetAllModulesRequest
+//        @Validated
+//        @RequestBody
+//        dto: GetAllModulesRequest TODO: add pagination
     ): ResponseEntity<List<BaseModuleResponse>> =
-        moduleService.getAll(dto)
+        moduleService.getAll(/*dto*/)
 
     @Operation(summary = "Create module")
     @ApiResponse(

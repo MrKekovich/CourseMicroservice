@@ -10,7 +10,7 @@ import com.mrkekovich.courses.repositories.CourseRepository
 import com.mrkekovich.courses.repositories.ModuleRepository
 import kotlin.jvm.optionals.getOrNull
 
-fun ModuleEntity.toBaseResponse(): BaseModuleResponse {
+fun ModuleEntity.toBaseResponseDto(): BaseModuleResponse {
     return BaseModuleResponse(
         id = id,
         title = title,
@@ -45,13 +45,20 @@ private fun dtoToEntity(
     courseRepository: CourseRepository
 ): ModuleEntity = ModuleEntity(
     title = dto.title,
+
     description = dto.description,
-    parentModule = dto.parentId?.let {
-        moduleRepository.findById(it).getOrNull()
-    },
+
     course = dto.courseId?.let {
         courseRepository.findById(it).getOrNull()
     } ?: throw NotFoundException("Course with id ${dto.courseId} not found"),
+
+    parentModule = dto.parentId?.let {
+        // We don't need to check if parent exists, if it's null
+        moduleRepository.findById(it).getOrNull()
+            ?: throw NotFoundException("Module with id ${dto.parentId} not found")
+    },
+
     position = dto.position,
+
     id = dto.id
 )
