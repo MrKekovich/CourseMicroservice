@@ -62,10 +62,10 @@ internal class CourseControllerTest @Autowired constructor(
         // arrange
         val expected = listOf(request, request)
 
-        expected.forEach {
+        expected.forEach { createCourseRequest ->
             mockMvc.post(baseUrl) {
                 contentType = MediaType.APPLICATION_JSON
-                content = objectMapper.writeValueAsString(it)
+                content = objectMapper.writeValueAsString(createCourseRequest)
             }
         }
 
@@ -79,10 +79,10 @@ internal class CourseControllerTest @Autowired constructor(
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
                 jsonPath("$.length()") { value(expected.size) }
-                jsonPath("$[0].title") { value(expected[0].title) }
-                jsonPath("$[0].description") { value(expected[0].description) }
-                jsonPath("$[1].title") { value(expected[1].title) }
-                jsonPath("$[1].description") { value(expected[1].description) }
+                expected.forEachIndexed { index, course ->
+                    jsonPath("$[$index].title") { value(course.title) }
+                    jsonPath("$[$index].description") { value(course.description) }
+                }
             }
     }
 
