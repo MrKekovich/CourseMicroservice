@@ -18,7 +18,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import kotlin.jvm.optionals.getOrNull
 
-class ModuleServiceTest {
+internal class ModuleServiceTest {
     private val moduleRepository: ModuleRepository = mockk()
     private val courseRepository: CourseRepository = mockk()
 

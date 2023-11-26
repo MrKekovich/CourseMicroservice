@@ -2,7 +2,7 @@ package com.mrkekovich.courses.dto
 
 import org.junit.jupiter.api.Test
 
-class CourseDtoTest {
+internal class CourseDtoTest {
     @Test
     fun `should validate length`() {
         // Length validation is defined in Parent class,
