@@ -51,7 +51,7 @@ internal class ArticleServiceTest {
             title = article.title,
             description = article.description,
             content = article.content,
-            moduleId = article.module.id
+            moduleId = article.module?.id
         )
         val expected = ResponseEntity(
             article.toBaseResponseDto(),
@@ -104,7 +104,7 @@ internal class ArticleServiceTest {
             title = article.title,
             description = article.description,
             content = article.content,
-            moduleId = article.module.id,
+            moduleId = article.module?.id,
             id = article.id
         )
         val expected = ResponseEntity(
@@ -142,7 +142,7 @@ internal class ArticleServiceTest {
             title = article.title,
             description = article.description,
             content = article.content,
-            moduleId = article.module.id,
+            moduleId = article.module?.id,
             id = article.id
         )
         val expectedMessage = "Article with id \"${request.id}\" not found"
@@ -180,7 +180,7 @@ internal class ArticleServiceTest {
             title = article.title,
             description = article.description,
             content = article.content,
-            moduleId = article.module.id,
+            moduleId = article.module?.id,
             id = article.id
         )
         val expectedMessage = "Module with id \"${request.moduleId}\" not found"

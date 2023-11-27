@@ -14,7 +14,7 @@ fun ArticleEntity.toBaseResponseDto(): BaseArticleResponse {
         title = title,
         content = content,
         description = description,
-        moduleId = module.id,
+        moduleId = module?.id,
         id = id,
     )
 }

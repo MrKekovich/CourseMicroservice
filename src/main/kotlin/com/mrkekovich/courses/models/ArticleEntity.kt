@@ -23,7 +23,7 @@ class ArticleEntity(
 
     @ManyToOne
     @JoinColumn(name = "module_id")
-    val module: ModuleEntity,
+    val module: ModuleEntity?,
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
