@@ -5,6 +5,7 @@ import com.mrkekovich.courses.dto.CreateCourseRequest
 import com.mrkekovich.courses.dto.DeleteCourseRequest
 import com.mrkekovich.courses.dto.UpdateCourseRequest
 import com.mrkekovich.courses.models.CourseEntity
+import com.mrkekovich.courses.repositories.CourseRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -26,14 +27,14 @@ import org.springframework.test.web.servlet.post
 @TestPropertySource(locations = ["classpath:application-test.properties"])
 internal class CourseControllerTest @Autowired constructor(
     val mockMvc: MockMvc,
-    val objectMapper: ObjectMapper
+    val objectMapper: ObjectMapper,
+    val courseRepository: CourseRepository,
 ) {
     private val baseUrl = "/api/v1/courses"
 
     private val course = CourseEntity(
         title = "title",
         description = "description",
-        id = "id"
     )
     private val request = CreateCourseRequest(
         title = course.title,
@@ -60,14 +61,8 @@ internal class CourseControllerTest @Autowired constructor(
     @Test
     fun `should return all courses`() {
         // arrange
-        val expected = listOf(request, request)
-
-        expected.forEach { createCourseRequest ->
-            mockMvc.post(baseUrl) {
-                contentType = MediaType.APPLICATION_JSON
-                content = objectMapper.writeValueAsString(createCourseRequest)
-            }
-        }
+        val expected = listOf(course, course)
+        courseRepository.saveAll(expected)
 
         // act
         mockMvc.get(baseUrl) {
@@ -89,17 +84,12 @@ internal class CourseControllerTest @Autowired constructor(
     @Test
     fun `should update course`() {
         // arrange
-        val createResult = mockMvc.post(baseUrl) {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(request)
-        }.andReturn()
-
-        val createdCourseId = objectMapper.readTree(createResult.response.contentAsString).get("id").asText()
+        val course = courseRepository.save(course)
 
         val updateRequest = UpdateCourseRequest(
             title = "new title",
             description = "new description",
-            id = createdCourseId
+            id = course.id
         )
 
         // act
@@ -131,19 +121,12 @@ internal class CourseControllerTest @Autowired constructor(
     @Test
     fun `should delete course`() {
         // arrange
-        val createResult = mockMvc.post(baseUrl) {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(request)
-        }.andReturn()
+        val course = courseRepository.save(course)
 
-        val createdCourseId = objectMapper.readTree(createResult.response.contentAsString).get("id").asText()
-
-        val request = DeleteCourseRequest(
-            id = createdCourseId
-        )
+        val request = DeleteCourseRequest(id = course.id)
 
         // act
-        mockMvc.delete(baseUrl, createdCourseId) {
+        mockMvc.delete(baseUrl) {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(request)
         }
