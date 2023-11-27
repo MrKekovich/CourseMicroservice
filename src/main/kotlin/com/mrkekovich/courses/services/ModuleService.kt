@@ -50,7 +50,7 @@ class ModuleService(
     fun update(dto: UpdateModuleRequest): ResponseEntity<BaseModuleResponse> {
         dto.id?.let {
             moduleRepository.findById(it).getOrNull()
-        } ?: throw NotFoundException("Module with id ${dto.id} not found")
+        } ?: throw NotFoundException("Module with id \"${dto.id}\" not found")
 
         val updatedEntity = moduleRepository.save(
             dto.toEntity(
@@ -68,7 +68,7 @@ class ModuleService(
     fun delete(dto: DeleteModuleRequest): ResponseEntity<HttpStatus> {
         val entity = dto.id?.let {
             moduleRepository.findById(it).getOrNull()
-        } ?: throw NotFoundException("Module with id ${dto.id} not found")
+        } ?: throw NotFoundException("Module with id \"${dto.id}\" not found")
 
         moduleRepository.delete(entity)
 

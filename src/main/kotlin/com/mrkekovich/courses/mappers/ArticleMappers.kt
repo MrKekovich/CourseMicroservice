@@ -68,6 +68,6 @@ private fun dtoToEntity(
     description = dto.description,
     module = dto.moduleId?.let {
         moduleRepository.findById(it).getOrNull()
-    } ?: throw NotFoundException("Module with id ${dto.moduleId} not found"),
+    } ?: throw NotFoundException("Module with id \"${dto.moduleId}\" not found"),
     id = dto.id
 )

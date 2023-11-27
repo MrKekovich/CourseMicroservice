@@ -50,12 +50,12 @@ private fun dtoToEntity(
 
     course = dto.courseId?.let {
         courseRepository.findById(it).getOrNull()
-    } ?: throw NotFoundException("Course with id ${dto.courseId} not found"),
+    } ?: throw NotFoundException("Course with id \"${dto.courseId}\" not found"),
 
     parentModule = dto.parentModuleId?.let {
         // We don't need to check if parent exists, if it's null
         moduleRepository.findById(it).getOrNull()
-            ?: throw NotFoundException("Module with id ${dto.parentModuleId} not found")
+            ?: throw NotFoundException("Module with id \"${dto.parentModuleId}\" not found")
     },
 
     position = dto.position,
