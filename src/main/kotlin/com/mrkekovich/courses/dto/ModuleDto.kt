@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.Length
  *
  * @property position Position of the module.
  *
- * @property parentId ID of the parent module.
+ * @property parentModuleId ID of the parent module.
  * - [JsonProperty]: "parent_id"
  *
  * @property courseId ID of the course the module belongs to.
@@ -39,8 +39,8 @@ sealed class ModuleDto {
     open val position: Int? = null
 
     @get:Schema(description = "ID of the parent module")
-    @get:JsonProperty("parent_id")
-    open val parentId: String? = null
+    @get:JsonProperty("parent_module_id")
+    open val parentModuleId: String? = null
 
     @get:Schema(description = "ID of the course the module belongs to")
     @get:JsonProperty("course_id")
@@ -60,7 +60,7 @@ sealed class ModuleDto {
  * @property description [ModuleDto.description]
  * - [NotBlank]
  *
- * @property parentId [ModuleDto.parentId]
+ * @property parentModuleId [ModuleDto.parentModuleId]
  *
  * @property courseId [ModuleDto.courseId]
  * - [NotBlank]
@@ -81,7 +81,7 @@ data class CreateModuleRequest(
     @get:NotNull
     override val position: Int? = 0,
 
-    override val parentId: String? = null,
+    override val parentModuleId: String? = null,
 
     @get:NotBlank
     override val courseId: String?,
@@ -100,7 +100,7 @@ data class CreateModuleRequest(
  * @property position [ModuleDto.position]
  * - [NotNull]
  *
- * @property parentId [ModuleDto.parentId]
+ * @property parentModuleId [ModuleDto.parentModuleId]
  *
  * @property courseId [ModuleDto.courseId]
  * - [NotBlank]
@@ -119,7 +119,7 @@ data class UpdateModuleRequest(
     @get:NotNull
     override val position: Int? = 0,
 
-    override val parentId: String? = null,
+    override val parentModuleId: String? = null,
 
     @get:NotBlank
     override val courseId: String?,
@@ -152,7 +152,7 @@ data class GetAllModulesRequest(
  * @property title [ModuleDto.title]
  * @property description [ModuleDto.description]
  * @property position [ModuleDto.position]
- * @property parentId [ModuleDto.parentId]
+ * @property parentModuleId [ModuleDto.parentModuleId]
  * @property courseId [ModuleDto.courseId]
  * @property id [ModuleDto.id]
  */
@@ -161,7 +161,7 @@ data class BaseModuleResponse(
     override val title: String?,
     override val description: String?,
     override val position: Int?,
-    override val parentId: String?,
+    override val parentModuleId: String?,
     override val courseId: String?,
     override val id: String?,
 ) : ModuleDto()

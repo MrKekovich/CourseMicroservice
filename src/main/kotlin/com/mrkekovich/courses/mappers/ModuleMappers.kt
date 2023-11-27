@@ -15,7 +15,7 @@ fun ModuleEntity.toBaseResponseDto(): BaseModuleResponse {
         id = id,
         title = title,
         description = description,
-        parentId = parentModule?.id,
+        parentModuleId = parentModule?.id,
         courseId = course?.id,
         position = position
     )
@@ -52,10 +52,10 @@ private fun dtoToEntity(
         courseRepository.findById(it).getOrNull()
     } ?: throw NotFoundException("Course with id ${dto.courseId} not found"),
 
-    parentModule = dto.parentId?.let {
+    parentModule = dto.parentModuleId?.let {
         // We don't need to check if parent exists, if it's null
         moduleRepository.findById(it).getOrNull()
-            ?: throw NotFoundException("Module with id ${dto.parentId} not found")
+            ?: throw NotFoundException("Module with id ${dto.parentModuleId} not found")
     },
 
     position = dto.position,

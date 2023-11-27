@@ -50,7 +50,7 @@ internal class ModuleServiceTest {
             title = module.title,
             description = module.description,
             position = module.position,
-            parentId = module.parentModule?.id,
+            parentModuleId = module.parentModule?.id,
             courseId = module.course?.id,
         )
         val expected = ResponseEntity(
@@ -63,7 +63,7 @@ internal class ModuleServiceTest {
                 courseRepository.findById(it).getOrNull()
             } returns course
         }
-        request.parentId?.let {
+        request.parentModuleId?.let {
             every {
                 moduleRepository.findById(it).getOrNull()
             } returns null
@@ -88,7 +88,7 @@ internal class ModuleServiceTest {
             title = nestedModule.title,
             description = nestedModule.description,
             position = nestedModule.position,
-            parentId = nestedModule.parentModule?.id,
+            parentModuleId = nestedModule.parentModule?.id,
             courseId = nestedModule.course?.id,
         )
         val expected = ResponseEntity(
@@ -101,7 +101,7 @@ internal class ModuleServiceTest {
                 courseRepository.findById(it).getOrNull()
             } returns course
         }
-        request.parentId?.let {
+        request.parentModuleId?.let {
             every {
                 moduleRepository.findById(it).getOrNull()
             } returns module
@@ -126,7 +126,7 @@ internal class ModuleServiceTest {
         val request = CreateModuleRequest(
             title = module.title,
             description = module.description,
-            parentId = module.parentModule?.id,
+            parentModuleId = module.parentModule?.id,
             courseId = module.course?.id,
             position = module.position,
         )
@@ -159,18 +159,18 @@ internal class ModuleServiceTest {
         val request = CreateModuleRequest(
             title = nestedModule.title,
             description = nestedModule.description,
-            parentId = nestedModule.parentModule?.id,
+            parentModuleId = nestedModule.parentModule?.id,
             courseId = nestedModule.course?.id,
             position = nestedModule.position,
         )
-        val expectedMessage = "Module with id ${request.parentId} not found"
+        val expectedMessage = "Module with id ${request.parentModuleId} not found"
 
         request.courseId?.let {
             every {
                 courseRepository.findById(it).getOrNull()
             } returns course
         }
-        request.parentId?.let {
+        request.parentModuleId?.let {
             every {
                 moduleRepository.findById(it).getOrNull()
             } returns null
@@ -197,7 +197,7 @@ internal class ModuleServiceTest {
         val request = CreateModuleRequest(
             title = nestedModule.title,
             description = nestedModule.description,
-            parentId = nestedModule.parentModule?.id,
+            parentModuleId = nestedModule.parentModule?.id,
             courseId = nestedModule.course?.id,
             position = nestedModule.position,
         )
@@ -208,7 +208,7 @@ internal class ModuleServiceTest {
                 courseRepository.findById(it).getOrNull()
             } returns null
         }
-        request.parentId?.let {
+        request.parentModuleId?.let {
             every {
                 moduleRepository.findById(it).getOrNull()
             } returns null
@@ -261,7 +261,7 @@ internal class ModuleServiceTest {
             description = module.description,
             position = module.position,
             courseId = module.course?.id,
-            parentId = module.parentModule?.id,
+            parentModuleId = module.parentModule?.id,
             id = module.id,
         )
         val expected = ResponseEntity(
@@ -274,7 +274,7 @@ internal class ModuleServiceTest {
                 courseRepository.findById(it).getOrNull()
             } returns course
         }
-        request.parentId?.let {
+        request.parentModuleId?.let {
             every {
                 moduleRepository.findById(it).getOrNull()
             } returns null
@@ -306,7 +306,7 @@ internal class ModuleServiceTest {
             description = nestedModule.description,
             position = nestedModule.position,
             courseId = nestedModule.course?.id,
-            parentId = nestedModule.parentModule?.id,
+            parentModuleId = nestedModule.parentModule?.id,
             id = nestedModule.id,
         )
         val expected = ResponseEntity(
@@ -319,7 +319,7 @@ internal class ModuleServiceTest {
                 courseRepository.findById(it).getOrNull()
             } returns course
         }
-        request.parentId?.let {
+        request.parentModuleId?.let {
             every {
                 moduleRepository.findById(it).getOrNull()
             } returns module
@@ -351,7 +351,7 @@ internal class ModuleServiceTest {
             description = module.description,
             position = module.position,
             courseId = module.course?.id,
-            parentId = module.parentModule?.id,
+            parentModuleId = module.parentModule?.id,
             id = module.id,
         )
         val expectedMessage = "Course with id ${request.courseId} not found"
@@ -361,7 +361,7 @@ internal class ModuleServiceTest {
                 courseRepository.findById(it).getOrNull()
             } returns null
         }
-        request.parentId?.let {
+        request.parentModuleId?.let {
             every {
                 moduleRepository.findById(it).getOrNull()
             } returns null
@@ -395,17 +395,17 @@ internal class ModuleServiceTest {
             description = nestedModule.description,
             position = nestedModule.position,
             courseId = nestedModule.course?.id,
-            parentId = nestedModule.parentModule?.id,
+            parentModuleId = nestedModule.parentModule?.id,
             id = nestedModule.id,
         )
-        val expectedMessage = "Module with id ${request.parentId} not found"
+        val expectedMessage = "Module with id ${request.parentModuleId} not found"
 
         request.courseId?.let {
             every {
                 courseRepository.findById(it).getOrNull()
             } returns course
         }
-        request.parentId?.let {
+        request.parentModuleId?.let {
             every {
                 moduleRepository.findById(it).getOrNull()
             } returns null
@@ -439,7 +439,7 @@ internal class ModuleServiceTest {
             description = nestedModule.description,
             position = nestedModule.position,
             courseId = nestedModule.course?.id,
-            parentId = nestedModule.parentModule?.id,
+            parentModuleId = nestedModule.parentModule?.id,
             id = nestedModule.id,
         )
         val expectedMessage = "Course with id ${request.courseId} not found"
@@ -449,7 +449,7 @@ internal class ModuleServiceTest {
                 courseRepository.findById(it).getOrNull()
             } returns null
         }
-        request.parentId?.let {
+        request.parentModuleId?.let {
             every {
                 moduleRepository.findById(it).getOrNull()
             } returns null
