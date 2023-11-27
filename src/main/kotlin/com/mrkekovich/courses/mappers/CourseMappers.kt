@@ -43,7 +43,7 @@ fun UpdateCourseRequest.toEntity(): CourseEntity {
  * override all fields - they will be set to null.
  *
  * @param dto [CourseDto] to convert.
- * @return [CourseEntity] with mapped from [CourseDto].
+ * @return [CourseEntity] mapped from [dto].
  */
 private fun dtoToEntity(
     dto: CourseDto

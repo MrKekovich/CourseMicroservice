@@ -9,6 +9,11 @@ import com.mrkekovich.courses.models.ArticleEntity
 import com.mrkekovich.courses.repositories.ModuleRepository
 import kotlin.jvm.optionals.getOrNull
 
+/**
+ * Converts [ArticleEntity] to [BaseArticleResponse].
+ *
+ * @return [BaseArticleResponse] mapped from [ArticleEntity].
+ */
 fun ArticleEntity.toBaseResponseDto(): BaseArticleResponse {
     return BaseArticleResponse(
         title = title,
@@ -24,7 +29,7 @@ fun ArticleEntity.toBaseResponseDto(): BaseArticleResponse {
  *
  * Transforms create request DTO to entity
  * @param moduleRepository [ModuleRepository]
- * @return [ArticleEntity] from [CreateArticleRequest]
+ * @return [ArticleEntity] mapped from [CreateArticleRequest]
  */
 fun CreateArticleRequest.toEntity(
     moduleRepository: ModuleRepository
@@ -38,7 +43,7 @@ fun CreateArticleRequest.toEntity(
  *
  * Transforms update request DTO to entity
  * @param moduleRepository [ModuleRepository]
- * @return [ArticleEntity] from [UpdateArticleRequest]
+ * @return [ArticleEntity] mapped from [UpdateArticleRequest]
  */
 fun UpdateArticleRequest.toEntity(
     moduleRepository: ModuleRepository
@@ -57,7 +62,7 @@ fun UpdateArticleRequest.toEntity(
  *
  * @param dto The [ArticleDto] to convert to entity.
  * @param moduleRepository [ModuleRepository] Used to map module from id.
- * @return [ArticleEntity] with mapped fields.
+ * @return [ArticleEntity] mapped from [dto].
  */
 private fun dtoToEntity(
     dto: ArticleDto,
