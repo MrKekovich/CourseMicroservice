@@ -1,6 +1,7 @@
 package com.mrkekovich.courses.controllers
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.mrkekovich.courses.dto.CourseDto
 import com.mrkekovich.courses.dto.CreateCourseRequest
 import com.mrkekovich.courses.dto.DeleteCourseRequest
 import com.mrkekovich.courses.dto.UpdateCourseRequest
@@ -56,6 +57,8 @@ internal class CourseControllerTest @Autowired constructor(
                 jsonPath("$.title") { value(course.title) }
                 jsonPath("$.description") { value(course.description) }
             }
+
+        validateWithGetRequest(request = request)
     }
 
     @Test
@@ -86,36 +89,28 @@ internal class CourseControllerTest @Autowired constructor(
         // arrange
         val course = courseRepository.save(course)
 
-        val updateRequest = UpdateCourseRequest(
+        val request = UpdateCourseRequest(
             title = "new title",
             description = "new description",
             id = course.id
         )
 
         // act
-        mockMvc.patch(baseUrl, updateRequest.id) {
+        mockMvc.patch(baseUrl, request.id) {
             contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(updateRequest)
+            content = objectMapper.writeValueAsString(request)
         }
             .andDo { print() }
             // assert
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                jsonPath("$.title") { value(updateRequest.title) }
-                jsonPath("$.description") { value(updateRequest.description) }
-                jsonPath("$.id") { value(updateRequest.id) }
+                jsonPath("$.title") { value(request.title) }
+                jsonPath("$.description") { value(request.description) }
+                jsonPath("$.id") { value(request.id) }
             }
 
-        mockMvc.get(baseUrl) {
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
-                jsonPath("$.length()") { value(1) }
-                jsonPath("$[0].id") { value(updateRequest.id) }
-                jsonPath("$[0].title") { value(updateRequest.title) }
-                jsonPath("$[0].description") { value(updateRequest.description) }
-            }
+        validateWithGetRequest(request = request)
     }
 
     @Test
@@ -136,13 +131,22 @@ internal class CourseControllerTest @Autowired constructor(
                 status { isOk() }
             }
 
+        validateWithGetRequest(request = null, length = 0)
+    }
+
+    fun validateWithGetRequest(
+        request: CourseDto?,
+        length: Int = 1,
+        index: Int = 0
+    ) {
         mockMvc.get(baseUrl) {
             contentType = MediaType.APPLICATION_JSON
         }
             .andExpect {
-                status { isOk() }
-                content { contentType(MediaType.APPLICATION_JSON) }
-                jsonPath("$.length()") { value(0) }
+                jsonPath("$.length()") { value(length) }
+                request?.title?.let { jsonPath("$[$index].title") { value(it) } }
+                request?.description?.let { jsonPath("$[$index].description") { value(it) } }
+                request?.id?.let { jsonPath("$[$index].id") { value(it) } }
             }
     }
 }
