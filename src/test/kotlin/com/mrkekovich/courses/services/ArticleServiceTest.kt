@@ -145,7 +145,7 @@ internal class ArticleServiceTest {
             moduleId = article.module.id,
             id = article.id
         )
-        val expectedMessage = "Article with id ${request.id} not found"
+        val expectedMessage = "Article with id \"${request.id}\" not found"
 
         request.moduleId?.let {
             every {
@@ -183,7 +183,7 @@ internal class ArticleServiceTest {
             moduleId = article.module.id,
             id = article.id
         )
-        val expectedMessage = "Module with id ${request.moduleId} not found"
+        val expectedMessage = "Module with id \"${request.moduleId}\" not found"
 
         request.moduleId?.let {
             every {
@@ -243,7 +243,7 @@ internal class ArticleServiceTest {
         val request = DeleteArticleRequest(
             id = article.id
         )
-        val expectedMessage = "Article with id ${request.id} not found"
+        val expectedMessage = "Article with id \"${request.id}\" not found"
 
         request.id?.let {
             every {

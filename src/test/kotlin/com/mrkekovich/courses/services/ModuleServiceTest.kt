@@ -130,7 +130,7 @@ internal class ModuleServiceTest {
             courseId = module.course?.id,
             position = module.position,
         )
-        val expectedMessage = "Course with id ${request.courseId} not found"
+        val expectedMessage = "Course with id \"${request.courseId}\" not found"
 
         request.courseId?.let {
             every {
@@ -163,7 +163,7 @@ internal class ModuleServiceTest {
             courseId = nestedModule.course?.id,
             position = nestedModule.position,
         )
-        val expectedMessage = "Module with id ${request.parentModuleId} not found"
+        val expectedMessage = "Module with id \"${request.parentModuleId}\" not found"
 
         request.courseId?.let {
             every {
@@ -201,7 +201,7 @@ internal class ModuleServiceTest {
             courseId = nestedModule.course?.id,
             position = nestedModule.position,
         )
-        val expectedMessage = "Course with id ${request.courseId} not found"
+        val expectedMessage = "Course with id \"${request.courseId}\" not found"
 
         request.courseId?.let {
             every {
@@ -354,7 +354,7 @@ internal class ModuleServiceTest {
             parentModuleId = module.parentModule?.id,
             id = module.id,
         )
-        val expectedMessage = "Course with id ${request.courseId} not found"
+        val expectedMessage = "Course with id \"${request.courseId}\" not found"
 
         request.courseId?.let {
             every {
@@ -398,7 +398,7 @@ internal class ModuleServiceTest {
             parentModuleId = nestedModule.parentModule?.id,
             id = nestedModule.id,
         )
-        val expectedMessage = "Module with id ${request.parentModuleId} not found"
+        val expectedMessage = "Module with id \"${request.parentModuleId}\" not found"
 
         request.courseId?.let {
             every {
@@ -442,7 +442,7 @@ internal class ModuleServiceTest {
             parentModuleId = nestedModule.parentModule?.id,
             id = nestedModule.id,
         )
-        val expectedMessage = "Course with id ${request.courseId} not found"
+        val expectedMessage = "Course with id \"${request.courseId}\" not found"
 
         request.courseId?.let {
             every {
@@ -503,7 +503,7 @@ internal class ModuleServiceTest {
     fun `should throw exception when module not found on delete`() {
         // arrange
         val request = DeleteModuleRequest(module.id)
-        val expectedMessage = "Module with id ${request.id} not found"
+        val expectedMessage = "Module with id \"${request.id}\" not found"
 
         request.id?.let {
             every {

@@ -110,7 +110,7 @@ internal class CourseServiceTest {
             description = course.description,
             id = course.id
         )
-        val expectedMessage = "Course with id ${request.id} not found"
+        val expectedMessage = "Course with id \"${request.id}\" not found"
 
         request.id?.let {
             every {
@@ -160,7 +160,7 @@ internal class CourseServiceTest {
     fun `should throw exception if course not found on delete`() {
         // arrange
         val request = DeleteCourseRequest(course.id)
-        val expectedMessage = "Course with id ${request.id} not found"
+        val expectedMessage = "Course with id \"${request.id}\" not found"
 
         request.id?.let {
             every {

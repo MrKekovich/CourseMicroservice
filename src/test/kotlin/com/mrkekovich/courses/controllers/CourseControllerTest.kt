@@ -33,17 +33,11 @@ internal class CourseControllerTest @Autowired constructor(
 ) {
     private val baseUrl = "/api/v1/courses"
 
-    private val course = CourseEntity(
-        title = "title",
-        description = "description",
-    )
-    private val request = CreateCourseRequest(
-        title = course.title,
-        description = course.description
-    )
-
     @Test
     fun `should create and return course`() {
+        // arrange
+        val request = getCourse().toCreateRequest()
+
         // act
         mockMvc.post(baseUrl) {
             contentType = MediaType.APPLICATION_JSON
@@ -54,8 +48,8 @@ internal class CourseControllerTest @Autowired constructor(
             .andExpect {
                 status { isCreated() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                jsonPath("$.title") { value(course.title) }
-                jsonPath("$.description") { value(course.description) }
+                jsonPath("$.title") { value(request.title) }
+                jsonPath("$.description") { value(request.description) }
             }
 
         validateWithGetRequest(request = request)
@@ -64,7 +58,10 @@ internal class CourseControllerTest @Autowired constructor(
     @Test
     fun `should return all courses`() {
         // arrange
-        val expected = listOf(course, course)
+        val expected = listOf(
+            getCourse(),
+            getCourse()
+        )
         courseRepository.saveAll(expected)
 
         // act
@@ -87,13 +84,9 @@ internal class CourseControllerTest @Autowired constructor(
     @Test
     fun `should update course`() {
         // arrange
-        val course = courseRepository.save(course)
+        val course = courseRepository.save(getCourse())
 
-        val request = UpdateCourseRequest(
-            title = "new title",
-            description = "new description",
-            id = course.id
-        )
+        val request = course.toUpdateRequest()
 
         // act
         mockMvc.patch(baseUrl, request.id) {
@@ -116,7 +109,7 @@ internal class CourseControllerTest @Autowired constructor(
     @Test
     fun `should delete course`() {
         // arrange
-        val course = courseRepository.save(course)
+        val course = courseRepository.save(getCourse())
 
         val request = DeleteCourseRequest(id = course.id)
 
@@ -149,4 +142,23 @@ internal class CourseControllerTest @Autowired constructor(
                 request?.id?.let { jsonPath("$[$index].id") { value(it) } }
             }
     }
+
+    private fun getCourse() =
+        CourseEntity(
+            title = "title",
+            description = "description",
+        )
+
+    private fun CourseEntity.toCreateRequest() =
+        CreateCourseRequest(
+            title = title,
+            description = description,
+        )
+
+    private fun CourseEntity.toUpdateRequest() =
+        UpdateCourseRequest(
+            title = "new title",
+            description = "new description",
+            id = id,
+        )
 }
