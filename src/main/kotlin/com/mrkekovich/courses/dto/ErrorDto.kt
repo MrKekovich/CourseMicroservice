@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * Used to send error messages.
+ *
  * @property errorMessage Error message to show.
  * alias ([JsonProperty]) is "error_message".
+ *
  * @property status Status code.
  */
 data class ErrorDto(

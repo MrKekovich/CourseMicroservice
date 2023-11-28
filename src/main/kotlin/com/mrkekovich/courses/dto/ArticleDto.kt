@@ -145,7 +145,7 @@ data class GetAllArticlesRequest(
     @get:NotNull
     @get:Min(-1)
     val limit: Int? = -1
-)
+) : ArticleDto()
 
 /**
  * Base article response is used to represent server response.

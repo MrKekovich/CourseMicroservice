@@ -25,7 +25,10 @@ class CourseService(
             it.toBaseResponseDto()
         }
 
-        return ResponseEntity.ok(response)
+        return ResponseEntity(
+            response,
+            HttpStatus.OK,
+        )
     }
 
     fun create(

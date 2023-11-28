@@ -144,7 +144,7 @@ data class DeleteModuleRequest(
 data class GetAllModulesRequest(
     @get:NotNull
     val limit: Int = 10,
-)
+) : ModuleDto()
 
 /**
  * Base module DTO represents a module response returned from the server.
