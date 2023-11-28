@@ -29,9 +29,9 @@ fun ModuleEntity.toBaseResponseDto(): BaseModuleResponse {
 /**
  * Converts [CreateModuleRequest] to [ModuleEntity].
  *
- * @param moduleRepository [ModuleRepository]
- * @param courseRepository [CourseRepository]
- * @return [ModuleEntity] mapped from [CreateModuleRequest]
+ * @param moduleRepository [ModuleRepository] Used to map module from id.
+ * @param courseRepository [CourseRepository] Used to map course from id.
+ * @return [ModuleEntity] mapped from [CreateModuleRequest].
  */
 fun CreateModuleRequest.toEntity(
     moduleRepository: ModuleRepository,

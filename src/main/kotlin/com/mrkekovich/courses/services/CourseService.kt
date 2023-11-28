@@ -17,14 +17,10 @@ private const val COURSE_NOT_FOUND_MESSAGE = "Course with id \"%s\" not found"
 class CourseService(
     private val courseRepository: CourseRepository,
 ) {
-    @Suppress("UnusedParameter")
-    fun getAll(
-//        dto: GetAllCoursesRequest, TODO: Add pagination
-    ): List<BaseCourseResponse> {
-        return courseRepository.findAll().map {
+    fun getAll(): List<BaseCourseResponse> =
+        courseRepository.findAll().map {
             it.toBaseResponseDto()
         }
-    }
 
     fun create(
         dto: CreateCourseRequest,
@@ -32,6 +28,7 @@ class CourseService(
         val entity = courseRepository.save(
             dto.toEntity()
         )
+
         return entity.toBaseResponseDto()
     }
 

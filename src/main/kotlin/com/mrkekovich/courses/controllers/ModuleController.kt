@@ -25,25 +25,20 @@ import org.springframework.web.bind.annotation.RestController
 class ModuleController(
     private val moduleService: ModuleService
 ) {
-    @Operation(summary = "Get all modules")
     @ApiResponse(
         responseCode = "200",
-        description = "Get all modules",
+        description = "Get modules",
         content = [
             Content(
                 schema = Schema(implementation = BaseModuleResponse::class)
             )
         ]
     )
+    @Operation(summary = "Get modules")
     @GetMapping
-    fun getAll(
-//        @Validated
-//        @RequestBody
-//        dto: GetAllModulesRequest TODO: add pagination
-    ): List<BaseModuleResponse> =
-        moduleService.getAll(/*dto*/)
+    fun getModules(): List<BaseModuleResponse> =
+        moduleService.getAll()
 
-    @Operation(summary = "Create module")
     @ApiResponse(
         responseCode = "200",
         description = "Create module",
@@ -53,15 +48,15 @@ class ModuleController(
             )
         ]
     )
+    @Operation(summary = "Create module")
     @PostMapping
-    fun create(
+    fun createModule(
         @Validated
         @RequestBody
         dto: CreateModuleRequest
     ): BaseModuleResponse =
         moduleService.create(dto)
 
-    @Operation(summary = "Update module")
     @ApiResponse(
         responseCode = "200",
         description = "Update module",
@@ -71,21 +66,22 @@ class ModuleController(
             )
         ]
     )
+    @Operation(summary = "Update module")
     @PatchMapping
-    fun update(
+    fun updateModule(
         @Validated
         @RequestBody
         dto: UpdateModuleRequest
     ): BaseModuleResponse =
         moduleService.update(dto)
 
-    @Operation(summary = "Delete module")
     @ApiResponse(
         responseCode = "200",
         description = "Delete module",
     )
     @DeleteMapping
-    fun delete(
+    @Operation(summary = "Delete module")
+    fun deleteModule(
         @Validated
         @RequestBody
         dto: DeleteModuleRequest

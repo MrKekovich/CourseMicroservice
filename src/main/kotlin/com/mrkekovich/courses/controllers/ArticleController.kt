@@ -25,34 +25,22 @@ import org.springframework.web.bind.annotation.RestController
 class ArticleController(
     private val articleService: ArticleService
 ) {
-    @Operation(summary = "Get all articles")
     @ApiResponse(
         responseCode = "200",
-        description = "Get all articles",
-        content = [
-            Content(
-                schema = Schema(implementation = BaseArticleResponse::class)
-            )
-        ]
+        description = "Get articles",
+        content = [Content(schema = Schema(implementation = BaseArticleResponse::class))]
     )
+    @Operation(summary = "Get articles")
     @GetMapping
-    fun getArticles(
-//        @Validated
-//        @RequestBody
-//        dto: GetAllArticlesRequest TODO: add pagination
-    ): List<BaseArticleResponse> =
-        articleService.getAll(/*dto*/)
+    fun getArticles(): List<BaseArticleResponse> =
+        articleService.getAll()
 
-    @Operation(summary = "Create new article")
     @ApiResponse(
         responseCode = "200",
         description = "Create new article",
-        content = [
-            Content(
-                schema = Schema(implementation = BaseArticleResponse::class)
-            )
-        ]
+        content = [Content(schema = Schema(implementation = BaseArticleResponse::class))]
     )
+    @Operation(summary = "Create new article")
     @PostMapping
     fun createArticle(
         @Validated
@@ -61,16 +49,12 @@ class ArticleController(
     ): BaseArticleResponse =
         articleService.create(dto)
 
-    @Operation(summary = "Update article")
     @ApiResponse(
         responseCode = "200",
         description = "Update article",
-        content = [
-            Content(
-                schema = Schema(implementation = BaseArticleResponse::class)
-            )
-        ]
+        content = [Content(schema = Schema(implementation = BaseArticleResponse::class))]
     )
+    @Operation(summary = "Update article")
     @PatchMapping
     fun updateArticle(
         @Validated
@@ -79,16 +63,12 @@ class ArticleController(
     ): BaseArticleResponse =
         articleService.update(dto)
 
-    @Operation(summary = "Delete article")
     @ApiResponse(
         responseCode = "200",
         description = "Delete article",
-        content = [
-            Content(
-                schema = Schema(implementation = BaseArticleResponse::class)
-            )
-        ]
+        content = [Content(schema = Schema(implementation = BaseArticleResponse::class))]
     )
+    @Operation(summary = "Delete article")
     @DeleteMapping
     fun deleteArticle(
         @Validated

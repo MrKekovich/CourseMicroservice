@@ -19,7 +19,9 @@ class ModuleService(
     private val moduleRepository: ModuleRepository,
     private val courseRepository: CourseRepository,
 ) {
-    fun create(dto: CreateModuleRequest): BaseModuleResponse {
+    fun create(
+        dto: CreateModuleRequest
+    ): BaseModuleResponse {
         val entity = moduleRepository.save(
             dto.toEntity(
                 moduleRepository = moduleRepository,
@@ -31,15 +33,14 @@ class ModuleService(
     }
 
     @Suppress("UnusedParameter")
-    fun getAll(
-//        dto: GetAllModulesRequest TODO: add pagination
-    ): List<BaseModuleResponse> {
-        return moduleRepository.findAll().map {
+    fun getAll(): List<BaseModuleResponse> =
+        moduleRepository.findAll().map {
             it.toBaseResponseDto()
         }
-    }
 
-    fun update(dto: UpdateModuleRequest): BaseModuleResponse {
+    fun update(
+        dto: UpdateModuleRequest
+    ): BaseModuleResponse {
         dto.id?.let {
             moduleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException(MODULE_NOT_FOUND_MESSAGE.format(dto.id))
@@ -54,7 +55,9 @@ class ModuleService(
         return updatedEntity.toBaseResponseDto()
     }
 
-    fun delete(dto: DeleteModuleRequest) {
+    fun delete(
+        dto: DeleteModuleRequest
+    ) {
         val entity = dto.id?.let {
             moduleRepository.findById(it).getOrNull()
         } ?: throw NotFoundException(MODULE_NOT_FOUND_MESSAGE.format(dto.id))

@@ -22,18 +22,14 @@ fun CourseEntity.toBaseResponseDto(): BaseCourseResponse = BaseCourseResponse(
  *
  * @return [CourseEntity] mapped from [CreateCourseRequest].
  */
-fun CreateCourseRequest.toEntity(): CourseEntity = dtoToEntity(
-    this
-)
+fun CreateCourseRequest.toEntity(): CourseEntity = dtoToEntity(this)
 
 /**
  * Converts [UpdateCourseRequest] to entity
  *
  * @return [CourseEntity] mapped from [UpdateCourseRequest].
  */
-fun UpdateCourseRequest.toEntity(): CourseEntity {
-    return dtoToEntity(this)
-}
+fun UpdateCourseRequest.toEntity(): CourseEntity = dtoToEntity(this)
 
 /**
  * Converts [CourseDto] to [CourseEntity].

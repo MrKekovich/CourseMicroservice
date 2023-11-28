@@ -25,11 +25,10 @@ fun ArticleEntity.toBaseResponseDto(): BaseArticleResponse {
 }
 
 /**
- * Create request to entity
+ * Converts [CreateArticleRequest] to [ArticleEntity].
  *
- * Transforms create request DTO to entity
- * @param moduleRepository [ModuleRepository]
- * @return [ArticleEntity] mapped from [CreateArticleRequest]
+ * @param moduleRepository [ModuleRepository].
+ * @return [ArticleEntity] mapped from [CreateArticleRequest].
  */
 fun CreateArticleRequest.toEntity(
     moduleRepository: ModuleRepository
@@ -39,9 +38,8 @@ fun CreateArticleRequest.toEntity(
 )
 
 /**
- * Update request to entity
+ * Converts [UpdateArticleRequest] to [ArticleEntity].
  *
- * Transforms update request DTO to entity
  * @param moduleRepository [ModuleRepository]
  * @return [ArticleEntity] mapped from [UpdateArticleRequest]
  */

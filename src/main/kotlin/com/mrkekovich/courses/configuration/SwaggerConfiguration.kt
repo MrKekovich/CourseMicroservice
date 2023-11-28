@@ -9,15 +9,15 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class SwaggerConfiguration {
     @Bean
-    fun openApi(): OpenAPI = OpenAPI().info(
-        Info()
-            .title("Netrunner Courses API")
-            .version("0.1.0a0")
-            .description("API for managing courses")
-            .contact(
-                Contact()
-                    .name("MrKekovich")
-                    .email("mrkekovich.official@gmail.com")
-            )
-    )
+    fun openApi(): OpenAPI = OpenAPI().apply {
+        info = Info().apply {
+            title = "Netrunner Courses API"
+            version = "0.1.0a0"
+            description = "API for managing courses"
+            contact = Contact().apply {
+                name = "MrKekovich"
+                email = "mrkekovich.official@gmail.com"
+            }
+        }
+    }
 }

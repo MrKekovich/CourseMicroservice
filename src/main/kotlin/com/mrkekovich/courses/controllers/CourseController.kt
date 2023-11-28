@@ -25,34 +25,22 @@ import org.springframework.web.bind.annotation.RestController
 class CourseController(
     private val courseService: CourseService,
 ) {
-    @Operation(summary = "Get all courses")
     @ApiResponse(
         responseCode = "200",
-        description = "Get all course with a limit",
-        content = [
-            Content(
-                schema = Schema(implementation = BaseCourseResponse::class)
-            )
-        ]
+        description = "Get course with a pageSize",
+        content = [Content(schema = Schema(implementation = BaseCourseResponse::class))]
     )
+    @Operation(summary = "Get courses")
     @GetMapping
-    fun getCourses(
-//        @Validated
-//        @RequestBody
-//        dto: GetAllCoursesRequest, TODO: Add pagination
-    ): List<BaseCourseResponse> =
-        courseService.getAll(/*dto*/)
+    fun getCourses(): List<BaseCourseResponse> =
+        courseService.getAll()
 
-    @Operation(summary = "Create course")
     @ApiResponse(
         responseCode = "200",
         description = "Create course",
-        content = [
-            Content(
-                schema = Schema(implementation = BaseCourseResponse::class)
-            )
-        ]
+        content = [Content(schema = Schema(implementation = BaseCourseResponse::class))]
     )
+    @Operation(summary = "Create course")
     @PostMapping
     fun createCourse(
         @Validated
@@ -61,16 +49,12 @@ class CourseController(
     ): BaseCourseResponse =
         courseService.create(dto)
 
-    @Operation(summary = "Update course")
     @ApiResponse(
         responseCode = "200",
         description = "Update course",
-        content = [
-            Content(
-                schema = Schema(implementation = BaseCourseResponse::class)
-            )
-        ]
+        content = [Content(schema = Schema(implementation = BaseCourseResponse::class))]
     )
+    @Operation(summary = "Update course")
     @PatchMapping
     fun updateCourse(
         @Validated
@@ -79,11 +63,11 @@ class CourseController(
     ): BaseCourseResponse =
         courseService.update(dto)
 
-    @Operation(summary = "Delete course")
     @ApiResponse(
         responseCode = "200",
         description = "Delete course",
     )
+    @Operation(summary = "Delete course")
     @DeleteMapping
     fun deleteCourse(
         @Validated
