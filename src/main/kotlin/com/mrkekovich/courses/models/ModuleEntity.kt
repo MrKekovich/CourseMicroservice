@@ -11,6 +11,18 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
+/**
+ * Module entity.
+ *
+ * @property title Title of a module.
+ * @property description Description of a module.
+ * @property position Position of a module.
+ * @property course Course the module belongs to.
+ * @property parentModule Parent module.
+ * @property id ID of a module.
+ * @property childrenModules Children modules of a module.
+ * @property articles Articles of a module.
+ */
 @Entity
 @Table(name = "modules")
 class ModuleEntity(

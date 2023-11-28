@@ -4,6 +4,6 @@ import com.mrkekovich.courses.models.CourseEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
 /**
- * Course repository. Used to perform database operations.
+ * Course JPA repository.
  */
 interface CourseRepository : JpaRepository<CourseEntity, String>

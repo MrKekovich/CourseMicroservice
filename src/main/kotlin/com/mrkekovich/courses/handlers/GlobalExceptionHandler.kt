@@ -7,8 +7,19 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
+/**
+ * Used to handle global exceptions that may occur in the application.
+ */
 @RestControllerAdvice
 class GlobalExceptionHandler {
+    /**
+     * Used to handle [NotFoundException]
+     * and return [ErrorDto] with [HttpStatus.NOT_FOUND] status
+     * wrapped in [ResponseEntity].
+     *
+     * @param notFoundException [NotFoundException] occurred in the application.
+     * @return [ResponseEntity] with [ErrorDto] and [HttpStatus.NOT_FOUND] status.
+     */
     @ExceptionHandler(value = [NotFoundException::class])
     fun handleNotFoundException(
         notFoundException: NotFoundException,

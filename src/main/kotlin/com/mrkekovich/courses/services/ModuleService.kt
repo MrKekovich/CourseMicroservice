@@ -41,8 +41,8 @@ class ModuleService(
     fun update(
         dto: UpdateModuleRequest
     ): BaseModuleResponse {
-        dto.id?.let {
-            moduleRepository.findById(it).getOrNull()
+        dto.id?.let { id ->
+            moduleRepository.findById(id).getOrNull()
         } ?: throw NotFoundException(MODULE_NOT_FOUND_MESSAGE.format(dto.id))
 
         val updatedEntity = moduleRepository.save(
@@ -58,8 +58,8 @@ class ModuleService(
     fun delete(
         dto: DeleteModuleRequest
     ) {
-        val entity = dto.id?.let {
-            moduleRepository.findById(it).getOrNull()
+        val entity = dto.id?.let { id ->
+            moduleRepository.findById(id).getOrNull()
         } ?: throw NotFoundException(MODULE_NOT_FOUND_MESSAGE.format(dto.id))
 
         moduleRepository.delete(entity)

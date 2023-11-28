@@ -130,7 +130,7 @@ data class DeleteArticleRequest(
 ) : ArticleDto()
 
 /**
- * Get all articles request is used to represent client request to get all articles.
+ * Get articles request is used to represent client request to get all articles.
  * It contains limit of article records to return.
  *
  * @property limit Limit of article records to return.
@@ -139,7 +139,7 @@ data class DeleteArticleRequest(
  * - [NotNull]
  * - [Min]: (-1)
  */
-@Schema(name = "Get all articles request")
+@Schema(name = "Get articles request")
 data class GetAllArticlesRequest(
     @get:Schema(description = "Article records limit. -1 means no limit.")
     @get:NotNull

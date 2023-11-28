@@ -37,8 +37,8 @@ class ArticleService(
     fun update(
         dto: UpdateArticleRequest
     ): BaseArticleResponse {
-        dto.id?.let {
-            articleRepository.findById(it).getOrNull()
+        dto.id?.let { id ->
+            articleRepository.findById(id).getOrNull()
         } ?: throw NotFoundException(ARTICLE_NOT_FOUND_MESSAGE.format(dto.id))
 
         val updatedEntity = articleRepository.save(
@@ -51,8 +51,8 @@ class ArticleService(
     fun delete(
         dto: DeleteArticleRequest
     ) {
-        val entity = dto.id?.let {
-            articleRepository.findById(it).getOrNull()
+        val entity = dto.id?.let { id ->
+            articleRepository.findById(id).getOrNull()
         } ?: throw NotFoundException(ARTICLE_NOT_FOUND_MESSAGE.format(dto.id))
 
         articleRepository.delete(entity)

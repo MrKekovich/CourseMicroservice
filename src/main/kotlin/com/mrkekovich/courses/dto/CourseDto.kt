@@ -97,21 +97,21 @@ data class DeleteCourseRequest(
 ) : CourseDto()
 
 /**
- * Get all request represents a client request to get all courses.
+ * Get courses request represents a client request to get all courses.
  *
  * @property limit Limit of courses to get (-1 means no limit).
  * - [Min] (-1).
  */
 @Schema(
-    name = "Get all courses request",
-    description = "Represents a client request to get all courses."
+    name = "Get courses request",
+    description = "Represents a client request to get courses."
 )
 data class GetAllCoursesRequest(
     @get:Schema(description = "Limit of courses to get. -1 means no limit.")
     @get:NotNull
     @get:Min(-1)
     val limit: Int? = -1,
-)
+) : CourseDto()
 
 /**
  * Base response DTO represents a response from server with course data.

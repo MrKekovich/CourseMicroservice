@@ -11,6 +11,7 @@ import jakarta.persistence.Table
 
 /**
  * Course entity
+ *
  * @property title Title of a course.
  * @property description Description of a course.
  * @property id (Optional) ID of a course.

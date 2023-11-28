@@ -9,6 +9,15 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
+/**
+ * Article entity.
+ *
+ * @property title Title of the article.
+ * @property description Description of the article.
+ * @property content Content of the article.
+ * @property module Module article belongs to.
+ * @property id ID of the article.
+ */
 @Entity
 @Table(name = "articles")
 class ArticleEntity(

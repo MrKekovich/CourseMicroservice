@@ -47,8 +47,8 @@ class CourseService(
     fun delete(
         dto: DeleteCourseRequest,
     ) {
-        val entity = dto.id?.let {
-            courseRepository.findById(it).getOrNull()
+        val entity = dto.id?.let { id ->
+            courseRepository.findById(id).getOrNull()
         } ?: throw NotFoundException(COURSE_NOT_FOUND_MESSAGE.format(dto.id))
 
         courseRepository.delete(entity)

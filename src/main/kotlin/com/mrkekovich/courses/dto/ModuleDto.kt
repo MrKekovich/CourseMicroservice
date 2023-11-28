@@ -2,6 +2,7 @@ package com.mrkekovich.courses.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Length
@@ -140,10 +141,21 @@ data class DeleteModuleRequest(
     override val id: String?
 ) : ModuleDto()
 
-@Schema(name = "Get all modules request")
+/**
+ * Get modules DTO represents a client request to get all modules.
+ *
+ * @property limit
+ * - [NotNull]
+ */
+@Schema(
+    name = "Get modules request",
+    description = "Represents a client request to get modules."
+)
 data class GetAllModulesRequest(
+    @get:Schema(description = "Limit of modules to get. -1 means no limit.")
     @get:NotNull
-    val limit: Int = 10,
+    @get:Min(-1)
+    val limit: Int = -1,
 ) : ModuleDto()
 
 /**
