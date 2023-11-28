@@ -14,8 +14,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import kotlin.jvm.optionals.getOrNull
 
 internal class ModuleServiceTest {
@@ -53,10 +51,7 @@ internal class ModuleServiceTest {
             parentModuleId = module.parentModule?.id,
             courseId = module.course?.id,
         )
-        val expected = ResponseEntity(
-            module.toBaseResponseDto(),
-            HttpStatus.CREATED
-        )
+        val expected = module.toBaseResponseDto()
 
         request.courseId?.let {
             every {
@@ -91,10 +86,7 @@ internal class ModuleServiceTest {
             parentModuleId = nestedModule.parentModule?.id,
             courseId = nestedModule.course?.id,
         )
-        val expected = ResponseEntity(
-            nestedModule.toBaseResponseDto(),
-            HttpStatus.CREATED
-        )
+        val expected = nestedModule.toBaseResponseDto()
 
         request.courseId?.let {
             every {
@@ -236,10 +228,7 @@ internal class ModuleServiceTest {
             module,
             nestedModule
         )
-        val expected = ResponseEntity(
-            records.map { it.toBaseResponseDto() },
-            HttpStatus.OK
-        )
+        val expected = records.map { it.toBaseResponseDto() }
 
         every {
             moduleRepository.findAll()
@@ -264,10 +253,7 @@ internal class ModuleServiceTest {
             parentModuleId = module.parentModule?.id,
             id = module.id,
         )
-        val expected = ResponseEntity(
-            module.toBaseResponseDto(),
-            HttpStatus.OK
-        )
+        val expected = module.toBaseResponseDto()
 
         request.courseId?.let {
             every {
@@ -309,10 +295,7 @@ internal class ModuleServiceTest {
             parentModuleId = nestedModule.parentModule?.id,
             id = nestedModule.id,
         )
-        val expected = ResponseEntity(
-            nestedModule.toBaseResponseDto(),
-            HttpStatus.OK
-        )
+        val expected = nestedModule.toBaseResponseDto()
 
         request.courseId?.let {
             every {
@@ -479,7 +462,7 @@ internal class ModuleServiceTest {
     fun `should delete module`() {
         // arrange
         val request = DeleteModuleRequest(module.id)
-        val expected = ResponseEntity<HttpStatus>(HttpStatus.OK)
+        val expected = Unit
 
         request.id?.let {
             every {

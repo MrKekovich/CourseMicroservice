@@ -10,8 +10,6 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -42,7 +40,7 @@ class ArticleController(
 //        @Validated
 //        @RequestBody
 //        dto: GetAllArticlesRequest TODO: add pagination
-    ): ResponseEntity<List<BaseArticleResponse>> =
+    ): List<BaseArticleResponse> =
         articleService.getAll(/*dto*/)
 
     @Operation(summary = "Create new article")
@@ -60,7 +58,7 @@ class ArticleController(
         @Validated
         @RequestBody
         dto: CreateArticleRequest
-    ): ResponseEntity<BaseArticleResponse> =
+    ): BaseArticleResponse =
         articleService.create(dto)
 
     @Operation(summary = "Update article")
@@ -78,7 +76,7 @@ class ArticleController(
         @Validated
         @RequestBody
         dto: UpdateArticleRequest
-    ): ResponseEntity<BaseArticleResponse> =
+    ): BaseArticleResponse =
         articleService.update(dto)
 
     @Operation(summary = "Delete article")
@@ -96,6 +94,6 @@ class ArticleController(
         @Validated
         @RequestBody
         dto: DeleteArticleRequest
-    ): ResponseEntity<HttpStatus> =
+    ): Unit =
         articleService.delete(dto)
 }

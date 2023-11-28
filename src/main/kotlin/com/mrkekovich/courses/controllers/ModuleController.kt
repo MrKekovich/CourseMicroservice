@@ -10,8 +10,6 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -42,7 +40,7 @@ class ModuleController(
 //        @Validated
 //        @RequestBody
 //        dto: GetAllModulesRequest TODO: add pagination
-    ): ResponseEntity<List<BaseModuleResponse>> =
+    ): List<BaseModuleResponse> =
         moduleService.getAll(/*dto*/)
 
     @Operation(summary = "Create module")
@@ -60,7 +58,7 @@ class ModuleController(
         @Validated
         @RequestBody
         dto: CreateModuleRequest
-    ): ResponseEntity<BaseModuleResponse> =
+    ): BaseModuleResponse =
         moduleService.create(dto)
 
     @Operation(summary = "Update module")
@@ -78,7 +76,7 @@ class ModuleController(
         @Validated
         @RequestBody
         dto: UpdateModuleRequest
-    ): ResponseEntity<BaseModuleResponse> =
+    ): BaseModuleResponse =
         moduleService.update(dto)
 
     @Operation(summary = "Delete module")
@@ -91,6 +89,6 @@ class ModuleController(
         @Validated
         @RequestBody
         dto: DeleteModuleRequest
-    ): ResponseEntity<HttpStatus> =
+    ): Unit =
         moduleService.delete(dto)
 }

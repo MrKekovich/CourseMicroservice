@@ -9,17 +9,17 @@ import com.mrkekovich.courses.mappers.toBaseResponseDto
 import com.mrkekovich.courses.mappers.toEntity
 import com.mrkekovich.courses.repositories.CourseRepository
 import com.mrkekovich.courses.repositories.ModuleRepository
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
+
+private const val MODULE_NOT_FOUND_MESSAGE = "Module with id \"%s\" not found"
 
 @Service
 class ModuleService(
     private val moduleRepository: ModuleRepository,
     private val courseRepository: CourseRepository,
 ) {
-    fun create(dto: CreateModuleRequest): ResponseEntity<BaseModuleResponse> {
+    fun create(dto: CreateModuleRequest): BaseModuleResponse {
         val entity = moduleRepository.save(
             dto.toEntity(
                 moduleRepository = moduleRepository,
@@ -27,30 +27,22 @@ class ModuleService(
             )
         )
 
-        return ResponseEntity(
-            entity.toBaseResponseDto(),
-            HttpStatus.CREATED
-        )
+        return entity.toBaseResponseDto()
     }
 
     @Suppress("UnusedParameter")
     fun getAll(
 //        dto: GetAllModulesRequest TODO: add pagination
-    ): ResponseEntity<List<BaseModuleResponse>> {
-        val response = moduleRepository.findAll().map {
+    ): List<BaseModuleResponse> {
+        return moduleRepository.findAll().map {
             it.toBaseResponseDto()
         }
-
-        return ResponseEntity(
-            response,
-            HttpStatus.OK
-        )
     }
 
-    fun update(dto: UpdateModuleRequest): ResponseEntity<BaseModuleResponse> {
+    fun update(dto: UpdateModuleRequest): BaseModuleResponse {
         dto.id?.let {
             moduleRepository.findById(it).getOrNull()
-        } ?: throw NotFoundException("Module with id \"${dto.id}\" not found")
+        } ?: throw NotFoundException(MODULE_NOT_FOUND_MESSAGE.format(dto.id))
 
         val updatedEntity = moduleRepository.save(
             dto.toEntity(
@@ -59,19 +51,14 @@ class ModuleService(
             )
         )
 
-        return ResponseEntity(
-            updatedEntity.toBaseResponseDto(),
-            HttpStatus.OK
-        )
+        return updatedEntity.toBaseResponseDto()
     }
 
-    fun delete(dto: DeleteModuleRequest): ResponseEntity<HttpStatus> {
+    fun delete(dto: DeleteModuleRequest) {
         val entity = dto.id?.let {
             moduleRepository.findById(it).getOrNull()
-        } ?: throw NotFoundException("Module with id \"${dto.id}\" not found")
+        } ?: throw NotFoundException(MODULE_NOT_FOUND_MESSAGE.format(dto.id))
 
         moduleRepository.delete(entity)
-
-        return ResponseEntity(HttpStatus.OK)
     }
 }

@@ -10,8 +10,6 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -42,7 +40,7 @@ class CourseController(
 //        @Validated
 //        @RequestBody
 //        dto: GetAllCoursesRequest, TODO: Add pagination
-    ): ResponseEntity<List<BaseCourseResponse>> =
+    ): List<BaseCourseResponse> =
         courseService.getAll(/*dto*/)
 
     @Operation(summary = "Create course")
@@ -60,7 +58,7 @@ class CourseController(
         @Validated
         @RequestBody
         dto: CreateCourseRequest,
-    ): ResponseEntity<BaseCourseResponse> =
+    ): BaseCourseResponse =
         courseService.create(dto)
 
     @Operation(summary = "Update course")
@@ -78,7 +76,7 @@ class CourseController(
         @Validated
         @RequestBody
         dto: UpdateCourseRequest,
-    ): ResponseEntity<BaseCourseResponse> =
+    ): BaseCourseResponse =
         courseService.update(dto)
 
     @Operation(summary = "Delete course")
@@ -91,6 +89,6 @@ class CourseController(
         @Validated
         @RequestBody
         dto: DeleteCourseRequest,
-    ): ResponseEntity<HttpStatus> =
+    ): Unit =
         courseService.delete(dto)
 }

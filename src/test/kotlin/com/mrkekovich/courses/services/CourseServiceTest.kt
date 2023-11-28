@@ -12,8 +12,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import kotlin.jvm.optionals.getOrNull
 
 internal class CourseServiceTest {
@@ -34,10 +32,8 @@ internal class CourseServiceTest {
             title = course.title,
             description = course.description
         )
-        val expected = ResponseEntity(
-            course.toBaseResponseDto(),
-            HttpStatus.CREATED
-        )
+        val expected = course.toBaseResponseDto()
+
         every {
             courseRepository.save(any())
         } returns course
@@ -54,10 +50,7 @@ internal class CourseServiceTest {
     fun `should get all courses`() {
         // arrange
         val records = listOf(course, course)
-        val expected = ResponseEntity(
-            records.map { it.toBaseResponseDto() },
-            HttpStatus.OK
-        )
+        val expected = records.map { it.toBaseResponseDto() }
 
         every {
             courseRepository.findAll()
@@ -79,10 +72,7 @@ internal class CourseServiceTest {
             description = course.description,
             id = course.id
         )
-        val expected = ResponseEntity(
-            course.toBaseResponseDto(),
-            HttpStatus.OK
-        )
+        val expected = course.toBaseResponseDto()
 
         request.id?.let {
             every {
@@ -136,7 +126,7 @@ internal class CourseServiceTest {
     fun `should delete course`() {
         // arrange
         val request = DeleteCourseRequest(course.id)
-        val expected = ResponseEntity<HttpStatus>(HttpStatus.OK)
+        val expected = Unit
 
         request.id?.let {
             every {

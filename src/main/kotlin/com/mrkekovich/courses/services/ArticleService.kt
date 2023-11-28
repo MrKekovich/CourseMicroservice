@@ -9,65 +9,50 @@ import com.mrkekovich.courses.mappers.toBaseResponseDto
 import com.mrkekovich.courses.mappers.toEntity
 import com.mrkekovich.courses.repositories.ArticleRepository
 import com.mrkekovich.courses.repositories.ModuleRepository
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
+
+private const val ARTICLE_NOT_FOUND_MESSAGE = "Article with id \"%s\" not found"
 
 @Service
 class ArticleService(
     private val articleRepository: ArticleRepository,
     private val moduleRepository: ModuleRepository
 ) {
-    fun create(dto: CreateArticleRequest): ResponseEntity<BaseArticleResponse> {
+    fun create(dto: CreateArticleRequest): BaseArticleResponse {
         val entity = articleRepository.save(
             dto.toEntity(moduleRepository)
         )
 
-        return ResponseEntity(
-            entity.toBaseResponseDto(),
-            HttpStatus.CREATED
-        )
+        return entity.toBaseResponseDto()
     }
 
     @Suppress("UnusedParameter")
     fun getAll(
 //        dto: GetAllArticlesRequest TODO: add pagination
-    ): ResponseEntity<List<BaseArticleResponse>> {
-        val response = articleRepository.findAll().map {
+    ): List<BaseArticleResponse> {
+        return articleRepository.findAll().map {
             it.toBaseResponseDto()
         }
-
-        return ResponseEntity(
-            response,
-            HttpStatus.OK
-        )
     }
 
-    fun update(dto: UpdateArticleRequest): ResponseEntity<BaseArticleResponse> {
+    fun update(dto: UpdateArticleRequest): BaseArticleResponse {
         dto.id?.let {
             articleRepository.findById(it).getOrNull()
-        } ?: throw NotFoundException("Article with id \"${dto.id}\" not found")
+        } ?: throw NotFoundException(ARTICLE_NOT_FOUND_MESSAGE.format(dto.id))
 
         val updatedEntity = articleRepository.save(
             dto.toEntity(moduleRepository)
         )
 
-        return ResponseEntity(
-            updatedEntity.toBaseResponseDto(),
-            HttpStatus.OK
-        )
+        return updatedEntity.toBaseResponseDto()
     }
 
-    fun delete(dto: DeleteArticleRequest): ResponseEntity<HttpStatus> {
+    fun delete(dto: DeleteArticleRequest) {
         val entity = dto.id?.let {
             articleRepository.findById(it).getOrNull()
-        } ?: throw NotFoundException("Article with id \"${dto.id}\" not found")
+        } ?: throw NotFoundException(ARTICLE_NOT_FOUND_MESSAGE.format(dto.id))
 
         articleRepository.delete(entity)
-
-        return ResponseEntity(
-            HttpStatus.OK
-        )
     }
 }

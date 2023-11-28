@@ -8,10 +8,10 @@ import com.mrkekovich.courses.exceptions.NotFoundException
 import com.mrkekovich.courses.mappers.toBaseResponseDto
 import com.mrkekovich.courses.mappers.toEntity
 import com.mrkekovich.courses.repositories.CourseRepository
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
+
+private const val COURSE_NOT_FOUND_MESSAGE = "Course with id \"%s\" not found"
 
 @Service
 class CourseService(
@@ -20,52 +20,40 @@ class CourseService(
     @Suppress("UnusedParameter")
     fun getAll(
 //        dto: GetAllCoursesRequest, TODO: Add pagination
-    ): ResponseEntity<List<BaseCourseResponse>> {
-        val response = courseRepository.findAll().map {
+    ): List<BaseCourseResponse> {
+        return courseRepository.findAll().map {
             it.toBaseResponseDto()
         }
-
-        return ResponseEntity(
-            response,
-            HttpStatus.OK,
-        )
     }
 
     fun create(
         dto: CreateCourseRequest,
-    ): ResponseEntity<BaseCourseResponse> {
+    ): BaseCourseResponse {
         val entity = courseRepository.save(
             dto.toEntity()
         )
-        return ResponseEntity(
-            entity.toBaseResponseDto(),
-            HttpStatus.CREATED,
-        )
+        return entity.toBaseResponseDto()
     }
 
     fun update(
         dto: UpdateCourseRequest,
-    ): ResponseEntity<BaseCourseResponse> {
+    ): BaseCourseResponse {
         dto.id?.let { id ->
             courseRepository.findById(id).getOrNull()
-        } ?: throw NotFoundException("Course with id \"${dto.id}\" not found")
+        } ?: throw NotFoundException(COURSE_NOT_FOUND_MESSAGE.format(dto.id))
 
         val updatedEntity = courseRepository.save(dto.toEntity())
-        return ResponseEntity(
-            updatedEntity.toBaseResponseDto(),
-            HttpStatus.OK,
-        )
+
+        return updatedEntity.toBaseResponseDto()
     }
 
     fun delete(
         dto: DeleteCourseRequest,
-    ): ResponseEntity<HttpStatus> {
+    ) {
         val entity = dto.id?.let {
             courseRepository.findById(it).getOrNull()
-        } ?: throw NotFoundException("Course with id \"${dto.id}\" not found")
+        } ?: throw NotFoundException(COURSE_NOT_FOUND_MESSAGE.format(dto.id))
 
         courseRepository.delete(entity)
-
-        return ResponseEntity(HttpStatus.OK)
     }
 }

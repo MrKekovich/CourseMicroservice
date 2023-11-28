@@ -15,8 +15,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import kotlin.jvm.optionals.getOrNull
 
 internal class ArticleServiceTest {
@@ -53,10 +51,7 @@ internal class ArticleServiceTest {
             content = article.content,
             moduleId = article.module?.id
         )
-        val expected = ResponseEntity(
-            article.toBaseResponseDto(),
-            HttpStatus.CREATED
-        )
+        val expected = article.toBaseResponseDto()
 
         request.moduleId?.let {
             every {
@@ -80,10 +75,7 @@ internal class ArticleServiceTest {
     fun `should get all articles`() {
         // arrange
         val articles = listOf(article, article)
-        val expected = ResponseEntity(
-            articles.map { it.toBaseResponseDto() },
-            HttpStatus.OK
-        )
+        val expected = articles.map { it.toBaseResponseDto() }
 
         every {
             articleRepository.findAll()
@@ -107,10 +99,7 @@ internal class ArticleServiceTest {
             moduleId = article.module?.id,
             id = article.id
         )
-        val expected = ResponseEntity(
-            article.toBaseResponseDto(),
-            HttpStatus.OK
-        )
+        val expected = article.toBaseResponseDto()
 
         request.moduleId?.let {
             every {
@@ -217,7 +206,7 @@ internal class ArticleServiceTest {
         val request = DeleteArticleRequest(
             id = article.id
         )
-        val expected = ResponseEntity<HttpStatus>(HttpStatus.OK)
+        val expected = Unit
 
         request.id?.let {
             every {

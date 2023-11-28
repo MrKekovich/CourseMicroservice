@@ -59,7 +59,7 @@ class ArticleControllerTest @Autowired constructor(
             .andDo { print() }
             // assert
             .andExpect {
-                status { isCreated() }
+                status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
                 jsonPath("$.title") { value(request.title) }
                 jsonPath("$.description") { value(request.description) }
