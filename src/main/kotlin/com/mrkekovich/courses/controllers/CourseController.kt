@@ -3,6 +3,7 @@ package com.mrkekovich.courses.controllers
 import com.mrkekovich.courses.dto.BaseCourseResponse
 import com.mrkekovich.courses.dto.CreateCourseRequest
 import com.mrkekovich.courses.dto.DeleteCourseRequest
+import com.mrkekovich.courses.dto.GetCoursesRequest
 import com.mrkekovich.courses.dto.UpdateCourseRequest
 import com.mrkekovich.courses.services.CourseService
 import io.swagger.v3.oas.annotations.Operation
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.data.domain.Page
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -32,8 +34,12 @@ class CourseController(
     )
     @Operation(summary = "Get courses")
     @GetMapping
-    fun getCourses(): List<BaseCourseResponse> =
-        courseService.getAll()
+    fun getCourses(
+        @Validated
+        @RequestBody
+        dto: GetCoursesRequest
+    ): Page<BaseCourseResponse> =
+        courseService.getAll(dto)
 
     @ApiResponse(
         responseCode = "200",

@@ -2,6 +2,7 @@ package com.mrkekovich.courses.services
 
 import com.mrkekovich.courses.dto.CreateCourseRequest
 import com.mrkekovich.courses.dto.DeleteCourseRequest
+import com.mrkekovich.courses.dto.GetCoursesRequest
 import com.mrkekovich.courses.dto.UpdateCourseRequest
 import com.mrkekovich.courses.exceptions.NotFoundException
 import com.mrkekovich.courses.mappers.toBaseResponseDto
@@ -12,6 +13,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.springframework.data.domain.PageImpl
 import kotlin.jvm.optionals.getOrNull
 
 internal class CourseServiceTest {
@@ -49,19 +51,32 @@ internal class CourseServiceTest {
     @Test
     fun `should get all courses`() {
         // arrange
-        val records = listOf(course, course)
+        val records = PageImpl(listOf(course, course))
         val expected = records.map { it.toBaseResponseDto() }
+        val dto = GetCoursesRequest()
 
         every {
-            courseRepository.findAll()
+            courseRepository.findAllByFilter(
+                title = dto.title,
+                description = dto.description,
+                id = dto.id,
+                pageable = any()
+            )
         } returns records
 
         // act
-        val actual = courseService.getAll()
+        val actual = courseService.getAll(dto)
 
         // assert
         assert(actual == expected)
-        verify(exactly = 1) { courseRepository.findAll() }
+        verify(exactly = 1) {
+            courseRepository.findAllByFilter(
+                title = any(),
+                description = any(),
+                id = any(),
+                pageable = any(),
+            )
+        }
     }
 
     @Test

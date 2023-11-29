@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.mrkekovich.courses.dto.CourseDto
 import com.mrkekovich.courses.dto.CreateCourseRequest
 import com.mrkekovich.courses.dto.DeleteCourseRequest
+import com.mrkekovich.courses.dto.GetCoursesRequest
 import com.mrkekovich.courses.dto.UpdateCourseRequest
 import com.mrkekovich.courses.models.CourseEntity
 import com.mrkekovich.courses.repositories.CourseRepository
@@ -56,28 +57,61 @@ internal class CourseControllerTest @Autowired constructor(
     }
 
     @Test
-    fun `should return all courses`() {
+    fun `should return courses`() {
         // arrange
         val expected = listOf(
             getCourse(),
             getCourse()
         )
         courseRepository.saveAll(expected)
+        val request = GetCoursesRequest()
 
         // act
         mockMvc.get(baseUrl) {
             contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(request)
         }
             .andDo { print() }
             // assert
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                jsonPath("$.length()") { value(expected.size) }
+                jsonPath("$.content.length()") { value(expected.size) }
                 expected.forEachIndexed { index, course ->
-                    jsonPath("$[$index].title") { value(course.title) }
-                    jsonPath("$[$index].description") { value(course.description) }
+                    jsonPath("$.content[$index].title") { value(course.title) }
+                    jsonPath("$.content[$index].description") { value(course.description) }
                 }
+            }
+    }
+
+    @Test
+    fun `should filter and return courses`() {
+        // arrange
+        val uniqueCourse = CourseEntity(
+            title = "unique title",
+            description = "unique description",
+        )
+        val expected = listOf(
+            getCourse(),
+            getCourse(),
+            uniqueCourse,
+        )
+        courseRepository.saveAll(expected)
+        val request = GetCoursesRequest(title = "unique")
+
+        // act
+        mockMvc.get(baseUrl) {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(request)
+        }
+            .andDo { print() }
+            // assert
+            .andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                jsonPath("$.content.length()") { value(1) }
+                jsonPath("$.content[0].title") { value(uniqueCourse.title) }
+                jsonPath("$.content[0].description") { value(uniqueCourse.description) }
             }
     }
 
@@ -130,16 +164,18 @@ internal class CourseControllerTest @Autowired constructor(
     fun validateWithGetRequest(
         request: CourseDto?,
         length: Int = 1,
-        index: Int = 0
+        index: Int = 0,
+        getCoursesRequest: GetCoursesRequest? = null,
     ) {
         mockMvc.get(baseUrl) {
             contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(getCoursesRequest ?: GetCoursesRequest())
         }
             .andExpect {
-                jsonPath("$.length()") { value(length) }
-                request?.title?.let { jsonPath("$[$index].title") { value(it) } }
-                request?.description?.let { jsonPath("$[$index].description") { value(it) } }
-                request?.id?.let { jsonPath("$[$index].id") { value(it) } }
+                jsonPath("$.content.length()") { value(length) }
+                request?.title?.let { jsonPath("$.content[$index].title") { value(it) } }
+                request?.description?.let { jsonPath("$.content[$index].description") { value(it) } }
+                request?.id?.let { jsonPath("$.content[$index].id") { value(it) } }
             }
     }
 
