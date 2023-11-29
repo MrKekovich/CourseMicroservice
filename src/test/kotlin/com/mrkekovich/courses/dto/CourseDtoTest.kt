@@ -77,14 +77,19 @@ internal class CourseDtoTest {
     }
 
     @Test
-    fun `get all courses request should validate`() {
+    fun `get courses request should validate`() {
         // arrange
-        val validDto = GetAllCoursesRequest(
-            limit = 1
+        val validDto = GetCoursesRequest(
+            pageSize = 1,
+            page = 0
         )
-        val invalidDtos = (-100 until -1).map {
-            GetAllCoursesRequest(limit = it)
+        val invalidPageSizeDtos = (-100..0).map {
+            GetCoursesRequest(pageSize = it, page = 0)
         }
+        val invalidPageDtos = (-100..-1).map {
+            GetCoursesRequest(pageSize = 1, page = it)
+        }
+        val invalidDtos = invalidPageSizeDtos + invalidPageDtos
 
         // act
         val violationsValid =
@@ -98,6 +103,6 @@ internal class CourseDtoTest {
         // assert
         assert(violationsValid.isEmpty())
         assert(violationsInvalid.all { it.isNotEmpty() })
-        validateNotNull(1, ::GetAllCoursesRequest)
+        validateNotNull<Int>(2) { GetCoursesRequest(pageSize = it, page = it) }
     }
 }

@@ -1,5 +1,6 @@
 package com.mrkekovich.courses.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
@@ -97,20 +98,47 @@ data class DeleteCourseRequest(
 ) : CourseDto()
 
 /**
- * Get courses request represents a client request to get all courses.
+ * Get courses request represents a client request to get courses.
  *
- * @property limit Limit of courses to get (-1 means no limit).
- * - [Min] (-1).
+ * @property pageSize Limit of courses on a single page.
+ * - [NotNull]
+ * - [Min] (1)
+ *
+ * @property page (offset) Which page to get.
+ * - [NotNull]
+ * - [Min] (0)
+ *
+ * @property title Title filter.
+ *
+ * @property description Description filter.
+ *
+ * @property id ID filter.
  */
 @Schema(
     name = "Get courses request",
     description = "Represents a client request to get courses."
 )
-data class GetAllCoursesRequest(
-    @get:Schema(description = "Limit of courses to get. -1 means no limit.")
+data class GetCoursesRequest(
+    @get:Schema(description = "Page number (offset)")
+    @get:JsonProperty("page")
     @get:NotNull
-    @get:Min(-1)
-    val limit: Int? = -1,
+    @get:Min(0)
+    val page: Int? = 0,
+
+    @get:Schema(description = "How many courses to return on a single page.")
+    @get:JsonProperty("page_size")
+    @get:NotNull
+    @get:Min(1)
+    val pageSize: Int? = 10,
+
+    @get:Schema(description = "Title filter.")
+    override val title: String? = null,
+
+    @get:Schema(description = "Description filter.")
+    override val description: String? = null,
+
+    @get:Schema(description = "ID filter.")
+    override val id: String? = null,
 ) : CourseDto()
 
 /**

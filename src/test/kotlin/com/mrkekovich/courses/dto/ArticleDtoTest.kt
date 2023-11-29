@@ -99,14 +99,19 @@ internal class ArticleDtoTest {
     }
 
     @Test
-    fun `get all articles request should validate`() {
+    fun `get articles request should validate`() {
         // arrange
         val validDto = GetAllArticlesRequest(
-            limit = 1
+            page = 0,
+            pageSize = 10,
         )
-        val invalidDtos = (-100 until -1).map {
-            GetAllArticlesRequest(limit = it)
+        val invalidPageDtos = (-100..-1).map {
+            GetAllArticlesRequest(page = it, pageSize = 10)
         }
+        val invalidPageSizeDtos = (-100..0).map {
+            GetAllArticlesRequest(page = 0, pageSize = it)
+        }
+        val invalidDtos = invalidPageDtos + invalidPageSizeDtos
 
         // act
         val violationsValid =

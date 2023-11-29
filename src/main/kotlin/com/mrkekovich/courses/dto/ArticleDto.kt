@@ -130,23 +130,37 @@ data class DeleteArticleRequest(
 ) : ArticleDto()
 
 /**
- * Get articles request is used to represent client request to get all articles.
- * It contains limit of article records to return.
+ * Get articles request is used to represent client request to get articles.
  *
- * @property limit Limit of article records to return.
- * -1 means no limit.
+ * @property page Page number (offset).
  * Validation:
  * - [NotNull]
  * - [Min]: (-1)
  */
 @Schema(name = "Get articles request")
 data class GetAllArticlesRequest(
-    @get:Schema(description = "Article records limit. -1 means no limit.")
+    @get:Schema(description = "Page number (offset).")
     @get:NotNull
-    @get:Min(-1)
-    val limit: Int? = -1
-) : ArticleDto()
+    @get:Min(0)
+    val page: Int? = 0,
 
+    @get:Schema(description = "How many articles to return on a single page.")
+    @get:NotNull
+    @get:Min(1)
+    val pageSize: Int? = 10,
+
+    @get:Schema(description = "Title filter.")
+    override val title: String? = null,
+
+    @get:Schema(description = "Description filter.")
+    override val description: String? = null,
+
+    @get:Schema(description = "Module ID filter.")
+    override val moduleId: String? = null,
+
+    @get:Schema(description = "ID filter.")
+    override val id: String? = null,
+) : ArticleDto()
 /**
  * Base article response is used to represent server response.
  * This DTO contains all fields from [ArticleDto].
